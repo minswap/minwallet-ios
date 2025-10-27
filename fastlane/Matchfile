@@ -5,7 +5,7 @@ storage_mode("git")
 type("development") # The default type, can be: appstore, adhoc, enterprise or development
 
 app_identifier(["org.minswap.MinWallet", "org.minswap.MinWallet.OneSignalNotificationServiceExtension"])
-username("klaus_le@icloud.com")
+username("khanh@minswap.org")
 
 # For all available options run `fastlane match --help`
 # Remove the # in the beginning of the line to enable the other options

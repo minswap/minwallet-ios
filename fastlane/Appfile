@@ -1,5 +1,5 @@
 app_identifier("org.minswap.MinWallet") # The bundle identifier of your app
-apple_id("klaus_le@icloud.com") # Your Apple Developer Portal username
+apple_id("khanh@minswap.org") # Your Apple Developer Portal username
 
 # For more information about the Appfile, see:
 #     https://docs.fastlane.tools/advanced/#appfile
