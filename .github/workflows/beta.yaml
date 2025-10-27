@@ -11,13 +11,13 @@ jobs:
     runs-on: macos-15
     environment: Production
     steps:
-      - uses: webfactory/ssh-agent@v0.9.1
-        with:
-            ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      # - uses: webfactory/ssh-agent@v0.9.1
+      #   with:
+      #       ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
       - uses: actions/checkout@v4
-        with:
-          ssh-key: ${{ secrets.DEPLOY_KEY }}
-          ssh-strict: true
+        # with:
+        #   ssh-key: ${{ secrets.DEPLOY_KEY }}
+        #   ssh-strict: true
       - uses: SwiftyLab/setup-swift@latest
         with:
           swift-version: "6.1.2"
