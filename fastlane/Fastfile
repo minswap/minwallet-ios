@@ -27,7 +27,4 @@ lane :beta do
   )
   upload_to_testflight(skip_waiting_for_build_processing: true)
   clean_build_artifacts
-  commit_version_bump(message: "[skip ci] Version Bump", xcodeproj: "MinWallet.xcodeproj")
-  add_git_tag
-  push_to_git_remote
 end
