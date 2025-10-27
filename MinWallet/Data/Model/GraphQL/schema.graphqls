@@ -1,0 +1,2642 @@
+directive @rateLimit(duration: Int!, limit: Int!) on FIELD_DEFINITION | OBJECT
+
+"""
+A directive used by the Apollo iOS client to annotate operations or fragments that should be used exclusively for generating local cache mutations instead of as standard operations.
+"""
+directive @apollo_client_ios_localCacheMutation on QUERY | MUTATION | SUBSCRIPTION | FRAGMENT_DEFINITION
+
+"""
+A directive used by the Apollo iOS code generation engine to generate custom import statements in operation or fragment definition files. An import statement to import a module with the name provided in the `module` argument will be added to the generated definition file.
+"""
+directive @import(
+  """The name of the module to import."""
+  module: String!
+) repeatable on QUERY | MUTATION | SUBSCRIPTION | FRAGMENT_DEFINITION
+
+"""Attach extra information to a given type."""
+directive @typePolicy(
+  """
+  A selection set containing fields used to compute the cache key of an object. Referenced fields must have non-nullable scalar types. Order is important.
+  """
+  keyFields: String!
+) on OBJECT | INTERFACE
+
+"""
+Directs the executor to defer this fragment when the `if` argument is true or undefined.
+"""
+directive @defer(
+  """Deferred when true or undefined."""
+  if: Boolean
+
+  """Unique name"""
+  label: String
+) on FRAGMENT_SPREAD | INLINE_FRAGMENT
+
+type AMMPool {
+  lpAsset: Asset!
+  poolAssets: [Asset!]!
+  tvlInAda: BigInt
+  type: AMMType!
+  utxo: AMMUtxo!
+  volume24h: BigInt
+}
+
+enum AMMType {
+  DEX
+  DEX_V2
+  STABLESWAP
+}
+
+type AMMUtxo {
+  address: String!
+  datum: String!
+  txIn: String!
+  value: String!
+}
+
+type ActiveLaunchEvent {
+  assets: [Asset!]!
+  id: String!
+  service: LaunchBowlService!
+}
+
+type AdaPrice {
+  currency: SupportedCurrency!
+  value: CurrencyStats
+}
+
+type AggregatorFeeApp {
+  feeReceiverAddress: String!
+  feeReceiverPeriod: AggregatorFeeReceiverPeriod!
+  id: Int!
+  name: String!
+  ownerAddress: String!
+  stats: AggregatorFeeAppStats!
+  swapFeeNum: Int!
+}
+
+type AggregatorFeeAppStats {
+  paidFee: BigInt!
+  pendingFee: BigInt!
+  totalFee: BigInt!
+  transactions: BigInt!
+}
+
+input AggregatorFeeAppsInput {
+  name: String
+  ownerAddress: String!
+}
+
+input AggregatorFeeCreateAppInput {
+  feeReceiverAddress: String!
+  feeReceiverPeriod: AggregatorFeeReceiverPeriod!
+  name: String!
+  ownerAddress: String!
+  swapFeeNum: Int!
+  tx: String!
+}
+
+input AggregatorFeePreCreateAppInput {
+  inputsToChoose: [String!]!
+  ownerAddress: String!
+}
+
+enum AggregatorFeeReceiverPeriod {
+  DAILY
+  MONTHLY
+  WEEKLY
+}
+
+type AggregatorFeeTransaction {
+  earnedFee: BigInt!
+  id: BigInt!
+  serviceFee: BigInt!
+  txHash: String!
+}
+
+input AggregatorFeeTransactionsInput {
+  appName: String!
+  ownerAddress: String!
+}
+
+type AnalyticsFarmContribution {
+  ammType: AMMType
+  apr: Float
+  label: String!
+  totalLockedInAda: BigInt!
+}
+
+type Asset {
+  currencySymbol: String!
+  details: AssetDetails
+  marketData: AssetMarketData
+  metadata: AssetMetadata
+  tokenName: String!
+}
+
+type AssetAmount {
+  amount: BigInt!
+  asset: Asset!
+}
+
+type AssetDetails {
+  categories: [String!]!
+  project: String!
+  socialLinks: AssetSocialLinks
+}
+
+type AssetMarketData {
+  marketCap: BigNumber!
+  price: BigNumber!
+  priceChange24h: BigNumber!
+  volume24h: BigNumber!
+}
+
+type AssetMetadata {
+  decimals: Int
+  description: String
+  isVerified: Boolean!
+  name: String
+  ticker: String
+  url: String
+}
+
+type AssetSocialLinks {
+  coinGecko: String
+  coinMarketCap: String
+  discord: String
+  telegram: String
+  twitter: String
+  website: String
+}
+
+input AssetsInput {
+  onlyVerified: Boolean
+  searchAfter: [String!]
+  term: String
+}
+
+type AssetsResponse {
+  assets: [Asset!]!
+  searchAfter: [String!]
+}
+
+"""
+The `BigInt` scalar type represents non-fractional signed whole numeric values.
+"""
+scalar BigInt
+
+scalar BigNumber
+
+input BuildCreateLBEPoolOptions {
+  amountA: BigInt
+  amountB: BigInt
+  projectID: String!
+  skey: String!
+}
+
+input BuildCreatePoolOptions {
+  amountA: BigInt!
+  amountB: BigInt!
+  assetA: InputAsset!
+  assetB: InputAsset!
+  collateralUtxos: [String!]!
+  inputsToChoose: [String!]!
+  owner: String!
+  shouldSplitChange: Boolean
+  useCoinSelectionStrategy: Boolean!
+}
+
+type BuildCreatePoolResponse {
+  lpAsset: Asset!
+  tx: String!
+}
+
+input BuildCustomMintTestAssetOptions {
+  address: String!
+  assetSkey: String!
+  assets: [MintAsset!]!
+  policyId: String!
+  skey: String!
+}
+
+input BuildEmergencyWithdrawOptions {
+  collateralUtxos: [String!]!
+  farmTx: FarmTx!
+}
+
+input BuildFarmMigrationOptions {
+  collateralUtxos: [String!]!
+  farmTx: FarmTx!
+}
+
+input BuildFirstDepositTxOptions {
+  amount: BigInt!
+  farmTx: FarmTx!
+  lbWhitelistAssets: [InputAsset!]
+}
+
+"""
+Options to build migration transaction of Yield Farming V1
+The transaction unstakes LP Token V1 and make a withdrawal in Liquidity Pool
+"""
+input BuildMigrateFarmV1ToLPV2Options {
+  """
+  Available Collateral Utxos of *owner* that can be used in the transaction
+  """
+  collateralUtxos: [String!]!
+
+  """Common option to build Yield Farming transaction"""
+  farmTx: FarmTx!
+
+  """
+  Allow withdrawal funds to be transferred to Minswap wallet and process the migration flow
+  """
+  quickMigration: Boolean!
+
+  """
+  Numerator of slippage for the withdrawal order, the denomination is 10000
+  """
+  slippage: Int!
+}
+
+"""
+Options to build migration transaction of Yield Farming V2
+The transaction unstakes LP Token V1 and make a withdrawal in Liquidity Pool
+"""
+input BuildMigrateFarmV2ToLPV2Options {
+  """
+  Available Collateral Utxos of *owner* that can be used in the transaction
+  """
+  collateralUtxos: [String!]!
+
+  """Available Utxos of *owner* that can be spent in the transaction"""
+  inputsToChoose: [String!]!
+
+  """Address of Staking's owner"""
+  owner: String!
+
+  """Yield Farming records that *owner* wants to migrate"""
+  pools: [HarvestPool!]!
+
+  """
+  Allow withdrawal funds to be transferred to Minswap wallet and process the migration flow
+  """
+  quickMigration: Boolean!
+
+  """Should split change Utxos to smaller Utxos or not"""
+  shouldSplitChange: Boolean
+
+  """
+  Numerator of slippage for the withdrawal order, the denomination is 10000
+  """
+  slippage: Int!
+
+  """Using Minswap Utxos selection argorithms or not"""
+  useCoinSelectionStrategy: Boolean!
+}
+
+input BuildMintTestAssetOptions {
+  address: String!
+  assets: [MintAsset!]!
+  seed: String
+  skey: String
+}
+
+"""
+Options to build harvesting transaction of multiple Yield Farming records
+"""
+input BuildMultipleHarvestsOptions {
+  """
+  Available Collateral Utxos of *owner* that can be used in the transaction
+  """
+  collateralUtxos: [String!]!
+
+  """Available Utxos of *owner* that can be spent in the transaction"""
+  inputsToChoose: [String!]!
+
+  """Address of Staking's owner"""
+  owner: String!
+
+  """Yield Farming records that *owner* wants to harvest"""
+  pools: [HarvestPool!]!
+
+  """Should split change Utxos to smaller Utxos or not"""
+  shouldSplitChange: Boolean
+
+  """Using Minswap Utxos selection argorithms or not"""
+  useCoinSelectionStrategy: Boolean!
+}
+
+input BuildStakeDepositOptions {
+  additionalLbWhitelistAssets: [InputAsset!]
+  amount: BigInt!
+  collateralUtxos: [String!]!
+  farmTx: FarmTx!
+}
+
+input BuildStakeWithdrawAllOptions {
+  collateralUtxos: [String!]!
+  farmTx: FarmTx!
+}
+
+input BuildStakeWithdrawOptions {
+  amount: BigInt!
+  collateralUtxos: [String!]!
+  farmTx: FarmTx!
+}
+
+input CLIWallet {
+  address: String!
+  skey: String!
+  stakeSkey: String
+}
+
+input CancelLbeV2EventInput {
+  baseAsset: InputAsset!
+  inputsToChoose: [String!]!
+  raiseAsset: InputAsset!
+}
+
+enum CancelOrderType {
+  ORDER_V1
+  ORDER_V2_AND_STABLESWAP
+}
+
+enum ChartPeriod {
+  ONE_DAY
+  ONE_MONTH
+  ONE_WEEK
+  ONE_YEAR
+  SIX_MONTHS
+}
+
+type ContributionChart {
+  top: [TopContribution!]!
+  totalValue: String!
+}
+
+input CreateLbeV2EventInput {
+  inputsToChoose: [String!]!
+  lbeV2Parameters: LbeV2Parameters!
+  projectDetails: InputProjectDetails!
+}
+
+input CreateLbeV2OrderInput {
+  amount: BigInt!
+  baseAsset: InputAsset!
+  inputsToChoose: [String!]!
+  owner: String!
+  raiseAsset: InputAsset!
+}
+
+type CurrencyStats {
+  change24h: Float!
+  price: Float!
+}
+
+enum DAOChoiceType {
+  MULTIPLE
+  SINGLE
+}
+
+input DAOProposal {
+  body: String!
+  choiceType: DAOChoiceType!
+  choices: [String!]!
+  discussion: String!
+  end: String!
+  limitChoice: Int!
+  quorum: BigInt!
+  start: String!
+  title: String!
+}
+
+type DAOTreasury {
+  details: [DAOTreasuryDetail!]!
+  totalAdaValue: BigInt!
+}
+
+type DAOTreasuryAssetPosition {
+  adaValue: BigInt!
+  positions: [DAOTreasuryAssetPositionDetail!]!
+}
+
+type DAOTreasuryAssetPositionDetail {
+  adaValue: BigInt!
+  amount: BigInt!
+  asset: Asset!
+}
+
+enum DAOTreasuryCategory {
+  ADA_MIN_POL
+  DAO
+  DAO_FEE
+  DAO_HOT
+  FARMING_ADA_MIN_POL
+  POL
+}
+
+type DAOTreasuryDetail {
+  adaValue: BigInt!
+  category: DAOTreasuryCategory!
+  handle: String
+  isStaked: Boolean!
+  positions: DAOTreasuryPosition!
+  wallet: String!
+}
+
+type DAOTreasuryLpPosition {
+  adaValue: BigInt!
+  positions: [DAOTreasuryLpPositionDetail!]!
+}
+
+type DAOTreasuryLpPositionDetail {
+  adaValue: BigInt!
+  amount: BigInt!
+  asset: Asset!
+  equivalent: [AssetAmount!]!
+}
+
+type DAOTreasuryPosition {
+  assets: DAOTreasuryAssetPosition!
+  farming: DAOTreasuryLpPosition!
+  lpTokens: DAOTreasuryLpPosition!
+}
+
+type DailyRewardEmission {
+  asset: Asset!
+  endAt: BigInt
+  reward: BigInt!
+}
+
+input DaoCreateTempCheckInput {
+  endAt: BigInt
+  inputsToChoose: [String!]!
+  linkForum: String!
+  officialEndAt: BigInt
+  officialStartAt: BigInt
+  ownerAddress: String!
+  startAt: BigInt!
+  type: ProposalType!
+}
+
+"""
+A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+"""
+scalar DateTime
+
+type DepositOverSlippageDetail {
+  receivedLPAmount: BigInt!
+  type: OrderOverSlippage!
+}
+
+type DetailedUtxo {
+  rawDatum: String!
+  rawUtxo: String!
+}
+
+type DexMigration {
+  amountLp: AssetAmount!
+  assetA: Asset!
+  assetB: Asset!
+  category: MigrationCategory!
+  flow: DexMigrationFlow
+  hasLbBonus: Boolean!
+  id: String!
+  type: MigrationType!
+}
+
+type DexMigrationCancelledStatus {
+  cancelledAt: String!
+  cancelledTxId: String!
+  type: DexMigrationStatusType!
+}
+
+type DexMigrationExecutedStatus {
+  executedAt: String!
+  executedTxId: String!
+  executedTxIndex: Int!
+  type: DexMigrationStatusType!
+}
+
+"""Data representing for the migration flows from DEX V1 to DEX V2"""
+type DexMigrationFlow {
+  """DEX V2 Depositing flow"""
+  deposit: DexMigrationSubFlow
+
+  """Owner address of the migration"""
+  owner: String!
+
+  """The time that migration starts"""
+  startTime: String!
+
+  """DEX V1 Withdrawal flow"""
+  withdrawal: DexMigrationSubFlow!
+}
+
+type DexMigrationProcessingStatus {
+  type: DexMigrationStatusType!
+}
+
+union DexMigrationStatus = DexMigrationCancelledStatus | DexMigrationExecutedStatus | DexMigrationProcessingStatus
+
+enum DexMigrationStatusType {
+  CANCELLED
+  EXECUTED
+  PROCESSING
+}
+
+"""Data representing for each flow in the migration from DEX V1 to DEX V2"""
+type DexMigrationSubFlow {
+  """Time that the flow is happened"""
+  createdAt: String!
+
+  """Transaction ID of migration transaction"""
+  createdTxId: String!
+
+  """LP Token of the Liquidity Pool that is linked to the migration"""
+  lpAsset: Asset!
+
+  """Status of the flow"""
+  status: DexMigrationStatus!
+}
+
+type DexOverview {
+  totalTrade: Int!
+  totalTraders: Int!
+  totalTvl: BigInt!
+  totalVolume: BigInt!
+}
+
+type DexV2WithdrawImbalanceOverSlippageDetail {
+  receivedAmountA: BigInt!
+  receivedAmountB: BigInt!
+  type: OrderOverSlippage!
+}
+
+type Events {
+  ido: [IdoEvent!]!
+  lbe: [String!]!
+  lbeV2: [LbeV2Event!]!
+}
+
+type Factory {
+  id: String!
+  utxo: String!
+}
+
+type FarmAPR {
+  rewardAPRs: [FarmRewardAPR!]!
+  tradingFeeAPR: Float
+}
+
+type FarmAnalytics {
+  contribution: [AnalyticsFarmContribution!]!
+  minDailyEmission: BigInt!
+  totalFarms: Int!
+  totalLockedInAda: BigInt!
+  uniqueFarmers: Int!
+}
+
+"""Yield Farming records that are available to harvest rewards"""
+type FarmAvailableHarvest {
+  """Determine the Yield Farming Pool is active"""
+  active: Boolean!
+
+  """Tokens of the Liquidity Pool that is represented by the LP Token"""
+  assets: [Asset!]!
+
+  """Determine the Yield Farming Pool is belonged to a Launch Bowl event"""
+  hasLBBonus: Boolean!
+
+  """LP Token that the pool allows depositing on"""
+  lpAsset: Asset!
+
+  """Daily MIN rewards of Yield Farming Pool"""
+  minDailyEmission: BigInt!
+
+  """Farm Rewards are pending and waiting for the harvest"""
+  pendingRewards: [FarmRewardAmount!]!
+
+  """Type of Liquidity Pool that Yield Farming pool is linked to"""
+  poolType: AMMType!
+
+  """Version of Yield Farming contract"""
+  scriptVersion: String!
+}
+
+type FarmConfiguration {
+  maximumMINBarAPR: Float!
+  needMigration: Boolean!
+  totalDailyMIN: BigInt!
+}
+
+"""Data of Yield Farming Pool"""
+type FarmPool {
+  """Determine the Yield Farming Pool is active"""
+  active: Boolean!
+
+  """Tokens of the Liquidity Pool that is represented by the LP Token"""
+  assets: [Asset!]!
+
+  """The information of Staker's fund that is put on the Yield Farming"""
+  currentStaking: StakingData
+
+  """Daily rewards of Yield Farming Pool"""
+  dailyEmission: [DailyRewardEmission!]!
+
+  """APRs of Yield Farming Pool"""
+  farmAPRs: FarmAPR!
+
+  """Farm Rewards are harvested by the staker"""
+  harvestedRewards: [FarmRewardAmount!]!
+
+  """Determine the Yield Farming Pool is belonged to a Launch Bowl event"""
+  hasLBBonus: Boolean!
+
+  """The Launch Bowl NFT PolicyID that Yield Farming pool is linked to"""
+  lbWhitelistPolicyID: String
+
+  """LP Token that the pool allows depositing on"""
+  lpAsset: Asset!
+
+  """
+  Determine the Yield Farming Pool's LP Token can be migrated to newest version
+  """
+  migratable: Boolean!
+
+  """
+  Circulating Supply of Liquidity Pool's LP Token that Yield Farming pool is linked to
+  """
+  poolTotalLiquidity: BigInt!
+
+  """TVL of Liquidity Pool that Yield Farming pool is linked to"""
+  poolTvlInAda: BigInt!
+
+  """Type of Liquidity Pool that Yield Farming pool is linked to"""
+  poolType: AMMType!
+
+  """Tier of the Yield Farming Pool"""
+  tier: String!
+
+  """Number of LP Tokens are staked on Yield Farming"""
+  totalLiquidityStaking: BigInt!
+
+  """
+  Determine the buy fee and sell fee, respectively. If the two values are equal, only one value is returned
+  """
+  tradingFee: [Float!]
+  volume24h: BigInt
+}
+
+input FarmPoolInfoFilterInput {
+  finishedOnly: Boolean
+  launchBowlFarmOnly: Boolean
+  lpAssets: [InputAsset!]
+  stakingOnly: Boolean
+}
+
+input FarmPoolInfoInput {
+  filter: FarmPoolInfoFilterInput
+  pagination: Pagination
+  searchTerm: String
+  sortBy: FarmPoolInfoSortInput
+}
+
+enum FarmPoolInfoSortColumn {
+  REWARD_PERCENT
+  TOTAL_APR
+  TRADING_FEE_APR
+}
+
+input FarmPoolInfoSortInput {
+  column: FarmPoolInfoSortColumn!
+  type: SortType!
+}
+
+type FarmRebalance {
+  ammType: AMMType!
+  assets: [Asset!]!
+  change: Float!
+  date: String!
+  lpAsset: Asset!
+  point: Float!
+  tier: String!
+  tierLogo: String!
+  tradingFee: [Float!]!
+  tvl: BigInt!
+  volume24h: BigInt!
+}
+
+type FarmRewardAPR {
+  asset: Asset!
+  baseAPR: Float!
+  percentage: Float!
+}
+
+type FarmRewardAmount {
+  asset: Asset!
+  reward: BigInt!
+}
+
+"""Common option to build Yield Farming transaction"""
+input FarmTx {
+  """Determine the Yield Farming Pool is belonged to a Launch Bowl event"""
+  hasLBBonus: Boolean!
+
+  """Available Utxos of *owner* that can be spent in the transaction"""
+  inputsToChoose: [String!]!
+
+  """LP Token of the Yield Farming pool"""
+  lpAsset: String!
+
+  """Address of Staking's owner"""
+  owner: String!
+
+  """Should split change Utxos to smaller Utxos or not"""
+  shouldSplitChange: Boolean
+
+  """Using Minswap Utxos selection argorithms or not"""
+  useCoinSelectionStrategy: Boolean!
+}
+
+type FeaturingEvent {
+  bannerUrl: String!
+}
+
+enum FeeManagerType {
+  DELEGATED
+  POOL_CREATOR
+}
+
+type Fraction {
+  denominator: BigInt!
+  numerator: BigInt!
+}
+
+input GetActiveLaunchEventsInput {
+  assetA: InputAsset!
+  assetB: InputAsset!
+}
+
+input HarvestPool {
+  hasLBBonus: Boolean!
+  lpAsset: String!
+}
+
+type HomePageMinBar {
+  poolStats: MINBarPoolStats!
+  tieredAPRs: [MINBarAPR!]!
+}
+
+type HomePageResponse {
+  dexOverview: DexOverview!
+  minStakingStats: [HomePageMinBar!]!
+  topDexAssets: [TopAsset!]!
+  topFarmPools: [FarmPool!]!
+}
+
+input IdoCreateEventInput {
+  collateralUtxos: [String!]!
+  creatorAddress: String!
+  idoParameters: IdoParameters!
+  inputsToChoose: [String!]!
+  projectDetails: InputProjectDetails!
+}
+
+enum IdoDepositOrWithdrawOrderAction {
+  DEPOSIT
+  WITHDRAW
+}
+
+input IdoDepositOrWithdrawOrderInput {
+  action: IdoDepositOrWithdrawOrderAction!
+  collateralUtxos: [String!]!
+  depositOrWithdrawAmount: BigInt!
+  idoId: String!
+  inputsToChoose: [String!]!
+  userAddress: String!
+}
+
+input IdoDetailsInput {
+  address: String
+  idoId: String!
+}
+
+type IdoEvent {
+  endTime: String!
+  expectedSoldAmount: BigInt!
+  expiryTime: String!
+  featuringEvent: FeaturingEvent
+  idoId: String!
+  minimumRaiseAmount: BigInt
+  projectDetails: LbeV2ProjectDetails!
+  raiseAsset: Asset!
+  soldAsset: Asset!
+  startTime: String!
+  status: IdoEventStatus!
+  targetRaiseAmount: BigInt!
+  totalRaise: BigInt!
+}
+
+type IdoEventDetails {
+  event: IdoEvent!
+  numberOfParticipant: Int!
+  userAmounts: IdoUserAmounts
+}
+
+input IdoEventFilterOptions {
+  projectOwnerAddress: String
+  searchTerm: String
+  status: LBEStatus
+}
+
+enum IdoEventStatus {
+  CALCULATING
+  COMPLETED
+  FAILED
+  LIVE
+  UPCOMING
+}
+
+input IdoParameters {
+  baseAmount: BigInt!
+  baseAsset: InputAsset!
+  endTime: BigInt!
+  minimumRaise: BigInt!
+  projectOwner: String!
+  raiseAsset: InputAsset!
+  startTime: BigInt!
+  targetAmount: BigInt!
+}
+
+type IdoUserAmounts {
+  amount: BigInt!
+  receiveAmount: BigInt!
+  refundAmount: BigInt!
+  swapAmount: BigInt!
+}
+
+input InputAsset {
+  currencySymbol: String!
+  tokenName: String!
+}
+
+input InputAssetAmount {
+  amount: BigInt!
+  asset: InputAsset!
+}
+
+input InputCancelBulkOrders {
+  changeAddress: String!
+  orders: [InputCancelOrder!]!
+  publicKey: String!
+  type: CancelOrderType!
+}
+
+input InputCancelOrder {
+  rawDatum: String
+  utxo: String!
+}
+
+input InputCommonBatcherFeeReductionOptions {
+  userAddress: String!
+  userReferences: [String!]!
+  userUtxos: [String!]!
+}
+
+input InputCreateBulkOrders {
+  batcherFeeReductionOptions: InputCommonBatcherFeeReductionOptions
+  orders: [InputCreateOrderOptions!]!
+  publicKey: String!
+  sender: String!
+}
+
+input InputCreateOrderOptions {
+  dexV1OrderSwapExactIn: InputDexV1OrderSwapExactInOptions
+  dexV1OrderSwapExactOut: InputDexV1OrderSwapExactOutOptions
+  dexV2OrderMultiRouting: InputDexV2OrderMultiRoutingOptions
+  dexV2OrderSwapExactIn: InputDexV2OrderSwapExactInOptions
+  dexV2OrderSwapExactOut: InputDexV2OrderSwapExactOutOptions
+  stableswapOrder: InputStableswapOrderOptions
+}
+
+input InputDexV1OrderSwapExactInOptions {
+  assetInAmount: InputAssetAmount!
+  assetOut: InputAsset!
+  minimumAmountOut: BigInt!
+}
+
+input InputDexV1OrderSwapExactOutOptions {
+  assetIn: InputAsset!
+  assetOutAmount: InputAssetAmount!
+  maximumAmountIn: BigInt!
+}
+
+input InputDexV2OrderMultiRoutingOptions {
+  assetIn: InputAssetAmount!
+  lpAsset: InputAsset!
+  minimumReceived: BigInt!
+  routings: [InputOrderV2SwapRouting!]!
+}
+
+input InputDexV2OrderSwapExactInOptions {
+  assetInAmount: InputAssetAmount!
+  assetOut: InputAsset!
+  direction: OrderV2Direction!
+  lpAsset: InputAsset!
+  minimumAmountOut: BigInt!
+}
+
+input InputDexV2OrderSwapExactOutOptions {
+  assetIn: InputAsset!
+  direction: OrderV2Direction!
+  expectedReceived: BigInt!
+  lpAsset: InputAsset!
+  maximumAmountIn: BigInt!
+}
+
+input InputFinalizeAndSubmit {
+  tx: String!
+  witnessSet: String!
+}
+
+input InputOrderV2SwapRouting {
+  direction: OrderV2Direction!
+  lpAsset: InputAsset!
+}
+
+input InputPair {
+  assetA: InputAsset!
+  assetB: InputAsset!
+}
+
+input InputProjectDetails {
+  description: String
+  eventName: String!
+  socialLinks: InputSocialLinks
+  tokenomics: [InputTokenomics!]
+}
+
+input InputSendTokens {
+  assetAmounts: [InputAssetAmount!]!
+  publicKey: String!
+  receiver: String!
+  sendAll: Boolean
+  sender: String!
+}
+
+input InputSocialLinks {
+  discord: String
+  telegram: String
+  twitter: String
+  website: String
+}
+
+input InputStableswapOrderOptions {
+  assetInAmount: InputAssetAmount!
+  assetInIndex: BigInt!
+  assetOutIndex: BigInt!
+  lpAsset: InputAsset!
+  minimumAssetOut: BigInt!
+}
+
+input InputTokenomics {
+  percentage: String!
+  tag: String!
+}
+
+type InvalidOrder {
+  createdAt: String!
+  datum: String!
+  error: String!
+  txIn: TxIn!
+  type: AMMType!
+  value: String!
+}
+
+input IosTradeEstimateInput {
+  amount: BigInt!
+  inputAsset: InputAsset!
+  isApplied: Boolean!
+  isSwapExactIn: Boolean!
+  outputAsset: InputAsset!
+}
+
+type IosTradeEstimateOutput {
+  direction: OrderV2Direction
+  estimateAmount: BigInt
+  inputIndex: Int
+  lpAssets: [Asset!]!
+  lpFee: BigInt
+  outputIndex: Int
+  path: [Asset!]!
+  priceImpact: Float
+  type: AMMType!
+}
+
+type KupoAsset {
+  amount: String!
+  assetId: String!
+}
+
+type KupoUtxo {
+  address: String!
+  outputIndex: Int!
+  transactionId: String!
+  value: KupoValue!
+}
+
+type KupoValue {
+  assets: [KupoAsset!]!
+  coins: String!
+}
+
+input LBEBuildDepositInput {
+  address: String!
+  amount: BigInt!
+  inputsToChoose: [String!]!
+  projectID: String!
+  shouldSplitChange: Boolean
+}
+
+type LBEProjectDetail {
+  amountADA: BigInt!
+  id: String!
+  lbeAsset: Asset
+  participant: Int!
+  purrAsset: Asset!
+  service: LaunchBowlService!
+}
+
+enum LBEStatus {
+  COMPLETE
+  LIVE
+  UPCOMING
+}
+
+enum LBEV2Actor {
+  PROJECT
+  USER
+}
+
+type LPFeeDelegateProposalDetail {
+  delegatedAddress: String!
+  type: LPFeeProposalType!
+}
+
+type LPFeeProposal {
+  choiceWinIdx: Int!
+  choices: [ProposalOption!]!
+  createdTxId: String!
+  description: String!
+  details: LPFeeProposalDetail!
+  endAt: String!
+  isPassed: Boolean!
+  poolAssets: [Asset!]!
+  poolLPAsset: String!
+  proposerAddress: String!
+  quorum: BigInt!
+  resultPublishedTxId: String
+  snapshotAt: String!
+  startAt: String!
+  status: LPFeeProposalStatus!
+  userVotingPower: BigInt
+  voteCount: Int!
+}
+
+union LPFeeProposalDetail = LPFeeDelegateProposalDetail | LPFeeRevokeProposalDetail | LPFeeTransferOwnerProposalDetail
+
+input LPFeeProposalFilter {
+  lpAsset: String
+  proposerAddress: String
+  status: LPFeeProposalStatus
+  type: LPFeeProposalType
+}
+
+input LPFeeProposalInput {
+  proposalId: String!
+  userAddress: String
+}
+
+enum LPFeeProposalStatus {
+  COMPLETED
+  FAILED
+  ON_GOING
+  PASSED
+}
+
+enum LPFeeProposalType {
+  DELEGATE
+  REVOKE
+  TRANSFER_OWNERSHIP
+}
+
+input LPFeeProposalsInput {
+  filter: LPFeeProposalFilter
+  pagination: Pagination
+  userAddress: String
+}
+
+type LPFeeRevokeProposalDetail {
+  revokedAddress: String!
+  type: LPFeeProposalType!
+}
+
+type LPFeeTransferOwnerProposalDetail {
+  delegatedAddress: String!
+  revokedAddress: String!
+  type: LPFeeProposalType!
+}
+
+type LPHolder {
+  address: String!
+  lpADAWorth: BigInt!
+  lpAmount: BigInt!
+  poolShare: Float!
+  snapshotAt: String!
+}
+
+type LaunchBowlAnalytic {
+  participant: Int!
+  projectCount: Int!
+  raisedADA: BigInt!
+}
+
+input LaunchBowlJoinedProjectsInput {
+  searchTerm: String
+  userAddress: String!
+}
+
+type LaunchBowlProject {
+  amountADA: BigInt!
+  asset: Asset
+  id: String!
+  purrAsset: Asset!
+}
+
+enum LaunchBowlService {
+  IDO
+  LBE
+  LBE_V2
+}
+
+type LbeV2Details {
+  event: LbeV2Event!
+  numberOfParticipant: Int!
+  userOrder: LbeV2UserOrder
+}
+
+input LbeV2DetailsInput {
+  address: String
+  lbeId: String!
+}
+
+type LbeV2Event {
+  baseAsset: Asset!
+  currentRaiseAmount: BigInt!
+  endTime: BigInt!
+  featuringEvent: FeaturingEvent
+  id: String!
+  maximumRaiseAmount: BigInt
+  minimumOrderRaise: BigInt
+  minimumRaiseAmount: BigInt
+  owner: String!
+  penaltyConfig: LbeV2Penalty
+  poolAllocation: BigInt!
+  poolBaseFee: BigInt!
+  projectDetails: LbeV2ProjectDetails!
+  raiseAsset: Asset!
+  receiver: String!
+  revocable: Boolean!
+  sellerCount: BigInt!
+  startTime: BigInt!
+  status: LbeV2Status!
+  tokenDistribution: BigInt!
+}
+
+input LbeV2EventFilterOptions {
+  projectOwnerAddress: String
+  searchTerm: String
+  status: LBEStatus
+}
+
+input LbeV2Parameters {
+  baseAsset: InputAsset!
+  endTime: BigInt!
+  maximumRaise: BigInt
+  minimumOrderRaise: BigInt
+  minimumRaise: BigInt
+  owner: String!
+  penaltyConfig: LbeV2PenaltyInput
+  poolAllocation: BigInt!
+  poolBaseFee: BigInt!
+  raiseAsset: InputAsset!
+  receiver: String!
+  startTime: BigInt!
+  tokenDistribution: BigInt!
+}
+
+type LbeV2Penalty {
+  penaltyStartTime: BigInt!
+  percentage: BigInt!
+}
+
+input LbeV2PenaltyInput {
+  penaltyStartTime: BigInt!
+  percentage: BigInt!
+}
+
+type LbeV2ProjectDetails {
+  description: String
+  eventName: String!
+  socialLinks: LbeV2SocialLinks
+  tokenomics: [LbeV2Tokenomics!]
+}
+
+type LbeV2SocialLinks {
+  discord: String
+  telegram: String
+  twitter: String
+  website: String
+}
+
+type LbeV2Status {
+  batchingStatus: String
+
+  """
+  values of cancelReason are "CREATED_POOL", "BY_OWNER" and "NOT_REACH_MINIMUM"
+  """
+  cancelReason: String
+  cancelTime: BigInt
+  type: String!
+}
+
+type LbeV2Tokenomics {
+  percentage: String!
+  tag: String!
+}
+
+type LbeV2UserOrder {
+  changeAmount: BigInt!
+  lpAmount: BigInt!
+  totalAmount: BigInt!
+  totalPenalty: BigInt!
+}
+
+input LbeV2ValidateParametersInput {
+  baseAsset: InputAsset!
+  raiseAsset: InputAsset!
+}
+
+type LbeV2ValidateParametersResult {
+  """CREATED_POOL | CREATED_LBE"""
+  errorCode: String
+  isValid: Boolean!
+}
+
+input LpFeeGovernanceLatestSnapshotInput {
+  lpAsset: String!
+  userAddress: String!
+}
+
+type LpFeeGovernanceSnapshot {
+  address: String!
+  lpAmount: BigInt!
+  lpAsset: Asset!
+  snapshotAt: BigInt!
+}
+
+type LpFeeProposalStats {
+  fee: [BigInt!]!
+  feeManagerAddress: [String!]!
+  managerType: FeeManagerType!
+  numberOfActiveProposals: Int!
+  totalProposals: Int!
+}
+
+input LpFeeProposalStatsInput {
+  lpAsset: String!
+}
+
+type LpFeeProposalVote {
+  address: String!
+  blockId: BigInt!
+  createdAt: BigInt!
+  createdTxId: String!
+  id: BigInt!
+  proposalId: String!
+  snapshotAt: BigInt!
+  voteValue: BigInt!
+  votingPower: BigInt!
+}
+
+input LpFeeProposalVotesInput {
+  pagination: Pagination
+  proposalId: String!
+}
+
+input LpHolderInput {
+  lpAsset: String!
+  pagination: Pagination
+}
+
+type MINBarAPR {
+  duration: BigInt!
+  rewardAPRs: [FarmRewardAPR!]!
+}
+
+type MINBarDuration {
+  duration: BigInt!
+  multiplier: Int!
+}
+
+type MINBarLiquidPoolStats {
+  aprs: [FarmRewardAPR!]!
+  circulatingSupplyStaked: Float!
+  dailyEmission: [DailyRewardEmission!]!
+  totalStaking: BigInt!
+  uniqueWallets: BigInt!
+}
+
+type MINBarLiquidStakingData {
+  pendingRewards: [FarmRewardAmount!]!
+  stakingAdaWorth: BigInt
+  stakingAmount: BigInt!
+  stakingUtxo: String!
+}
+
+type MINBarPool {
+  asset: Asset!
+  liquidStats: MINBarLiquidPoolStats!
+  poolStats: MINBarPoolStats!
+  supportedDurations: [MINBarDuration!]!
+  tieredStats: MINBarTieredPoolStats!
+}
+
+type MINBarPoolStats {
+  circulatingSupplyStaked: Float!
+  dailyEmission: [DailyRewardEmission!]!
+  totalStaking: BigInt!
+  uniqueWallets: BigInt!
+}
+
+input MINBarStakeOption {
+  amount: BigInt!
+  asset: InputAsset!
+  duration: BigInt!
+}
+
+input MINBarStakeOptions {
+  inputsToChoose: [String!]!
+  owner: String!
+  shouldSplitChange: Boolean
+  stakeOptions: [MINBarStakeOption!]!
+  useCoinSelectionStrategy: Boolean!
+}
+
+type MINBarStakingChart {
+  amount: BigInt!
+  time: BigInt!
+}
+
+enum MINBarStakingChartInterval {
+  DAY
+  MONTH
+  WEEK
+}
+
+type MINBarStakingData {
+  duration: MINBarDuration!
+  endAt: BigInt!
+  pendingRewards: [FarmRewardAmount!]!
+  rewardPercent: Float!
+  stakingAdaWorth: BigInt
+  stakingAmount: BigInt!
+  stakingUtxo: String!
+  version: String!
+}
+
+type MINBarTieredPoolStats {
+  aprs: [MINBarAPR!]!
+  circulatingSupplyStaked: Float!
+  dailyEmission: [DailyRewardEmission!]!
+  totalBoostingStaking: BigInt!
+  totalStaking: BigInt!
+  uniqueWallets: BigInt!
+}
+
+input MINBarUnStakeOptions {
+  collateralUtxos: [String!]!
+  inputsToChoose: [String!]!
+  minBarStakingUtxos: [String!]!
+  shouldSplitChange: Boolean
+  useCoinSelectionStrategy: Boolean!
+}
+
+enum MigrationCategory {
+  CANCELLED
+  FINISH
+  MIGRATABLE
+  MIGRATING
+  NOT_MIGRATABLE
+}
+
+enum MigrationType {
+  FARM_V1
+  FARM_V2
+  WALLET
+}
+
+input MinBarBuildLiquidHarvestOptions {
+  harvestUtxoTxIn: String!
+  inputsToChoose: [String!]!
+}
+
+input MinBarBuildLiquidStakeOptions {
+  amount: BigInt!
+  asset: InputAsset!
+  inputsToChoose: [String!]!
+  owner: String!
+}
+
+input MinBarBuildLiquidUnstakeOptions {
+  inputsToChoose: [String!]!
+  unstakeUtxoTxIn: String!
+}
+
+input MinBarBuildLiquidWithdrawOptions {
+  inputsToChoose: [String!]!
+  withdrawUtxoTxIn: String!
+  withdrawalAmount: BigInt!
+}
+
+input MinBarBuildTieredStakeOptions {
+  amount: BigInt!
+  asset: InputAsset!
+  inputsToChoose: [String!]!
+  owner: String!
+}
+
+input MinBarBuildTieredUnstakeOptions {
+  inputsToChoose: [String!]!
+  unstakeUtxoTxIn: String!
+}
+
+type MinBarLiquidPositionStats {
+  amount: BigInt!
+  numOfPositions: Int!
+}
+
+type MinBarStakingStats {
+  liquidPoolStats: MINBarLiquidPoolStats
+  liquidPositionStats: MinBarLiquidPositionStats!
+  poolStats: MINBarPoolStats!
+  tieredPoolStats: MINBarTieredPoolStats!
+  tieredPositionStats: [MinBarTieredPositionStats!]!
+}
+
+type MinBarTieredPositionStats {
+  amount: BigInt!
+  duration: BigInt!
+  numOfPositions: Int!
+}
+
+type MinBarUnstakeResult {
+  pendingRewards: [FarmRewardAmount!]!
+  tx: String!
+}
+
+type MinTokenStats {
+  numberOfHolders: Int
+  topAsset: TopAsset!
+}
+
+type MinTokenomics {
+  circulatingSupply: BigInt!
+  coreTeam: BigInt!
+  dao: BigInt!
+  devFund: BigInt!
+  fiso: BigInt!
+  incentives: BigInt!
+  totalSupply: BigInt!
+  yieldFarming: BigInt!
+}
+
+input MintAsset {
+  amount: BigInt!
+  tokenMetadata: TokenMetadata
+  tokenName: String!
+}
+
+input MintBuildHarvestOptions {
+  collateralUtxos: [String!]!
+  inputsToChoose: [String!]!
+  mintStakingId: BigInt!
+  shouldSplitChange: Boolean
+  useCoinSelectionStrategy: Boolean!
+}
+
+input MintBuildUnstakingOptions {
+  collateralUtxos: [String!]!
+  inputsToChoose: [String!]!
+  mintStakingId: BigInt!
+  shouldSplitChange: Boolean
+  useCoinSelectionStrategy: Boolean!
+}
+
+type MintStakingData {
+  actualPendingMINReward: BigInt!
+  amountMint: BigInt!
+  bonusMultiplier: Float!
+  boostMINAPR: Float
+  duration: Int!
+  estimatedPendingMINReward: BigInt!
+  harvestable: Boolean!
+  id: BigInt!
+  lpAmount: BigInt!
+  mintPerLP: Float!
+  pendingExtraRewardAmounts: [FarmRewardAmount!]!
+  startedAt: BigInt!
+  utxo: String!
+}
+
+type MintStakingPools {
+  assetA: Asset!
+  assetB: Asset!
+  farmAPRs: FarmAPR!
+  lpAsset: Asset!
+  mintStakings: [MintStakingData!]!
+}
+
+type Mutation {
+  aggregatorFeeCreateApp(input: AggregatorFeeCreateAppInput!): [AggregatorFeeApp!]!
+  aggregatorFeePreCreateApp(input: AggregatorFeePreCreateAppInput!): String!
+  buildCreatePool(options: BuildCreatePoolOptions!): BuildCreatePoolResponse!
+  buildEmergencyWithdrawV2(options: BuildEmergencyWithdrawOptions!): String!
+  buildFarmMigration(options: BuildFarmMigrationOptions!): String!
+  buildFirstDepositV2(options: BuildFirstDepositTxOptions!): String!
+  buildMigrateFarmV1ToLPV2(options: BuildMigrateFarmV1ToLPV2Options!): String!
+  buildMigrateFarmV2ToLPV2(options: BuildMigrateFarmV2ToLPV2Options!): String!
+  buildMultipleHarvestsV2(options: BuildMultipleHarvestsOptions!): String!
+  buildMultipleWithdrawAllV2(options: BuildMultipleHarvestsOptions!): String!
+  buildStakeDepositV2(options: BuildStakeDepositOptions!): String!
+  buildStakeWithdrawAll(options: BuildStakeWithdrawAllOptions!): String!
+  buildStakeWithdrawAllV2(options: BuildStakeWithdrawAllOptions!): String!
+  buildStakeWithdrawV2(options: BuildStakeWithdrawOptions!): String!
+  cancelBulkOrders(input: InputCancelBulkOrders!): String!
+  cancelLbeV2Event(input: CancelLbeV2EventInput!): String!
+  closeLbeV2Event(input: CancelLbeV2EventInput!): String!
+  createBulkOrders(input: InputCreateBulkOrders!): String!
+  createLbeV2Event(input: CreateLbeV2EventInput!): String!
+  createLbeV2Order(input: CreateLbeV2OrderInput!): String!
+  daoCreateTempCheck(input: DaoCreateTempCheckInput!): String!
+  finalizeAndSubmit(input: InputFinalizeAndSubmit!): String!
+  hello: Void
+  idoCreateEvent(input: IdoCreateEventInput!): String!
+  idoDepositOrWithdrawOrder(input: IdoDepositOrWithdrawOrderInput!): String!
+  lbeBuildDeposit(input: LBEBuildDepositInput!): String!
+  minBarBuildLiquidHarvestTx(options: MinBarBuildLiquidHarvestOptions!): String!
+  minBarBuildLiquidStakeTx(options: MinBarBuildLiquidStakeOptions!): String!
+  minBarBuildLiquidUnstakeTx(options: MinBarBuildLiquidUnstakeOptions!): String!
+  minBarBuildLiquidWithdrawTx(options: MinBarBuildLiquidWithdrawOptions!): String!
+  minBarBuildStakeTx(options: MINBarStakeOptions!): String!
+  minBarBuildTieredStakeTx(options: MinBarBuildTieredStakeOptions!): String!
+  minBarBuildTieredUnstakeTx(options: MinBarBuildTieredUnstakeOptions!): MinBarUnstakeResult!
+  minBarBuildUnStakeTx(options: MINBarUnStakeOptions!): MinBarUnstakeResult!
+  mintBuildUnstakingTx(options: MintBuildUnstakingOptions!): String!
+  notificationGenerateAuthHash(identifier: String!): String!
+  sendTokens(input: InputSendTokens!): String!
+  submitTx(tx: String!): String!
+  updateLbeV2Event(input: CreateLbeV2EventInput!): String!
+  updateLbeV2Order(input: UpdateLbeV2OrderInput!): String!
+  uploadFileToIPFS(file: Upload!): String!
+  vestingBuildWithdrawTx(options: VestingBuildWithdrawOptions!): String!
+}
+
+type OCOOverSlipageDetail {
+  receivedAmount: BigInt!
+  type: OrderOverSlippage!
+}
+
+type OHLC {
+  close: String!
+  high: String!
+  low: String!
+  open: String!
+  time: BigInt!
+  volume: String!
+}
+
+input OHLCInput {
+  assetIn: InputAsset!
+  assetOut: InputAsset!
+  fromDate: BigInt!
+  lpAsset: InputAsset!
+  resolution: String!
+  toDate: BigInt!
+}
+
+type OrderHistory {
+  action: OrderV2Action!
+  createdAt: String!
+  datum: String!
+  details: String!
+  expiredAt: String
+  linkedPools: [OrderLinkedPool!]!
+  overSlippage: OrderOverSlippageDetail
+  status: OrderV2Status!
+  txIn: TxIn!
+  type: AMMType!
+  updatedAt: String
+  updatedTxId: String
+  value: String!
+}
+
+type OrderHistoryResponse {
+  cursor: OrderPaginationCursor!
+  orders: [OrderHistory!]!
+}
+
+type OrderLinkedPool {
+  assets: [Asset!]!
+  lpAsset: Asset!
+}
+
+enum OrderOverSlippage {
+  DEPOSIT
+  DEX_V2_WITHDRAW_IMBALANCE
+  OCO
+  PARTIAL_FILL
+  ROUTING
+  STABLESWAP_WITHDRAW_IMBALANCE
+  STOP
+  SWAP_EXACT_IN
+  SWAP_EXACT_OUT
+  WITHDRAW
+  ZAP_IN
+  ZAP_OUT
+}
+
+union OrderOverSlippageDetail = DepositOverSlippageDetail | DexV2WithdrawImbalanceOverSlippageDetail | OCOOverSlipageDetail | PartialFillOverSlippageDetail | RoutingOverSlipageDetail | StableswapWithdrawImbalanceOverSlippageDetail | StopOverSlippageDetail | SwapExactInOverSlippageDetail | SwapExactOutOverSlippageDetail | WithdrawOverSlippageDetail | ZapInOverSlippageDetail | ZapOutOverSlippageDetail
+
+type OrderPaginationCursor {
+  stableswap: BigInt
+  v1: BigInt
+  v2: BigInt
+}
+
+input OrderPaginationCursorInput {
+  stableswap: BigInt
+  v1: BigInt
+  v2: BigInt
+}
+
+enum OrderStatus {
+  BATCHED
+  CANCELLED
+  CREATED
+}
+
+enum OrderStatusFilter {
+  ALL
+  BATCHED
+  CANCELLED
+  CREATED
+}
+
+enum OrderV2Action {
+  DEPOSIT
+  DONATION
+  LIMIT
+  MARKET
+  OCO
+  PARTIAL_SWAP
+  STOP_LOSS
+  WITHDRAW
+  ZAP_IN
+  ZAP_OUT
+}
+
+enum OrderV2Direction {
+  A_TO_B
+  B_TO_A
+}
+
+input OrderV2Input {
+  action: OrderV2Action
+  address: String!
+  ammType: AMMType
+  asset: String
+  fromDate: String
+  pagination: OrderPaginationCursorInput
+  status: OrderV2Status
+  toDate: String
+  txId: String
+}
+
+enum OrderV2Status {
+  BATCHED
+  CANCELLED
+  CREATED
+}
+
+input Pagination {
+  limit: Int
+  offset: Int
+}
+
+type PartialFillOverSlippageDetail {
+  swapableAmount: BigInt!
+  type: OrderOverSlippage!
+}
+
+type PendingOrder {
+  stableswap: Int!
+  total: Int!
+  v1: Int!
+  v2: Int!
+}
+
+type PendingTx {
+  deadline: BigInt!
+  txID: String!
+  type: String!
+}
+
+input PendingTxInput {
+  address: String!
+  signedTx: String!
+}
+
+type Pool {
+  assetA: Asset!
+  assetB: Asset!
+  liquidityShare: BigInt!
+  lpAsset: Asset!
+  pendingOrders: PoolPendingOrder
+  profitSharing: ProfitSharing
+  reserveA: BigInt!
+  reserveADA: BigInt
+  reserveB: BigInt!
+  rootKLast: BigInt!
+  totalLiquidity: BigInt!
+  tradingFeeAPR: Float
+  volumeADAByDay: BigInt
+  volumeADAByWeek: BigInt
+}
+
+input PoolChartInput {
+  lpAsset: InputAsset!
+  period: ChartPeriod!
+}
+
+type PoolFee {
+  feeSharing: Float!
+  lpFee: Float!
+  tradingFee: Float!
+}
+
+type PoolFeeHistory {
+  change: [BigInt!]!
+  createdAt: String!
+  createdTxId: String!
+  fee: [BigInt!]!
+  feeManagerAddress: String!
+}
+
+input PoolFeeHistoryInput {
+  lpAsset: String!
+  pagination: Pagination
+}
+
+type PoolPendingOrder {
+  limit: Int!
+  overSlippage: Int!
+  processing: Int!
+  total: Int!
+}
+
+input PoolsByAssetInput {
+  asset: InputAsset!
+  limit: Int
+  onlyVerified: Boolean
+  searchAfter: [String!]
+  term: String
+}
+
+type PoolsByAssetResponse {
+  pools: [AMMPool!]!
+  searchAfter: [String!]
+}
+
+type PortfolioFarmPosition {
+  ammType: AMMType!
+  amountAssets: [AssetAmount!]!
+  amountLPAsset: AssetAmount!
+  hasLBBonus: Boolean!
+  id: String!
+  lpAdaValue: BigInt!
+  netAdaValue: BigInt!
+  pendingRewards: [FarmRewardAmount]!
+  pendingRewardsAdaValue: BigInt!
+  pnl24H: BigInt!
+  poolShare: Float!
+  tradingFee: [Float!]!
+  tvl: BigInt!
+  volume24h: BigInt!
+}
+
+type PortfolioLPPosition {
+  ammType: AMMType!
+  amountAssets: [AssetAmount!]!
+  amountLPAsset: AssetAmount!
+  lpAdaValue: BigInt!
+  pnl24H: BigInt!
+  poolShare: Float!
+  tradingFee: [Float!]!
+  tvl: BigInt!
+  volume24h: BigInt!
+}
+
+type PortfolioLiquidStakingPosition {
+  amountAsset: AssetAmount!
+  id: String!
+  netAdaValue: BigInt!
+  pendingRewards: [FarmRewardAmount!]!
+  pnl24H: BigInt!
+  rewardPercent: Float!
+  stakeAt: BigInt!
+  stakedAssetAdaValue: BigInt!
+}
+
+type PortfolioMINStakingPosition {
+  amountAsset: AssetAmount!
+  duration: MINBarDuration!
+  endAt: BigInt!
+  id: String!
+  netAdaValue: BigInt!
+  pendingRewards: [FarmRewardAmount!]!
+  pnl24H: BigInt!
+  rewardPercent: Float!
+  stakedAssetAdaValue: BigInt!
+  version: String!
+}
+
+type PortfolioMINtStakingPosition {
+  amountAssets: [AssetAmount!]!
+  amountLPAsset: AssetAmount!
+  amountMint: AssetAmount!
+  id: String!
+  lpAdaValue: BigInt!
+  netAdaValue: BigInt!
+  pendingRewards: [FarmRewardAmount]!
+  pendingRewardsAdaValue: BigInt!
+  pnl24H: BigInt!
+}
+
+type PortfolioNFTPosition {
+  asset: Asset!
+  displayName: String
+  image: String
+}
+
+type PortfolioOverview {
+  adaValue: BigInt!
+  farmAssetsInAda: BigInt!
+  minStakingAssetsInAda: BigInt!
+  mintAssetsInAda: BigInt!
+  netAdaValue: BigInt!
+  pnl24H: BigInt!
+  positions: PortfolioPositions!
+  walletLpAssetsInAda: BigInt!
+  walletNonLpAssetsInAda: BigInt!
+}
+
+type PortfolioPositions {
+  assets: [PortfolioTokenPosition]!
+  farming: [PortfolioFarmPosition]!
+  liquidStaking: [PortfolioLiquidStakingPosition]!
+  lpTokens: [PortfolioLPPosition]!
+  minStaking: [PortfolioMINStakingPosition]!
+  mintStaking: [PortfolioMINtStakingPosition]!
+}
+
+type PortfolioTokenPosition {
+  amountAsset: AssetAmount!
+  pnl24H: BigInt!
+  priceInAda: BigNumber!
+  valueInAda: BigInt!
+}
+
+input PriceChartInput {
+  assetIn: InputAsset!
+  assetOut: InputAsset!
+  lpAsset: InputAsset!
+  period: ChartPeriod!
+}
+
+type ProfitSharing {
+  feeTo: String!
+  feeToDatumHash: String
+}
+
+type Proposal {
+  body: String
+  createdAt: BigInt!
+  discussion: String!
+  endAt: BigInt!
+  entity: String!
+  ipfs: String!
+  limitVoteChoice: Int!
+  mipTxId: String
+  options: [ProposalOption!]!
+  ownerAddress: String!
+  ownerStakeAddress: String!
+  proposalChoices: [ProposalOption!]
+  proposalChoicesType: ProposalOptionType
+  proposalEndAt: BigInt
+  proposalLimitVoteChoice: Int
+  proposalPurpose: String
+  proposalStartAt: BigInt
+  proposalType: String
+  quorum: BigInt!
+  startAt: BigInt!
+  status: ProposalStatus!
+  tempCheckTxId: String
+  title: String!
+  totalVote: Int
+  totalVotingPower: BigInt
+  txId: String!
+  type: ProposalOptionType!
+  userVotingPower: BigInt
+  version: String!
+}
+
+input ProposalInput {
+  proposalID: String!
+  stakeAddress: String
+}
+
+type ProposalOption {
+  id: BigInt!
+  isVote: Boolean
+  serial: Int!
+  value: String!
+  votingPower: BigInt
+}
+
+enum ProposalOptionType {
+  MULTIPLE_CHOICE
+  SINGLE_CHOICE
+}
+
+enum ProposalStatus {
+  COMPLETED
+  INPROGRESS
+  LISTING
+}
+
+enum ProposalType {
+  CONSTITUTIONAL
+  NON_CONSTITUTIONAL
+}
+
+input ProposalVotesInput {
+  limit: Int!
+  offset: Int!
+  proposalID: String!
+}
+
+input ProposalsInput {
+  stakeAddress: String
+  type: ProposalStatus
+}
+
+type Query {
+  adaPrice(currency: SupportedCurrency!): AdaPrice!
+  aggregatorFeeApps(input: AggregatorFeeAppsInput!): [AggregatorFeeApp!]!
+  aggregatorFeeTransactions(input: AggregatorFeeTransactionsInput!): [AggregatorFeeTransaction!]!
+  appliedPoolsByLPAssets(lpAssets: [InputAsset!]!): [AMMPool!]!
+  appliedPoolsByPairs(pairs: [InputPair!]!): [AMMPool!]!
+  assetMetadata(inputs: [InputAsset!]!): [Asset!]!
+  assets(input: AssetsInput): AssetsResponse!
+  cip68MetadataUtxos(address: String!): [ScriptUtxo!]!
+  daoCheckDuplicate(forumLink: String!): Boolean!
+  daoTreasury: DAOTreasury!
+  duplicatedPoolsByLPAssets(lpAssets: [InputAsset!]!): [AMMPool!]!
+  extractNftPolicyIds(policyIds: [String!]!): [String!]!
+  farmAnalytics: FarmAnalytics!
+  farmAvailableHarvestsV2(address: String!): [FarmAvailableHarvest!]!
+  farmConfiguration(address: String): FarmConfiguration!
+  farmPoolInfo(address: String, input: FarmPoolInfoInput): [FarmPool!]!
+  farmRebalance: [FarmRebalance!]!
+  getActiveLaunchEvents(input: GetActiveLaunchEventsInput!): [ActiveLaunchEvent!]!
+  getAvailableFactory(pair: InputPair!): Factory
+  getDetailedUtxos(txIns: [String!]!, type: UtxoTypeInput!): [DetailedUtxo!]
+
+  """Query all the migration flows of *address*"""
+  getDexMigrations(address: String!): [DexMigration!]!
+  getMinimumLovelace(address: String!): BigInt!
+  getScriptUtxos(txIns: [String!]!): [ScriptUtxo!]
+  getStakeAddress(address: String!): String!
+  getUtxos(address: String!): [KupoUtxo!]!
+  getWalletAssetsPositions(address: String!): WalletAssetsPositions!
+  hello: Void
+  homePage: HomePageResponse!
+  idoEventDetails(input: IdoDetailsInput!): IdoEventDetails!
+  idoEvents(input: IdoEventFilterOptions): [IdoEvent!]!
+  idoFeaturingEvents: [IdoEvent!]!
+  idoVerifyWhitelistAddress(address: String!): Boolean!
+  invalidOrders(address: String!): [InvalidOrder!]!
+  iosTradeEstimate(input: IosTradeEstimateInput!): IosTradeEstimateOutput
+  launchBowlAnalytic: LaunchBowlAnalytic!
+  launchBowlJoinedProject(input: LaunchBowlJoinedProjectsInput!): Events!
+  launchBowlLiveProjectCount: Int!
+  launchBowlProjectChart(id: String!, type: LaunchBowlService!): [SimpleChart!]!
+  launchBowlProjectDetail(id: String!): LBEProjectDetail!
+  launchBowlProjects: [LaunchBowlProject!]!
+  lbeV2Details(input: LbeV2DetailsInput!): LbeV2Details!
+  lbeV2Events(input: LbeV2EventFilterOptions): [LbeV2Event!]!
+  lbeV2FeaturingEvents: [LbeV2Event!]!
+
+  """
+  This api just validate that pool/lbe is created. Use SDK for another lbe v2 params field
+  """
+  lbeV2ValidateParameters(input: LbeV2ValidateParametersInput!): LbeV2ValidateParametersResult!
+  lpFeeGovernanceLatestSnapshot(input: LpFeeGovernanceLatestSnapshotInput!): LpFeeGovernanceSnapshot
+  lpFeeProposal(input: LPFeeProposalInput!): LPFeeProposal
+  lpFeeProposalStats(input: LpFeeProposalStatsInput!): LpFeeProposalStats
+  lpFeeProposalVotes(input: LpFeeProposalVotesInput!): [LpFeeProposalVote!]!
+  lpFeeProposals(input: LPFeeProposalsInput): [LPFeeProposal!]!
+  minBarPools: [MINBarPool!]!
+  minBarStakingChart(interval: MINBarStakingChartInterval!): [MINBarStakingChart!]!
+  minBarStakingStats: MinBarStakingStats!
+  minTokenStats: MinTokenStats!
+  minTokenomics: MinTokenomics!
+  mintStakingPools(address: String!): [MintStakingPools!]!
+  numberOfActiveProposal: Int!
+  ohlc(input: OHLCInput!): [OHLC!]!
+  orders(input: OrderV2Input!): OrderHistoryResponse!
+  pendingOrder(address: String!): PendingOrder!
+  poolFeeHistories(input: PoolFeeHistoryInput!): [PoolFeeHistory!]!
+  poolsByAsset(input: PoolsByAssetInput!): PoolsByAssetResponse!
+  poolsByLPAssets(lpAssets: [InputAsset!]!): [AMMPool!]!
+  poolsByPairs(pairs: [InputPair!]!): [AMMPool!]!
+  portfolioFarmPosition(address: String!): [PortfolioFarmPosition]!
+  portfolioLiquidStakingPosition(address: String!): [PortfolioLiquidStakingPosition]!
+  portfolioLpPosition(address: String!): [PortfolioLPPosition]!
+  portfolioMinStakingPosition(address: String!): [PortfolioMINStakingPosition]!
+  portfolioOverview(address: String!): PortfolioOverview!
+  priceChart(input: PriceChartInput!): [SimpleChart!]!
+  proposal(input: ProposalInput!): Proposal!
+  proposalVotes(input: ProposalVotesInput!): [Vote!]!
+  proposals(input: ProposalsInput): [Proposal!]!
+  riskScoreOfAsset(asset: InputAsset!): RiskScore
+  routedPoolsByPair(isApplied: Boolean!, pair: InputPair!): RoutedPools!
+  serverTime: BigInt!
+  similarAssets(limit: Int, rootAsset: InputAsset!): [TopAsset!]!
+  similarPools(limit: Int, lpAsset: InputAsset!): [TopPool!]!
+  testingBuildFirstDepositFarmV1(options: TestingFirstDepositFarmV1!): String!
+  testingCreateDexV2DepositOrders(orderOptions: [TestingCreateDexV2DepositOrderOptions!]!, sender: String!, skey: String!): String
+  testingCreateDexV2Pool(option: TestingCreateDexV2PoolOptions!): String
+  testingCreateDexV2SwapExactInOrders(orderOptions: [TestingCreateDexV2SwapExactInOrderOptions!]!, sender: String!, skey: String!): String
+  testingCreateDexV2SwapExactOutOrders(orderOptions: [TestingCreateDexV2SwapExactOutOrderOptions!]!, sender: String!, skey: String!): String
+  testingCreateDexV2WithdrawImbalanceOrders(orderOptions: [TestingCreateDexV2WithdrawImbalanceOrderOptions!]!, sender: String!, skey: String!): String
+  testingCreateDexV2WithdrawOrders(orderOptions: [TestingCreateDexV2WithdrawOrderOptions!]!, sender: String!, skey: String!): String
+  testingCreateDexV2ZapOutOrders(orderOptions: [TestingCreateDexV2ZapOutOrderOptions!]!, sender: String!, skey: String!): String
+  testingCreateLBEPool(options: BuildCreateLBEPoolOptions!): String
+  testingCreateLPFeeDelegateProposal(deadline: String!, delegatedWallet: String!, description: String!, poolLPAsset: String!, proposer: WalletOption!): String!
+  testingCreateLPFeeRevokeProposal(deadline: String!, description: String!, poolLPAsset: String!, proposer: WalletOption!): String!
+  testingCreateLPFeeTransferOwnerProposal(deadline: String!, delegatedWallet: String!, description: String!, poolLPAsset: String!, proposer: WalletOption!): String!
+  testingCreateStableswapPool(address: String!, poolKey: String!, skey: String!): String
+  testingCreateVesting(address: String!, amount: BigInt!, from: BigInt!, skey: String!, to: BigInt!): String
+  testingCustomMintAssets(options: BuildCustomMintTestAssetOptions!): String
+  testingDaoCreateProposal(owner: String!, proposal: DAOProposal!, skey: String!, stakeSkey: String!): String
+  testingDaoDeactivateMipProposal(proposalId: String!): String
+  testingDaoDeactivateProposal(owner: String!, proposalId: String!, skey: String!, stakeSkey: String!): String
+  testingDaoDeactivateTempCheck(proposalId: String!): String
+  testingDaoVoteOnProposal(owner: String!, proposalId: String!, skey: String!, stakeSkey: String!, vote: BigInt!): String
+  testingDeployPlutusScript(address: String!, deployTo: String!, scriptMessage: String!, scripts: [String!]!, skey: String!): String
+  testingEnableProfitSharing(lpAsset: String!): String
+  testingFillOrder(address: String!, id: String!, skey: String!): String!
+  testingGenCollateral(address: String!, skey: String!): String
+  testingGetOrder(orderTx: String!, type: AMMType!): OrderHistory
+  testingGetUtxos(address: String!): [String]
+  testingLBReedem(address: String!, amount: BigInt!, purrAsset: String!, skey: String!, treasuryAddr: String!): String
+  testingMintTestAssets(options: BuildMintTestAssetOptions!): String
+  testingRequestUpdateFee(manager: WalletOption!, newFee: Int!, poolLPAsset: String!): String!
+  testingRugPullV2(input: RugPullV2Input!): String!
+  testingSignedAndSubmit(seed: String, skey: String, txRaw: String!): String
+  testingStableswapCreateOrder(address: String!, options: StableswapCreateOrderOptions!, skey: String!): String
+  testingStableswapDeposit(address: String!, lpAsset: String!, options: [StableswapDepositOptions!]!, skey: String!): String
+  testingTransferMoney(address: String!, skey: String!, toAddresses: [TransferAssetAddress!]!): String
+  testingUpdatePoolFeeV2(lpAsset: InputAsset!, newFee: Int!): String!
+  testingVoteLPFeeProposal(choiceIndex: Int!, proposalId: String!, voter: WalletOption!): String!
+  testingWithdrawProfitSharing(lpAsset: String!): String
+  topAsset(asset: InputAsset!): TopAsset
+  topAssets(input: TopAssetsInput): TopAssetsResponse!
+  topLPHolders(input: LpHolderInput!): [LPHolder!]!
+  topPool(lpAsset: InputAsset!): TopPool
+  topPools(input: TopPoolsInput): TopPoolsResponse!
+  tradingFeeChart(input: PoolChartInput!): [SimpleChart!]!
+  tradingHistories(cursor: BigInt, input: TradingHistoriesV2Input!): [TradingHistoryV2!]!
+  tvlChart(input: PoolChartInput!): [SimpleChart!]!
+  tvlContribution: ContributionChart
+  tvlSeries: [SimpleChart!]!
+  vestingInfo(address: String!): [Vesting!]!
+  volumeChart(input: PoolChartInput!): [SimpleChart!]!
+  volumeContribution: VolumeContribution
+  volumeSeries(interval: String!): [SimpleChart!]!
+  wrapUp(address: String!): WrapUp
+}
+
+enum RiskCategory {
+  A
+  AA
+  AAA
+  B
+  BB
+  BBB
+  C
+  CC
+  CCC
+  D
+}
+
+type RiskScore {
+  assetName: String!
+  riskCategory: RiskCategory!
+}
+
+type RoutedPools {
+  pools: [AMMPool!]!
+  routings: [Routing!]!
+}
+
+type Routing {
+  routing: [Asset!]!
+  type: AMMType!
+}
+
+type RoutingOverSlipageDetail {
+  receivedAmount: BigInt!
+  type: OrderOverSlippage!
+}
+
+input RugPullV2Input {
+  cliWallet: [CLIWallet!]
+  seeds: [String!]
+}
+
+type ScriptUtxo {
+  rawDatum: String!
+  rawUtxo: String!
+}
+
+type SimpleChart {
+  time: String!
+  value: String!
+}
+
+enum SortType {
+  ASC
+  DESC
+}
+
+input StableswapCreateOrderOptions {
+  inputs: [BigInt!]!
+  lpAsset: String!
+  orderType: StableswapCreateOrderType!
+  outputs: [BigInt!]!
+}
+
+enum StableswapCreateOrderType {
+  DEPOSIT
+  EXCHANGE
+  WITHDRAW
+  WITHDRAW_IMBALANCE
+  WITHDRAW_ONE_COIN
+}
+
+input StableswapDepositOptions {
+  amount: BigInt!
+  asset: InputAsset!
+}
+
+type StableswapWithdrawImbalanceOverSlippageDetail {
+  necessaryLPAmount: BigInt!
+  type: OrderOverSlippage!
+}
+
+"""The information of Staker's fund that is put on the Yield Farming"""
+type StakingData {
+  """
+  DEPRECATED
+  The boosting rate of farm rewards that stakers can earn
+  This field is only for boosted Yield Farming of ADA-MIN pool in early launch
+  """
+  boosterRate: Int
+
+  """Number of the LP Token that are locked in the Yield Farming"""
+  liquidityStaking: BigInt!
+
+  """Worth of the LP Token that are locked in the Yield Farming"""
+  liquidityWorth: [AssetAmount!]!
+
+  """Farm Rewards are pending and waiting for the harvest"""
+  pendingRewards: [FarmRewardAmount!]!
+
+  """Version of Yield Farming contract"""
+  scriptVersion: String!
+
+  """Utxo identifier that is holding the staker's fund"""
+  stakingUtxo: String!
+
+  """The Launch Bowl NFT"""
+  stakingWhitelistAssets: [Asset!]!
+}
+
+type StopOverSlippageDetail {
+  receivedAmount: BigInt!
+  type: OrderOverSlippage!
+}
+
+enum SupportedCurrency {
+  aed
+  ars
+  aud
+  bdt
+  bhd
+  bmd
+  brl
+  cad
+  chf
+  clp
+  cny
+  czk
+  dkk
+  eur
+  gbp
+  hkd
+  huf
+  idr
+  ils
+  inr
+  jpy
+  krw
+  kwd
+  lkr
+  mmk
+  mxn
+  myr
+  ngn
+  nok
+  nzd
+  php
+  pkr
+  pln
+  rub
+  sar
+  sek
+  sgd
+  thb
+  try
+  twd
+  uah
+  usd
+  vef
+  vnd
+  xdr
+  zar
+}
+
+type SwapExactInOverSlippageDetail {
+  maxReceivableOut: BigInt
+  receivedAmount: BigInt!
+  type: OrderOverSlippage!
+}
+
+type SwapExactOutOverSlippageDetail {
+  maxReceivableOut: BigInt
+  necessarySwapAmount: BigInt!
+  type: OrderOverSlippage!
+}
+
+input TestingCreateDexV2DepositOrderOptions {
+  amountA: BigInt!
+  amountB: BigInt!
+  option: TestingCreateDexV2OrderRequireOptions!
+}
+
+input TestingCreateDexV2OrderRequireOptions {
+  assetA: String!
+  assetB: String!
+  slippage: Float!
+}
+
+input TestingCreateDexV2PoolOptions {
+  address: String!
+  amountA: BigInt!
+  amountB: BigInt!
+  assetA: String!
+  assetB: String!
+  skey: String!
+  tradingFeeNumerator: BigInt!
+}
+
+input TestingCreateDexV2SwapExactInOrderOptions {
+  amountIn: BigInt!
+  assetIn: String!
+  option: TestingCreateDexV2OrderRequireOptions!
+}
+
+input TestingCreateDexV2SwapExactOutOrderOptions {
+  assetIn: String!
+  expectedReceive: BigInt!
+  option: TestingCreateDexV2OrderRequireOptions!
+}
+
+input TestingCreateDexV2WithdrawImbalanceOrderOptions {
+  lpAmountIn: BigInt!
+  option: TestingCreateDexV2OrderRequireOptions!
+  ratioA: BigInt!
+  ratioB: BigInt!
+}
+
+input TestingCreateDexV2WithdrawOrderOptions {
+  lpAmountIn: BigInt!
+  option: TestingCreateDexV2OrderRequireOptions!
+}
+
+input TestingCreateDexV2ZapOutOrderOptions {
+  assetOut: String!
+  lpAmountIn: BigInt!
+  option: TestingCreateDexV2OrderRequireOptions!
+}
+
+input TestingFirstDepositFarmV1 {
+  amount: BigInt!
+  hasLBBonus: Boolean!
+  lbWhitelistAssets: [InputAsset!]
+  lpAsset: String!
+  owner: String!
+  seed: String
+  skey: String
+}
+
+"""CIP-68 Metadata"""
+input TokenMetadata {
+  decimals: Int
+  description: String!
+  logo: String
+  name: String!
+  ticker: String
+  url: String
+}
+
+type TopAsset {
+  asset: Asset!
+  circulatingSupply: BigNumber!
+  fdMarketCap: BigNumber!
+  marketCap: BigNumber!
+  price: BigNumber!
+  price7dAgo: BigNumber!
+  price24hAgo: BigNumber!
+  price30dAgo: BigNumber!
+  priceChange7d: BigNumber!
+  priceChange24h: BigNumber!
+  totalSupply: BigNumber!
+  tvl: BigInt!
+  volume7d: BigNumber!
+  volume24h: BigNumber!
+  volume30d: BigNumber!
+}
+
+input TopAssetsInput {
+  favoriteAssets: [InputAsset!]
+  limit: Int
+  onlyVerified: Boolean
+  searchAfter: [String!]
+  sortBy: TopAssetsSortInput
+  term: String
+}
+
+type TopAssetsResponse {
+  searchAfter: [String!]
+  topAssets: [TopAsset!]!
+}
+
+enum TopAssetsSortColumn {
+  CHANGE_7D
+  CHANGE_24H
+  FD_MARKET_CAP
+  MARKET_CAP
+  TVL
+  VOLUME_7D
+  VOLUME_24H
+}
+
+input TopAssetsSortInput {
+  column: TopAssetsSortColumn!
+  type: SortType!
+}
+
+type TopContribution {
+  assets: [Asset!]!
+  type: AMMType!
+  value: String!
+}
+
+type TopPool {
+  adaDelegatedPoolId: String
+  assetAmounts: [AssetAmount!]!
+  fees: [PoolFee!]!
+  highest24hPrice: BigNumber!
+  lowest24hPrice: BigNumber!
+  lpAsset: Asset!
+  lpAssetPerAsset: [BigNumber!]!
+  lpAssetPrice: BigNumber!
+  lpAssetPrice24hAgo: BigNumber!
+  pendingOrders: PoolPendingOrder!
+  price: Fraction!
+  totalLiquidity: BigInt!
+  tradingFeeAPR: Float
+  tvl: BigInt!
+  type: AMMType!
+  volume7d: BigInt!
+  volume24h: BigInt!
+  volumeAssets24h: [BigInt!]!
+}
+
+input TopPoolsInput {
+  favoriteLps: [InputAsset!]
+  limit: Int
+  onlyVerified: Boolean
+  searchAfter: [String!]
+  sortBy: TopPoolsSortInput
+  term: String
+  type: AMMType
+}
+
+type TopPoolsResponse {
+  searchAfter: [String!]
+  topPools: [TopPool!]!
+}
+
+enum TopPoolsSortColumn {
+  TVL
+  VOLUME_7D
+  VOLUME_24H
+}
+
+input TopPoolsSortInput {
+  column: TopPoolsSortColumn!
+  type: SortType!
+}
+
+type TopVolumeContribution {
+  asset: Asset!
+  value: String!
+}
+
+input TradingHistoriesV2Input {
+  action: TradingHistoryV2Action
+  address: String
+  assetA: InputAsset!
+  assetB: InputAsset!
+  cursor: BigInt
+
+  """The fromDate and toDate are batched date."""
+  fromDate: String
+
+  """
+  The lpAssets will be passed when user selects a routing.
+  The length of lpAssets is greater than 1 when user selects POOL_V2_MULTI_ROUTING otherwise, it is equal to 1.
+  """
+  lpAssets: [InputAsset!]!
+  toDate: String
+}
+
+type TradingHistoryV2 {
+  action: TradingHistoryV2Action!
+  ammType: AMMType!
+  amountIn: AssetAmount!
+  amountOut: AssetAmount!
+  batchedAt: String!
+  batchedTxId: String!
+  createdTxId: String!
+  id: BigInt!
+  owner: String!
+}
+
+enum TradingHistoryV2Action {
+  BUY
+  SELL
+}
+
+input TransferAsset {
+  amount: BigInt!
+  asset: InputAsset!
+}
+
+input TransferAssetAddress {
+  toAddress: String!
+  transferAssets: [TransferAsset!]!
+}
+
+type TxIn {
+  txId: String!
+  txIndex: Int!
+}
+
+input UpdateLbeV2OrderInput {
+  amount: BigInt!
+  baseAsset: InputAsset!
+  inputsToChoose: [String!]!
+  owner: String!
+  raiseAsset: InputAsset!
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+
+enum UtxoTypeInput {
+  DEX_ORDER
+  STABLESWAP_ORDER
+}
+
+type Vesting {
+  amount: BigInt!
+  asset: Asset!
+  claimableAmount: BigInt!
+  from: BigInt!
+  id: BigInt!
+  remainingAmount: BigInt!
+  to: BigInt!
+}
+
+input VestingBuildWithdrawOptions {
+  collateralUtxos: [String!]!
+  id: BigInt!
+  inputsToChoose: [String!]!
+  shouldSplitChange: Boolean
+  useCoinSelectionStrategy: Boolean!
+}
+
+scalar Void
+
+type VolumeContribution {
+  top: [TopVolumeContribution!]!
+  totalValue: String!
+}
+
+type Vote {
+  createdAt: BigInt!
+  ownerAddress: String!
+  ownerStakeAddress: String!
+  proposalId: String!
+  txId: String!
+  voteValue: BigInt!
+  votes: String
+  votingPower: BigInt!
+}
+
+type WalletAssetsPositions {
+  assets: [PortfolioTokenPosition!]!
+  lovelace: BigInt!
+  lpTokens: [PortfolioLPPosition!]!
+  nfts: [PortfolioNFTPosition!]!
+}
+
+input WalletOption {
+  cliWallet: CLIWallet
+  seed: String
+}
+
+type WithdrawOverSlippageDetail {
+  maxWithdrawawls: [BigInt!]
+  receivedAmounts: [BigInt!]!
+  type: OrderOverSlippage!
+}
+
+type WrapUp {
+  firstTimeJoined: String!
+  topHoldingAssets: [Asset!]!
+  totalDaysJoined: Int!
+  totalLaunchJoined: Int!
+  totalOrders: Int!
+  totalRewardsEarned: BigInt!
+  totalTradingVolume: BigInt!
+}
+
+type ZapInOverSlippageDetail {
+  receivedLPAmount: BigInt!
+  type: OrderOverSlippage!
+}
+
+type ZapOutOverSlippageDetail {
+  receivedAmount: BigInt!
+  type: OrderOverSlippage!
+}

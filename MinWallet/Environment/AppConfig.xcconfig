@@ -1,0 +1,19 @@
+//
+//  AppConfig.xcconfig
+//  MinWallet
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+MIN_PRODUCT_NAME      = MinWallet
+MIN_PRODUCT_BUNDLE_ID = org.minswap.MinWallet
+MIN_DEVELOPMENT_TEAM  = 3FM7JRXRKW
+MIN_CODE_SIGN_ENTITLEMENTS = MinWallet/Environment/MinWallet.entitlements
+
+MIN_KEYCHAIN_SERVICE_NAME = minWallet
+MIN_KEYCHAIN_ACCESS_GROUP = ${MIN_DEVELOPMENT_TEAM}.${PRODUCT_BUNDLE_IDENTIFIER}
+
+MIN_PASS_DEFAULT_FOR_FACE_ID = org.minswap.MinWallet
+MIN_ONE_SIGNAL_APP_ID = e7da5418-cbc0-4725-80d3-6400e3d09123
+MIN_LOCK_AGGREGATOR_SOURCE=NO

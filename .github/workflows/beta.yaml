@@ -1,0 +1,46 @@
+name: Beta release
+
+on:
+  workflow_dispatch:
+  push:
+    branches: 
+      - main
+
+jobs:
+  release-beta:
+    runs-on: macos-15
+    environment: Production
+    steps:
+      - uses: webfactory/ssh-agent@v0.9.1
+        with:
+            ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - uses: actions/checkout@v4
+        with:
+          ssh-key: ${{ secrets.DEPLOY_KEY }}
+          ssh-strict: true
+      - uses: SwiftyLab/setup-swift@latest
+        with:
+          swift-version: "6.1.2"
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          cache-workspaces: rust
+          target: aarch64-apple-ios-sim,aarch64-apple-ios
+      - name: Select Xcode
+        run: sudo xcode-select -switch /Applications/Xcode_16.4.app
+      - name: Install Dependencies
+        run: bundle install
+      - name: Build rust
+        run: cd rust && ./build.sh
+      - name: Build
+        run: bundle exec fastlane beta
+        env:
+          LC_ALL: en_US.UTF-8
+          LANG: en_US.UTF-8
+          APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
+          APP_STORE_CONNECT_API_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_ISSUER_ID }}
+          APP_STORE_CONNECT_API_KEY_CONTENT: ${{ secrets.APP_STORE_CONNECT_API_KEY_CONTENT }}
+          MATCH_PASSWORD: ${{ secrets.FASTLANE_MATCH_PASSWORD }}
+          FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT: 120

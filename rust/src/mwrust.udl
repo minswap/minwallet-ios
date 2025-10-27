@@ -1,0 +1,20 @@
+namespace mwrust {
+    string? gen_phrase(u32 word_count);
+    MinWallet? create_wallet(string phrase, string password, string network_env, string wallet_name);
+    string? sign_tx(MinWallet wallet, string password, u32 account_index, string tx_raw);
+    MinWallet? change_password(MinWallet wallet, string current_password, string new_password);
+    boolean verify_password(MinWallet wallet, string password);
+    string? export_wallet(MinWallet wallet, string password, string network_env);
+    MinWallet? import_wallet(string data, string password, string wallet_name);
+    string? get_wallet_name_from_export_wallet(string data);
+    MinWallet? change_wallet_name(MinWallet wallet, string password, string new_wallet_name);
+};
+
+dictionary MinWallet {
+    string wallet_name;
+    string address;
+    u32 network_id;
+    u32 account_index;
+    string encrypted_key;
+    string public_key;
+};

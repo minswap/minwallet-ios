@@ -1,0 +1,1132 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "" : {
+
+    },
+    " " : {
+
+    },
+    " · %@%%" : {
+
+    },
+    " / 40" : {
+
+    },
+    " %@" : {
+
+    },
+    " for " : {
+
+    },
+    " Trading %@ token on Minswap may lead to a loss of underlying assets on %@." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : " Trading %1$@ token on Minswap may lead to a loss of underlying assets on %2$@."
+          }
+        }
+      }
+    },
+    "--" : {
+
+    },
+    "--%" : {
+
+    },
+    "#%lld" : {
+
+    },
+    "%" : {
+
+    },
+    "%@" : {
+
+    },
+    "%@%@%@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@%2$@%3$@"
+          }
+        }
+      }
+    },
+    "%@%%" : {
+
+    },
+    "%lld" : {
+
+    },
+    "%lld %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld %2$@"
+          }
+        }
+      }
+    },
+    "1 %@ = " : {
+
+    },
+    "A wallet name must be 3-40 characters" : {
+
+    },
+    "About" : {
+
+    },
+    "About %@ (%@)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "About %1$@ (%2$@)"
+          }
+        }
+      }
+    },
+    "About Minwallet" : {
+
+    },
+    "Action" : {
+
+    },
+    "ADA" : {
+
+    },
+    "ADA Handle (%@): not resolved yet." : {
+
+    },
+    "Add Token" : {
+
+    },
+    "Address" : {
+
+    },
+    "Address wallet" : {
+
+    },
+    "Aggregator Source" : {
+
+    },
+    "All" : {
+
+    },
+    "Appearance" : {
+
+    },
+    "Apply" : {
+
+    },
+    "Are you sure you want to cancel this order?" : {
+
+    },
+    "Audio" : {
+
+    },
+    "Authentication" : {
+
+    },
+    "Authentication cannot be initiated because a passcode has not been set up on the device." : {
+
+    },
+    "Authentication invalid, please try again later" : {
+
+    },
+    "Avg. price" : {
+
+    },
+    "Avg. price change (24h)" : {
+
+    },
+    "Basic" : {
+
+    },
+    "Batched at" : {
+
+    },
+    "Before you start, please read and keep the following security tips in mind." : {
+
+    },
+    "Beware that using over 50% slippage is risky. It means that you are willing to accept a price movement of over 50% once your order is executed." : {
+
+    },
+    "Camera access is denied.\n Please allow camera access in Settings." : {
+
+    },
+    "Camera Permission Denied" : {
+
+    },
+    "Cancel" : {
+
+    },
+    "Cancel Orders" : {
+
+    },
+    "Cancelled" : {
+
+    },
+    "Cancelled at" : {
+
+    },
+    "Cardexscan" : {
+
+    },
+    "Certain tokens on the Cardano blockchain are designed as indivisible. This means each token must be used, transferred, or traded as a whole unit." : {
+
+    },
+    "Change" : {
+
+    },
+    "Change amount" : {
+
+    },
+    "Change password" : {
+
+    },
+    "Change password failed" : {
+
+    },
+    "Change your password" : {
+
+    },
+    "Chart is unavailable" : {
+
+    },
+    "Check" : {
+
+    },
+    "Choose your best way to log-in" : {
+
+    },
+    "Circulating supply" : {
+
+    },
+    "Close" : {
+
+    },
+    "close menu" : {
+
+    },
+    "Completed" : {
+
+    },
+    "Confirm" : {
+
+    },
+    "Confirm new password" : {
+
+    },
+    "Confirmation" : {
+
+    },
+    "Copied" : {
+
+    },
+    "Copy" : {
+
+    },
+    "Create" : {
+
+    },
+    "Create new wallet" : {
+
+    },
+    "Create password" : {
+
+    },
+    "Create your password" : {
+
+    },
+    "Created at" : {
+
+    },
+    "Crypto prices" : {
+
+    },
+    "CSWAP" : {
+
+    },
+    "Currency" : {
+
+    },
+    "Customized Routing" : {
+
+    },
+    "Dark" : {
+
+    },
+    "Dashboard" : {
+
+    },
+    "Date" : {
+
+    },
+    "Decimal" : {
+
+    },
+    "Default" : {
+
+    },
+    "Deposit" : {
+
+    },
+    "Details" : {
+
+    },
+    "DEX's Fees" : {
+
+    },
+    "DexHunter" : {
+
+    },
+    "Disconnect" : {
+
+    },
+    "Disconnect wallet" : {
+
+    },
+    "Dismiss" : {
+
+    },
+    "Donation" : {
+
+    },
+    "Done" : {
+
+    },
+    "Edit nickname" : {
+
+    },
+    "Enter address or ADAHandle" : {
+
+    },
+    "Enter password to continue" : {
+
+    },
+    "Enter your password" : {
+
+    },
+    "Error" : {
+
+    },
+    "Error creating wallet" : {
+
+    },
+    "Error while restoring wallet" : {
+
+    },
+    "Estimated execution fee" : {
+
+    },
+    "Executed fee" : {
+
+    },
+    "Executed price" : {
+
+    },
+    "Execution information" : {
+
+    },
+    "Expires at" : {
+
+    },
+    "External links" : {
+
+    },
+    "Face ID" : {
+
+    },
+    "Face ID/Touch ID is locked" : {
+
+    },
+    "Face ID/Touch ID not available" : {
+
+    },
+    "Face ID/Touch ID not installed" : {
+
+    },
+    "Favorites" : {
+
+    },
+    "Fd Market cap" : {
+
+    },
+    "Fill Histories" : {
+
+    },
+    "Fill History" : {
+
+    },
+    "Filter" : {
+
+    },
+    "For project, let's increase you visibility by" : {
+
+    },
+    "For the best possible rates, this setting should be turned off if you are not familiar with it" : {
+
+    },
+    "Forgot password" : {
+
+    },
+    "Forgot password?" : {
+
+    },
+    "From" : {
+
+    },
+    "Functional token" : {
+
+    },
+    "Getting started now" : {
+
+    },
+    "Give your wallet a nickname ..." : {
+
+    },
+    "Got it" : {
+
+    },
+    "Half" : {
+
+    },
+    "Handle not found" : {
+
+    },
+    "Hello" : {
+      "extractionState" : "manual"
+    },
+    "Hide" : {
+
+    },
+    "High price impact" : {
+
+    },
+    "I have written the seed phrase and stored it in a secured place." : {
+
+    },
+    "I understand these warnings" : {
+
+    },
+    "If I clear my local storage without backing up the seed phrase, Minswap cannot retrieve it for me." : {
+
+    },
+    "If I lose my seed phrase, my assets will be lost forever." : {
+
+    },
+    "If I share my seed phrase with others, my assets will be stolen." : {
+
+    },
+    "If this ADA Handle has a typo or belongs to a different person your fund will be lost" : {
+
+    },
+    "If you forget your password, you can reset it by restoring your wallet. You can import your wallet again using the seed phrase or JSON file, and your assets will not be impacted." : {
+
+    },
+    "Import" : {
+
+    },
+    "Import file" : {
+
+    },
+    "Import from existing wallet json file" : {
+
+    },
+    "Import Minwallet.json file" : {
+
+    },
+    "Important" : {
+
+    },
+    "In case you forgot your seed phrase, Minswap can not retrieve your wallet once you click Disconnect button." : {
+
+    },
+    "Incorrect password" : {
+
+    },
+    "Indivisible Token" : {
+
+    },
+    "Input information" : {
+
+    },
+    "Insufficient %@ balance" : {
+
+    },
+    "Invalid address" : {
+
+    },
+    "Invalid handle. Only a-z, 0-9, dash (-), underscore (_), and period (.) are allowed." : {
+
+    },
+    "Invalid QR code" : {
+
+    },
+    "Invalid seed phrase" : {
+
+    },
+    "It refers to the number of digits used after the decimal point for a specific token. It essentially dictates the smallest indivisible unit of that token." : {
+
+    },
+    "Item %lld" : {
+
+    },
+    "Key" : {
+      "extractionState" : "manual"
+    },
+    "Language" : {
+
+    },
+    "Let's swap now" : {
+
+    },
+    "Light" : {
+
+    },
+    "Limit" : {
+
+    },
+    "Limit amount" : {
+
+    },
+    "Limit price" : {
+
+    },
+    "Liquidity Provider Fee" : {
+
+    },
+    "Liquidity Source" : {
+
+    },
+    "Local" : {
+
+    },
+    "Make sure no one is looking at your screen" : {
+
+    },
+    "Make sure to double-check the policy Id: %@." : {
+
+    },
+    "Market" : {
+
+    },
+    "Market cap" : {
+
+    },
+    "Market Cap = Current Price x Circulating Supply." : {
+
+    },
+    "Max" : {
+
+    },
+    "Max swap times" : {
+
+    },
+    "Minimum receive" : {
+
+    },
+    "Minimum received" : {
+
+    },
+    "Minimum Received" : {
+
+    },
+    "Minimum Send" : {
+
+    },
+    "Minimum swap amount" : {
+
+    },
+    "minswap" : {
+
+    },
+    "Minswap Aggregator" : {
+
+    },
+    "Minswap Stable" : {
+
+    },
+    "Minswap V1" : {
+
+    },
+    "Minswap V2" : {
+
+    },
+    "Minwallet is a secure and user-friendly wallet built directly into Minswap for seamless token swapping and management." : {
+
+    },
+    "MuesliSwap" : {
+
+    },
+    "My balance" : {
+
+    },
+    "My QR" : {
+
+    },
+    "New Password" : {
+
+    },
+    "Next" : {
+
+    },
+    "Nickname" : {
+
+    },
+    "No results" : {
+
+    },
+    "Not enough %@ amount in pool" : {
+
+    },
+    "Notice" : {
+
+    },
+    "Notification" : {
+
+    },
+    "OCO" : {
+
+    },
+    "OK" : {
+
+    },
+    "Old Password" : {
+
+    },
+    "on" : {
+
+    },
+    "Open Settings" : {
+
+    },
+    "Optic ID" : {
+
+    },
+    "Orders" : {
+
+    },
+    "Output information" : {
+
+    },
+    "Partial Fill" : {
+
+    },
+    "Password" : {
+
+    },
+    "Password Changed" : {
+
+    },
+    "Password incorrect" : {
+
+    },
+    "Password is match" : {
+
+    },
+    "Password is not match" : {
+
+    },
+    "Paste" : {
+
+    },
+    "Pending" : {
+
+    },
+    "Please accept with Face ID/Touch ID" : {
+
+    },
+    "Please enter wallet address below. Empty will use your current wallet address." : {
+
+    },
+    "Please grant biometric permission to the app to enable Face ID/Touch ID login" : {
+
+    },
+    "Please grant camera access in Settings to use this feature." : {
+
+    },
+    "Please write down your 24 words seed phrase and store it in a secured place." : {
+
+    },
+    "Policy ID" : {
+
+    },
+    "policy_content" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Astibulum dictum ultrices elit a luctus. Sed in ante ut leo congue posuere at sit amet ligula. Pellentesque eget augue nec nisl sodales blandit sed et sem. Aenean quis finibus arcu, in hendrerit purus. Praesent ac aliquet lorem. Morbi feugiat aliquam ligula, et vestibulum ligula hendrerit vitae. Sed ex lorem, pulvinar sed auctor sit amet, molestie a nibh. Ut euismod nisl arcu, sed placerat nulla volutpat aliquet. Ut id convallis nisl. Ut mauris leo, lacinia sed elit id, sagittis rhoncus odio. Pellentesque sapien libero, lobortis a placerat et, malesuada sit amet dui. Nam sem sapien, congue eu rutrum nec, pellentesque eget ligula.\n              Nunc tempor interdum ex, sed cursus nunc egestas aliquet. Pellentesque interdum vulputate elementum. Donec erat diam, pharetra nec enim ut, bibendum pretium tellus. Vestibulum et turpis nibh. Cras vel ornare velit, ac pretium arcu. Cras justo augue, finibus id sollicitudin et, rutrum eget metus. Suspendisse ut mauris eu massa pulvinar sollicitudin vel sed enim. Pellentesque viverra arcu et dignissim vehicula. Donec a velit ac dolor dapibus pellentesque sit amet at erat. Phasellus "
+          }
+        }
+      }
+    },
+    "Powered by Xerberus. This is for informational purposes only and is not intended to be used as financial advice. " : {
+
+    },
+    "Powered by Xerberus. This is for informational purposes only and is not intended to be used as financial advice. User Agreement" : {
+
+    },
+    "Prevent high price impact trades. Disable at your own risk." : {
+
+    },
+    "Price impact" : {
+
+    },
+    "Price Impact" : {
+
+    },
+    "Price impact is more than %@%%, make sure to check the price before submitting the transaction." : {
+
+    },
+    "Privacy policy" : {
+
+    },
+    "Protocol" : {
+
+    },
+    "Re-input your seed phrase" : {
+
+    },
+    "Read it before cancelling" : {
+
+    },
+    "Receive" : {
+
+    },
+    "Recent searches" : {
+
+    },
+    "Recommended" : {
+
+    },
+    "Refundable deposit" : {
+
+    },
+    "Reset" : {
+
+    },
+    "Restore" : {
+
+    },
+    "Restore using seed phrase" : {
+
+    },
+    "Restore wallet" : {
+
+    },
+    "Risk score" : {
+
+    },
+    "Route" : {
+
+    },
+    "Safe Mode" : {
+
+    },
+    "Sample" : {
+      "extractionState" : "manual"
+    },
+    "Sample item 1" : {
+
+    },
+    "Sample item 2" : {
+
+    },
+    "Save" : {
+
+    },
+    "Scam token" : {
+
+    },
+    "Scan QR" : {
+
+    },
+    "Scan QR code" : {
+
+    },
+    "Security" : {
+
+    },
+    "Seedphrase" : {
+
+    },
+    "Select All (%lld)" : {
+
+    },
+    "Select method to restore your wallet:" : {
+
+    },
+    "Send" : {
+
+    },
+    "Send all" : {
+
+    },
+    "Service Fee" : {
+
+    },
+    "Set up nickname" : {
+
+    },
+    "Share" : {
+
+    },
+    "Share this wallet address to receive payments." : {
+
+    },
+    "Show my QR" : {
+
+    },
+    "Sign the contract" : {
+
+    },
+    "Sign transaction failed" : {
+
+    },
+    "Slippage tolerance" : {
+
+    },
+    "Slippage Tolerance" : {
+
+    },
+    "Slippage tolerance is over %@%%. You can adjust it in trade " : {
+
+    },
+    "Something went wrong!" : {
+
+    },
+    "Spectrum" : {
+
+    },
+    "Splash" : {
+
+    },
+    "Splash Stable" : {
+
+    },
+    "Stableswap" : {
+
+    },
+    "Statistics" : {
+
+    },
+    "Status" : {
+
+    },
+    "SteelSwap" : {
+
+    },
+    "Stop" : {
+
+    },
+    "Stop amount" : {
+
+    },
+    "Stop price" : {
+
+    },
+    "Sundae V1" : {
+
+    },
+    "Sundae V3" : {
+
+    },
+    "Suspicious token" : {
+
+    },
+    "Swap" : {
+
+    },
+    "Swap " : {
+
+    },
+    "Swap amount" : {
+
+    },
+    "Tap to reveal seed phrase" : {
+
+    },
+    "Terms of service" : {
+
+    },
+    "The DEX fees includes the batcher fee and network fee required to process your transaction on the blockchain. These fees are necessary to ensure your trade is executed and confirmed by the network." : {
+
+    },
+    "The fee paid to liquidity providers for facilitating your trade. This fee is deducted from your input amount and distributed to users who supply assets to the liquidity pool." : {
+
+    },
+    "The market cap if the total supply was in circulation. Fully Diluted Market Cap = Current Price x Total Supply." : {
+
+    },
+    "The number of coins circulating in the market and available to the public for trading, similar to publicly traded shares on the stock market." : {
+
+    },
+    "The price from Weighted Arithmetic Mean of all ADA-%@ pools." : {
+
+    },
+    "The seed phrase is only stored on my phone, and Minswap has no access to it." : {
+
+    },
+    "The seed phrase is only stored on your phone, and Minswap has no access to it to help you retrieve it" : {
+
+    },
+    "The service fee is charged for routing your trade through multiple liquidity sources to find the best price. The fee is calculated as the greater of 0.85₳ or --% of your trade amount." : {
+
+    },
+    "The service fee will be refunded if no split has been filled" : {
+
+    },
+    "The Weighted Arithmetic Mean of all ADA-%@ pools." : {
+
+    },
+    "This % indicates the potential effect your swap might have on the pool's price. A higher % suggests a more significant impact." : {
+
+    },
+    "This amount of ADA will be held as minimum UTxO ADA and will be returned when your orders are processed or cancelled" : {
+
+    },
+    "This feature is designed for recovery in case user forgets their seed phrase but have the wallet logged in the DEX app. Proceeded with caution. Do not send to a CEX address as you could lose your native tokens." : {
+
+    },
+    "This project token is migrated to a new token, you can exchange your old token on %@ app. The new token has policyID %@ and tokenName %@." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "This project token is migrated to a new token, you can exchange your old token on %1$@ app. The new token has policyID %2$@ and tokenName %3$@."
+          }
+        }
+      }
+    },
+    "This token has not been verified yet. Please ensure the correct policyId" : {
+
+    },
+    "This token isn't registered on Cardano Token Registry. Please make sure to double check the policy Id: %@" : {
+
+    },
+    "Timezone" : {
+
+    },
+    "To" : {
+
+    },
+    "To wallet address:" : {
+
+    },
+    "togle" : {
+
+    },
+    "Token migration" : {
+
+    },
+    "Token name" : {
+
+    },
+    "Top Vol 24h Tokens" : {
+
+    },
+    "Total supply" : {
+
+    },
+    "Total supply = Total coins created - coins that have been burned (if any) It is comparable to outstanding shares in the market." : {
+
+    },
+    "Total: %lld TXs" : {
+
+    },
+    "Touch ID" : {
+
+    },
+    "Touch ID not available" : {
+
+    },
+    "Trading fee" : {
+
+    },
+    "Transaction not exist" : {
+
+    },
+    "Transaction not found" : {
+
+    },
+    "Transaction Submitted" : {
+
+    },
+    "Try again" : {
+
+    },
+    "Type" : {
+
+    },
+    "Uncalibrated" : {
+
+    },
+    "Unlock your wallet using %@ recognition or a password." : {
+
+    },
+    "Unregistered token" : {
+
+    },
+    "Unsafe slippage tolerance" : {
+
+    },
+    "Unsafe slippage tolerance." : {
+
+    },
+    "Update token supply" : {
+
+    },
+    "USD" : {
+
+    },
+    "Use FaceID" : {
+
+    },
+    "Use TouchID" : {
+
+    },
+    "User Agreement." : {
+
+    },
+    "UTC" : {
+
+    },
+    "v%@" : {
+
+    },
+    "V1" : {
+
+    },
+    "V2" : {
+
+    },
+    "Value" : {
+
+    },
+    "via" : {
+
+    },
+    "Via %@" : {
+
+    },
+    "View on explorer" : {
+
+    },
+    "Volume (24h)" : {
+
+    },
+    "Volume (24h) is the amount of the asset that has been traded on Minswap during the past 24 hours." : {
+
+    },
+    "VyFinance" : {
+
+    },
+    "Wallet not found" : {
+
+    },
+    "Warning" : {
+
+    },
+    "When you set the appearance to default, theme app will be depended on device settings." : {
+
+    },
+    "Wingriders Stable V2" : {
+
+    },
+    "Wingriders V1" : {
+
+    },
+    "Wingriders V2" : {
+
+    },
+    "Withdraw" : {
+
+    },
+    "Yes, cancel" : {
+
+    },
+    "You are disconnecting your wallet?" : {
+
+    },
+    "You can cancel only 1 type per time - Plutus V1, Plutus V2" : {
+
+    },
+    "You currently have notifications turned off for this application. You can open Setting to re-enable them." : {
+
+    },
+    "You have no order" : {
+
+    },
+    "You have successfully create a wallet. Minwallet makes exploring Cardano feel better than ever." : {
+
+    },
+    "You have to re-enter your seed phrases when reconnecting your wallet." : {
+
+    },
+    "You must log in with a successful password to use this feature." : {
+
+    },
+    "You paid" : {
+
+    },
+    "You pay" : {
+
+    },
+    "You receive" : {
+
+    },
+    "You want to send" : {
+
+    },
+    "You want to send:" : {
+
+    },
+    "You will have to pay a small fees to cancel your orders. Are you sure to continue?" : {
+
+    },
+    "You’re all set!" : {
+
+    },
+    "Your NFTs" : {
+
+    },
+    "Your password has been successfully changed." : {
+
+    },
+    "Your password must contain:" : {
+
+    },
+    "Your tokens" : {
+
+    },
+    "Your trade route" : {
+
+    },
+    "Your transaction has been submitted successfully" : {
+
+    },
+    "Your transaction will revert if the price changes unfavorably by more than this percentage." : {
+
+    },
+    "Your transaction will revert if there is a large, unfavorable price movement before it is confirmed.You can adjust this by setting percentage of Slippage Tolerance" : {
+
+    },
+    "Zap In" : {
+
+    },
+    "Zap Out" : {
+
+    },
+    "zzz" : {
+
+    }
+  },
+  "version" : "1.0"
+}

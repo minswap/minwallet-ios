@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>org.minswap.MinWallet</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>minswap</string>
+			</array>
+		</dict>
+	</array>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
+	<key>MIN_ADA_CURRENCY</key>
+	<string>${MIN_ADA_CURRENCY}</string>
+	<key>MIN_ADA_TOKEN</key>
+	<string>${MIN_ADA_TOKEN}</string>
+	<key>MIN_GRAPH_URL</key>
+	<string>${MIN_GRAPH_URL}</string>
+	<key>MIN_KEYCHAIN_ACCESS_GROUP</key>
+	<string>${MIN_KEYCHAIN_ACCESS_GROUP}</string>
+	<key>MIN_KEYCHAIN_SERVICE_NAME</key>
+	<string>${MIN_KEYCHAIN_SERVICE_NAME}</string>
+	<key>MIN_CURRENCY_SYMBOL_LP_V1</key>
+	<string>${MIN_CURRENCY_SYMBOL_LP_V1}</string>
+	<key>MIN_MINT_TOKEN</key>
+	<string>${MIN_MINT_TOKEN}</string>
+	<key>MIN_MIN_TOKEN</key>
+	<string>${MIN_MIN_TOKEN}</string>
+	<key>MIN_ONE_SIGNAL_APP_ID</key>
+	<string>${MIN_ONE_SIGNAL_APP_ID}</string>
+	<key>MIN_PASS_DEFAULT_FOR_FACE_ID</key>
+	<string>${MIN_PASS_DEFAULT_FOR_FACE_ID}</string>
+	<key>MIN_PUBLIC_NETWORK_ID</key>
+	<string>${MIN_PUBLIC_NETWORK_ID}</string>
+	<key>MIN_TRANSACTION_URL</key>
+	<string>${MIN_TRANSACTION_URL}</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Using Face ID to login</string>
+	<key>MIN_ADDRESS_PREFIX</key>
+	<string>${MIN_ADDRESS_PREFIX}</string>
+	<key>MIN_ADA_HANDLE_URL</key>
+	<string>${MIN_ADA_HANDLE_URL}</string>
+	<key>MIN_POLICY_URL</key>
+	<string>${MIN_POLICY_URL}</string>
+	<key>MIN_ASSET_URL</key>
+	<string>${MIN_ASSET_URL}</string>
+	<key>MIN_AGG_URL</key>
+	<string>${MIN_AGG_URL}</string>
+	<key>MIN_LOCK_AGGREGATOR_SOURCE</key>
+	<string>${MIN_LOCK_AGGREGATOR_SOURCE}</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>InterDisplay-SemiBold.ttf</string>
+		<string>InterDisplay-Regular.ttf</string>
+		<string>InterDisplay-Bold.ttf</string>
+		<string>InterDisplay-Medium.ttf</string>
+		<string>Inter-Regular.ttf</string>
+		<string>Inter-Medium.ttf</string>
+		<string>Inter-SemiBold.ttf</string>
+		<string>Inter-Bold.ttf</string>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>$(PRODUCT_NAME) camera use</string>
+</dict>
+</plist>

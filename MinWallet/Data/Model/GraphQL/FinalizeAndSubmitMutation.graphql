@@ -1,0 +1,3 @@
+mutation FinalizeAndSubmit($input: InputFinalizeAndSubmit!) {
+  finalizeAndSubmit(input: $input)
+}

@@ -1,0 +1,3 @@
+query MINGetSkateAddressQuery($address: String!) {
+ getStakeAddress(address: $address)
+}

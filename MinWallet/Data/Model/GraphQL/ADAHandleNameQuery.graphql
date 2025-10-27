@@ -1,0 +1,10 @@
+query ADAHandleNameQuery($address: String!) {
+  getWalletAssetsPositions(address: $address) {
+    nfts {
+      asset {
+        currencySymbol
+        tokenName
+      }
+    }
+  }
+}

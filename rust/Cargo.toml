@@ -1,0 +1,25 @@
+[package]
+name = "mwrust"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+tiny-bip39 = "2.0.0"
+cardano-serialization-lib = "13.2.0"
+hex = "0.4.3"
+rand = "0.8.5"
+uniffi = { version = "0.28.2", features = ["cli"] }
+cryptoxide = "0.4.4"
+serde = { version = "1.0.215", features = ["derive"] }
+serde_json = "1.0.133"
+
+[build-dependencies]
+uniffi = { version = "0.28.2", features = ["build"] }
+
+[lib]
+crate-type = ["cdylib", "staticlib"]
+name = "mwrust"
+
+[[bin]]
+name = "uniffi-bindgen"
+path = "src/uniffi-bindgen.rs"

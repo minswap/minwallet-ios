@@ -1,0 +1,3 @@
+query MINGetMinimumLovelaceQuery($address: String!) {
+  getMinimumLovelace(address: $address)
+}

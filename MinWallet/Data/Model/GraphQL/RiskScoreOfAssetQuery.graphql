@@ -1,0 +1,6 @@
+query RiskScoreOfAssetQuery($asset: InputAsset!) {
+  riskScoreOfAsset(asset: $asset) {
+    assetName
+    riskCategory
+  }
+}

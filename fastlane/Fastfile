@@ -1,0 +1,33 @@
+default_platform(:ios)
+
+lane :beta do
+  setup_ci if ENV['CI']
+  api_key = app_store_connect_api_key(
+    key_id: ENV["APP_STORE_CONNECT_API_KEY_ID"],
+    issuer_id: ENV["APP_STORE_CONNECT_API_ISSUER_ID"],
+    key_content: ENV["APP_STORE_CONNECT_API_KEY_CONTENT"],
+    is_key_content_base64: true,
+    duration: 1200,
+    in_house: false
+  )
+  match(type: "appstore", readonly: is_ci, app_identifier: ["org.minswap.MinWallet", "org.minswap.MinWallet.OneSignalNotificationServiceExtension"])
+  latest_build_number = latest_testflight_build_number
+  increment_build_number({
+    build_number: latest_build_number + 1,
+  })
+  build_app(
+    export_method: "app-store",
+    export_options: {
+      provisioningProfiles: { 
+        "org.minswap.MinWallet" => "match AppStore org.minswap.MinWallet",
+        "org.minswap.MinWallet.OneSignalNotificationServiceExtension" => "match AppStore org.minswap.MinWallet.OneSignalNotificationServiceExtension"
+      }
+    },
+    xcconfig: "MinWallet/Environment/Production.xcconfig"
+  )
+  upload_to_testflight(skip_waiting_for_build_processing: true)
+  clean_build_artifacts
+  commit_version_bump(message: "[skip ci] Version Bump", xcodeproj: "MinWallet.xcodeproj")
+  add_git_tag
+  push_to_git_remote
+end

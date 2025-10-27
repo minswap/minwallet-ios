@@ -1,0 +1,84 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36" version="24.7.14">
+  <diagram name="Page-1" id="2hfDB_Psic_24URi60xI">
+    <mxGraphModel grid="1" page="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="v9rbsV_P_vqkoP5i80Xt-15" value="" style="group" connectable="0" vertex="1" parent="1">
+          <mxGeometry x="10" y="60" width="640" height="400" as="geometry" />
+        </mxCell>
+        <mxCell id="v9rbsV_P_vqkoP5i80Xt-10" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="v9rbsV_P_vqkoP5i80Xt-15">
+          <mxGeometry width="600" height="400" as="geometry" />
+        </mxCell>
+        <mxCell id="v9rbsV_P_vqkoP5i80Xt-1" value="Rust business logi" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="v9rbsV_P_vqkoP5i80Xt-15">
+          <mxGeometry x="40" y="172.5" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="v9rbsV_P_vqkoP5i80Xt-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="v9rbsV_P_vqkoP5i80Xt-15" source="v9rbsV_P_vqkoP5i80Xt-2" target="v9rbsV_P_vqkoP5i80Xt-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="v9rbsV_P_vqkoP5i80Xt-2" value="Cardano Serialization Lib" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="v9rbsV_P_vqkoP5i80Xt-15">
+          <mxGeometry x="40" y="30" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="v9rbsV_P_vqkoP5i80Xt-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="v9rbsV_P_vqkoP5i80Xt-15" source="v9rbsV_P_vqkoP5i80Xt-3" target="v9rbsV_P_vqkoP5i80Xt-7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="v9rbsV_P_vqkoP5i80Xt-3" value="Interface Definition File" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="v9rbsV_P_vqkoP5i80Xt-15">
+          <mxGeometry x="40" y="290" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="v9rbsV_P_vqkoP5i80Xt-8" value="" style="group" connectable="0" vertex="1" parent="v9rbsV_P_vqkoP5i80Xt-15">
+          <mxGeometry x="260" y="177.5" width="100" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="v9rbsV_P_vqkoP5i80Xt-5" value="" style="sketch=0;pointerEvents=1;shadow=0;dashed=0;html=1;strokeColor=none;labelPosition=center;verticalLabelPosition=bottom;verticalAlign=top;align=center;fillColor=#505050;shape=mxgraph.mscae.enterprise.settings" vertex="1" parent="v9rbsV_P_vqkoP5i80Xt-8">
+          <mxGeometry x="25" width="50" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="v9rbsV_P_vqkoP5i80Xt-7" value="uniffi-bindgen" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="v9rbsV_P_vqkoP5i80Xt-8">
+          <mxGeometry y="55" width="100" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="v9rbsV_P_vqkoP5i80Xt-9" value="Rust wallet with Swift binding" style="rounded=0;whiteSpace=wrap;html=1;container=1;" vertex="1" parent="v9rbsV_P_vqkoP5i80Xt-15">
+          <mxGeometry x="440" y="172.5" width="120" height="60" as="geometry">
+            <mxRectangle x="440" y="172.5" width="200" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="v9rbsV_P_vqkoP5i80Xt-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="v9rbsV_P_vqkoP5i80Xt-15" source="v9rbsV_P_vqkoP5i80Xt-5" target="v9rbsV_P_vqkoP5i80Xt-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="v9rbsV_P_vqkoP5i80Xt-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="v9rbsV_P_vqkoP5i80Xt-15" source="v9rbsV_P_vqkoP5i80Xt-1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="280" y="203" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="v9rbsV_P_vqkoP5i80Xt-17" value="Swift UI App" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="710" y="230" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="v9rbsV_P_vqkoP5i80Xt-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="v9rbsV_P_vqkoP5i80Xt-9" target="v9rbsV_P_vqkoP5i80Xt-17">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="570" y="260" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="v9rbsV_P_vqkoP5i80Xt-22" value="" style="endArrow=classic;html=1;rounded=0;exitX=-0.012;exitY=0.654;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.971;entryY=0.601;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="v9rbsV_P_vqkoP5i80Xt-17" target="v9rbsV_P_vqkoP5i80Xt-9">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="780" y="350" as="sourcePoint" />
+            <mxPoint x="830" y="300" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="v9rbsV_P_vqkoP5i80Xt-23" value="Node.JS Backend" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="710" y="380" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="v9rbsV_P_vqkoP5i80Xt-24" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.416;entryY=0.039;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.413;exitY=0.964;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="v9rbsV_P_vqkoP5i80Xt-17" target="v9rbsV_P_vqkoP5i80Xt-23">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="760" y="300" as="sourcePoint" />
+            <mxPoint x="810" y="250" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="v9rbsV_P_vqkoP5i80Xt-26" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="v9rbsV_P_vqkoP5i80Xt-23" target="v9rbsV_P_vqkoP5i80Xt-17">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="810" y="390" as="sourcePoint" />
+            <mxPoint x="860" y="340" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,0 +1,3 @@
+mutation SendTokens($input: InputSendTokens!) {
+  sendTokens(input: $input)
+}
