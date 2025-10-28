@@ -2,13 +2,13 @@ import SwiftUI
 import FlowStacks
 
 struct GettingStartedView: View {
-    
+
     @EnvironmentObject
     private var navigator: FlowNavigator<MainCoordinatorViewModel.Screen>
-    
+
     @EnvironmentObject
     private var appSetting: AppSetting
-    
+
     var body: some View {
         VStack(spacing: 0) {
             Image(.icToken)
@@ -44,9 +44,9 @@ struct GettingStartedView: View {
                         .padding(.trailing, -50)
                 }
             }
-            
+
             Spacer()
-            
+
             CustomButton(
                 title: "Create new wallet",
                 action: {

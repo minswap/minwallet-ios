@@ -9,14 +9,14 @@ struct SelectTokenListItemView: View {
     private var isShowSelected: Bool = false
     @Binding
     private var isFav: Bool
-    
+
     init(token: TokenProtocol?, isSelected: Binding<Bool>, isShowSelected: Bool, isFav: Bool = false) {
         self.token = token
         self._isSelected = isSelected
         self._isShowSelected = .init(wrappedValue: isShowSelected)
         self._isFav = .constant(isFav)
     }
-    
+
     var body: some View {
         HStack(spacing: .md) {
             TokenLogoView(currencySymbol: token?.currencySymbol, tokenName: token?.tokenName, isVerified: token?.isVerified, isFav: isFav)
@@ -56,7 +56,7 @@ struct SelectTokenListItemView: View {
             if isShowSelected {
                 return Color.clear
             }
-            
+
             return isSelected ? Color.colorBorderPrimaryTer : Color.clear
         }
     }

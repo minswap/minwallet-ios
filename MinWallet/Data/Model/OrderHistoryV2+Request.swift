@@ -15,7 +15,7 @@ extension OrderHistory {
         var toTime: String?
         var limit: Int = 20
         var cursor: Int?
-        
+
         init() {}
     }
 }

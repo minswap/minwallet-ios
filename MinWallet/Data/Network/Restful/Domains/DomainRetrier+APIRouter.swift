@@ -35,13 +35,13 @@ extension APIRouter {
                 let second = max(0.0, retryResult.delay ?? 0.0)
                 try await Task.sleep(nanoseconds: UInt64(second * 1_000_000_000))
                 return try await body()
-                
+
             } else if let error = retryResult.error {
                 throw error
             }
             // fallthrough ↓
         }
-        
+
         // doNotRetry
         return response
     }

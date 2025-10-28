@@ -9,7 +9,7 @@ struct SetupNickNameView: View {
         case restoreWallet(fileContent: String, seedPhrase: [String])
         case walletSetting
     }
-    
+
     @EnvironmentObject
     private var navigator: FlowNavigator<MainCoordinatorViewModel.Screen>
     @EnvironmentObject
@@ -20,10 +20,10 @@ struct SetupNickNameView: View {
     private var isInputActive: Bool
     @State
     private var nickName: String = ""
-    
+
     @State
     var screenType: ScreenType
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("Set up nickname")
@@ -93,7 +93,7 @@ struct SetupNickNameView: View {
                     guard let minWallet = userInfo.minWallet, !nickName.isBlank else { return }
                     guard let minWallet = changeWalletName(wallet: minWallet, password: appSetting.password, newWalletName: nickName.trimmingCharacters(in: .whitespacesAndNewlines)) else { return }
                     userInfo.saveWalletInfo(walletInfo: minWallet)
-                    
+
                     navigator.pop()
                 }
             }

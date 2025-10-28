@@ -14,7 +14,7 @@ extension ChartPeriod: Identifiable {
     public var id: UUID {
         UUID()
     }
-    
+
     var title: String {
         switch self {
         case .oneDay:

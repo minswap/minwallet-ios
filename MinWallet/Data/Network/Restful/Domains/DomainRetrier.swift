@@ -28,15 +28,15 @@ protocol GDomainRetrier {
 // MARK: - Domain Authentication Retrier (refresh token)
 class GDomainAuthRetrier {
     private var refreshTask: Task<Void, Error>?
-    
+
     let refreshTokenRetryCountMax: Int
     let refreshTokenRetryDelay: DispatchTimeInterval
     private(set)
         var refreshWindow: RefreshWindow?
     var refreshTimestamps: [TimeInterval] = []
-    
+
     let domainRefreshRetrier: GDomainRetrier & GDomainTokenRefresher
-    
+
     init(
         domainRefreshRetrier: GDomainRetrier & GDomainTokenRefresher,
         refreshTokenRetryCountMax: Int = 3,
@@ -48,54 +48,54 @@ class GDomainAuthRetrier {
         self.refreshTokenRetryDelay = refreshTokenRetryDelay
         self.refreshWindow = refreshWindow
     }
-    
+
     func shouldRefreshTokenIfRequired(endpoint: APIRouter) -> RequiresRefreshResult {
         domainRefreshRetrier.shouldRefreshTokenIfRequired(endpoint: endpoint)
     }
-    
+
     func shouldRetryDueToAuthenticationError(endpoint: APIRouter, response: HTTPURLResponse?, data: Data?) throws -> RetryResult {
         let retryResult = try domainRefreshRetrier.shouldRetry(endpoint: endpoint, response: response, data: data)
         if retryResult.retryRequired, domainRefreshRetrier.refreshToken.isEmpty { return .doNotRetry }
         return retryResult
     }
-    
+
     func refresh() async throws -> Void {
         return try await _refresh()
     }
-    
+
     func _refresh() async throws -> Void {
         guard !isRefreshExcessive() else {
             throw APIRouterError.excessiveRefresh
         }
-        
+
         if let refreshTask = refreshTask {
             return try await refreshTask.value
         }
-        
+
         let task = Task { () throws -> Void in
             defer { refreshTask = nil }
-            
+
             refreshTimestamps.append(ProcessInfo.processInfo.systemUptime)
             try await attempts(maximumRetryCount: refreshTokenRetryCountMax, delayBeforeRetry: refreshTokenRetryDelay) {
                 try await self.domainRefreshRetrier.requestRefreshToken()
             }
         }
-        
+
         self.refreshTask = task
-        
+
         return try await task.value
     }
-    
+
     func isRefreshExcessive() -> Bool {
         guard let refreshWindow = self.refreshWindow else { return false }
-        
+
         let refreshWindowMin = ProcessInfo.processInfo.systemUptime - refreshWindow.interval
-        
+
         refreshTimestamps = refreshTimestamps.filter({ refreshWindowMin <= $0 })
         let refreshAttemptsWithinWindow: Int = refreshTimestamps.count
-        
+
         let isRefreshExcessive = refreshAttemptsWithinWindow >= refreshWindow.maximumAttempts
-        
+
         return isRefreshExcessive
     }
 }
@@ -103,24 +103,24 @@ class GDomainAuthRetrier {
 //------------------------------------------------------------------------------
 // MARK: - Default RefreshRetrier NoOp
 class GDomainRefreshRetrierNoOpDefault: GDomainRetrier, GDomainTokenRefresher {
-    
+
     static var sharedAuthRetrier = GDomainAuthRetrier(domainRefreshRetrier: GDomainRefreshRetrierNoOpDefault())
-    
+
     func shouldRetry(endpoint: APIRouter, response: HTTPURLResponse?, data: Data?) throws -> RetryResult {
         guard let response = response,
             response.statusCode == 401  // 403?
         else { return .doNotRetry }
         return .doNotRetryWithError(APIRouterError.serverUnauthenticated)
     }
-    
+
     var refreshToken: String {
         ""
     }
-    
+
     func requestRefreshToken() async throws {
         throw APIRouterError.localError(message: APIRouterError.GenericError)
     }
-    
+
     func requestRefreshToken() -> AnyPublisher<Void, Error> {
         Fail<Void, Error>(error: APIRouterError.localError(message: "Token refresh not implemented"))
             .eraseToAnyPublisher()
@@ -146,7 +146,7 @@ extension RequiresRefreshResult {
         default: return false
         }
     }
-    
+
     var delay: TimeInterval? {
         switch self {
         case let .requiresRefreshThenDelay(delay): return delay
@@ -165,14 +165,14 @@ extension RetryResult {
         default: return false
         }
     }
-    
+
     var delay: TimeInterval? {
         switch self {
         case let .retryWithDelay(delay): return delay
         default: return nil
         }
     }
-    
+
     var error: Error? {
         guard case let .doNotRetryWithError(error) = self else { return nil }
         return error
@@ -189,10 +189,10 @@ struct RefreshWindow {
     /// `RefreshWindow` represents the past 30 seconds. If more attempts occurred in the past 30 seconds than
     /// `maximumAttempts`, an `.excessiveRefresh` error will be thrown.
     let interval: TimeInterval
-    
+
     /// Total refresh attempts allowed within `interval` before throwing an `.excessiveRefresh` error.
     let maximumAttempts: Int
-    
+
     /// Creates a `RefreshWindow` instance from the specified `interval` and `maximumAttempts`.
     ///
     /// - Parameters:

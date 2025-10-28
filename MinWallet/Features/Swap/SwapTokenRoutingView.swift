@@ -5,10 +5,10 @@ import FlowStacks
 struct SwapTokenRoutingView: View {
     @EnvironmentObject
     private var viewModel: SwapTokenViewModel
-    
+
     @Environment(\.partialSheetDismiss)
     private var onDismiss
-    
+
     @State
     private var popoverTarget: UUID?
     @State
@@ -17,7 +17,7 @@ struct SwapTokenRoutingView: View {
     private var nsPopover
     @State
     private var workItem: DispatchWorkItem?
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("Your trade route")
@@ -44,7 +44,7 @@ struct SwapTokenRoutingView: View {
                                         .frame(maxHeight: .infinity)
                                 }
                                 .frame(width: 28)
-                                
+
                                 HStack(alignment: .center, spacing: 0) {
                                     Text("\(abs(percent).formatSNumber(maximumFractionDigits: 2))%")
                                         .foregroundStyle(.colorBaseTent)
@@ -59,7 +59,7 @@ struct SwapTokenRoutingView: View {
                                         let circleWidth: CGFloat = 24
                                         let circleCount = splits.count
                                         let dashCount = circleCount + 1
-                                        
+
                                         let totalDashWidth = geometry.size.width - (CGFloat(circleCount) * circleWidth)
                                         let dashWidth = (dashCount > 0 ? totalDashWidth / CGFloat(dashCount) : 0)
                                         HStack(spacing: 0) {
@@ -89,7 +89,7 @@ struct SwapTokenRoutingView: View {
                                                         .containerShape(.rect)
                                                         .onTapGesture { showPopover(target: split.id, protocolName: split.source.name.toString()) }
                                                         .matchedGeometryEffect(id: split.id, in: nsPopover, anchor: .bottom)
-                                                    
+
                                                     DashedLineView().frame(minWidth: dashWidth, maxWidth: dashWidth)
                                                 }
                                             }
@@ -131,7 +131,7 @@ struct SwapTokenRoutingView: View {
         .frame(height: (UIScreen.current?.bounds.height ?? 0) * 0.83)
         .presentSheetModifier()
     }
-    
+
     private var tokenInOutView: some View {
         HStack(spacing: 8) {
             let estimationResponse: EstimationResponse = viewModel.iosTradeEstimate ?? .init()
@@ -146,7 +146,7 @@ struct SwapTokenRoutingView: View {
             TokenInOutView(token: tokenOut, amount: amountOut, isLeading: false)
         }
     }
-    
+
     private var bottomView: some View {
         HStack {
             VStack(alignment: .center, spacing: 0) {
@@ -164,7 +164,7 @@ struct SwapTokenRoutingView: View {
             .frame(width: 28)
         }
     }
-    
+
     @ViewBuilder
     private var customPopover: some View {
         if let popoverTarget {
@@ -190,13 +190,13 @@ struct SwapTokenRoutingView: View {
                 .zIndex(1)
         }
     }
-    
+
     private func showPopover(target: UUID, protocolName: String) {
         workItem?.cancel()
         workItem = DispatchWorkItem(block: {
             self.popoverTarget = nil
         })
-        
+
         if popoverTarget != nil {
             popoverTarget = nil
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
@@ -230,7 +230,7 @@ private struct TokenInOutView: View {
     var amount: Double
     @State
     var isLeading: Bool = true
-    
+
     var body: some View {
         HStack(spacing: 8) {
             let tokenDefault = token.tokenDefault

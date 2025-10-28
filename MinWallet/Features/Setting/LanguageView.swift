@@ -5,7 +5,7 @@ struct LanguageView: View {
     private var appSetting: AppSetting
     @Environment(\.partialSheetDismiss)
     private var onDismiss
-    
+
     var body: some View {
         VStack(spacing: 0) {
             Text("Language")

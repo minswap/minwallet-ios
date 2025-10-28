@@ -6,7 +6,7 @@ enum SwapTokenAPIRouter: DomainAPIRouter {
     case estimate(request: EstimationRequest)
     case buildTX(request: BuildTxRequest)
     case signTX(cbor: String, witness_set: String)
-    
+
     func path() -> String {
         switch self {
         case .estimate:
@@ -17,14 +17,14 @@ enum SwapTokenAPIRouter: DomainAPIRouter {
             return "/aggregator/finalize-and-submit-tx"
         }
     }
-    
+
     func method() -> HTTPMethod {
         return .post
     }
-    
+
     func parameters() -> Parameters {
         var params = Parameters()
-        
+
         switch self {
         case let .estimate(req):
             params["amount"] = req.amount
@@ -45,7 +45,7 @@ enum SwapTokenAPIRouter: DomainAPIRouter {
             estimateJSON["exclude_protocols"] = req.estimate.exclude_protocols.map({ $0.rawId })
             estimateJSON["allow_multi_hops"] = true
             estimateJSON["partner"] = req.estimate.partner
-            
+
             params["sender"] = req.sender
             params["min_amount_out"] = req.min_amount_out
             params["amount_in_decimal"] = req.amount_in_decimal

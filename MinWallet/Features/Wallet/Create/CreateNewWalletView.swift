@@ -5,7 +5,7 @@ import FlowStacks
 struct CreateNewWalletView: View {
     @EnvironmentObject
     var navigator: FlowNavigator<MainCoordinatorViewModel.Screen>
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("Create new wallet")

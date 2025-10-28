@@ -7,7 +7,7 @@ import ApolloAPI
 @MainActor
 class MainCoordinatorViewModel: ObservableObject {
     @Published var routes: Routes<Screen> = []
-    
+
     init() {}
 }
 
@@ -73,13 +73,13 @@ enum SendTokenScreen: Hashable, Identifiable {
         sourceScreenType: SendTokenView.ScreenType,
         onSelectToken: (([TokenProtocol], Bool) -> Void)?
     )
-    
+
     var id: UUID { UUID() }
-    
+
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
-    
+
     static func == (lhs: SendTokenScreen, rhs: SendTokenScreen) -> Bool {
         switch (lhs, rhs) {
         case (.sendToken, .sendToken),
@@ -95,13 +95,13 @@ enum SendTokenScreen: Hashable, Identifiable {
 
 enum SwapTokenScreen: Hashable, Identifiable {
     var id: UUID { UUID() }
-    
+
     case swapToken(token: TokenProtocol?)
-    
+
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
-    
+
     static func == (lhs: SwapTokenScreen, rhs: SwapTokenScreen) -> Bool {
         switch (lhs, rhs) {
         case (.swapToken, .swapToken):
@@ -119,17 +119,17 @@ enum SecuritySetting: Hashable {
 extension SecuritySetting {
     struct CreatePassSuccess: Hashable {
         private var id = UUID().uuidString
-        
+
         var onCreatePassSuccess: ((String) -> Void)?
-        
+
         init(onCreatePassSuccess: ((String) -> Void)?) {
             self.onCreatePassSuccess = onCreatePassSuccess
         }
-        
+
         static func == (lhs: SecuritySetting.CreatePassSuccess, rhs: SecuritySetting.CreatePassSuccess) -> Bool {
             lhs.id == rhs.id
         }
-        
+
         func hash(into hasher: inout Hasher) {
             hasher.combine(id)
         }
@@ -138,11 +138,11 @@ extension SecuritySetting {
 
 extension MainCoordinatorViewModel.Screen: Identifiable {
     var id: UUID { UUID() }
-    
+
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
-    
+
     static func == (lhs: MainCoordinatorViewModel.Screen, rhs: MainCoordinatorViewModel.Screen) -> Bool {
         switch (lhs, rhs) {
         case (.home, .home),

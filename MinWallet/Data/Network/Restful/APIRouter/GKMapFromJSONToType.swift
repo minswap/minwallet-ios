@@ -7,15 +7,15 @@ public
     func gk_mapArrayOrNull(JSONObject: Any?) -> [N]? {
         guard JSONObject != nil, !(JSONObject is NSNull)
         else { return [] }
-        
+
         return mapArray(JSONObject: JSONObject)
     }
-    
+
     func gk_map(JSONData: Data) -> N? {
         if let JSON = (try? JSONSerialization.jsonObject(with: JSONData, options: [])) as? [String: Any] {
             return map(JSON: JSON)
         }
-        
+
         return nil
     }
 }
@@ -25,17 +25,17 @@ public
 {
     public typealias Object = T
     public typealias JSON = Any
-    
+
     private let fromJSON: (Any?) -> T?
-    
+
     public init(fromJSON: @escaping (Any?) -> T?) {
         self.fromJSON = fromJSON
     }
-    
+
     open func transformFromJSON(_ value: Any?) -> T? {
         return fromJSON(value)
     }
-    
+
     open func transformToJSON(_ value: T?) -> JSON? {
         return value
     }
@@ -51,19 +51,19 @@ public
 {
     public typealias Object = T
     public typealias JSON = J
-    
+
     private let fromJSON: (Any?) -> T?
     private let toJSON: (T?) -> J?
-    
+
     public init(fromJSON: @escaping (Any?) -> T?, toJSON: @escaping (T?) -> J?) {
         self.fromJSON = fromJSON
         self.toJSON = toJSON
     }
-    
+
     open func transformFromJSON(_ value: Any?) -> T? {
         return fromJSON(value)
     }
-    
+
     open func transformToJSON(_ value: T?) -> J? {
         return toJSON(value)
     }
@@ -150,11 +150,11 @@ extension String {
     public var gkFloatValue: Float {
         return (self as NSString).floatValue
     }
-    
+
     public var gkIntValue: Int {
         return (self as NSString).integerValue
     }
-    
+
     public var gkDoubleValue: Double {
         return (self as NSString).doubleValue
     }

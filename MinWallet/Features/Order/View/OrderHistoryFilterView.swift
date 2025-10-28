@@ -9,12 +9,12 @@ struct OrderHistoryFilterView: View {
     private var appSetting: AppSetting
     @ObservedObject
     var viewModel: OrderHistoryFilterViewModel
-    
+
     @Environment(\.partialSheetDismiss)
     var onDismiss
-    
+
     var onFilterSelected: ((AggrSource?, OrderV2Status?, AggregatorSource?, OrderHistory.OrderType?, Date?, Date?) -> Void)?
-    
+
     private func formateDate(_ date: Date?) -> String {
         guard let date = date else { return "Select date" }
         let formatter = DateFormatter()
@@ -25,10 +25,10 @@ struct OrderHistoryFilterView: View {
         }
         return formatter.string(from: date)
     }
-    
+
     private static let heightExpand: CGFloat = (UIScreen.current?.bounds.height ?? 0) * 0.85
     private static let heightCollapse: CGFloat = 450
-    
+
     var body: some View {
         VStack(spacing: 0) {
             Text("Filter")
@@ -87,7 +87,7 @@ struct OrderHistoryFilterView: View {
                             //let rawActionsP: [AggregatorSource] = AggregatorSource.allCases
                             let allKeyP: LocalizedStringKey = "All"
                             let actionsP: [String] = ([allKeyP] + rawActionsP.map({ $0.name })).map { $0.toString() }
-                            
+
                             let heightz = calculateHeightFlowLayout(actions: actionsP)
                             FlowLayout(
                                 mode: .vstack,
@@ -116,7 +116,7 @@ struct OrderHistoryFilterView: View {
                             let rawAction: [OrderHistory.OrderType] = [.swap, .limit, .zapIn, .zapOut, .deposit, .withdraw, .oco, .stopLoss, .partialSwap]
                             let allKey: LocalizedStringKey = "All"
                             let actions: [String] = ([allKey] + rawAction.map({ $0.titleFilter })).map { $0.toString() }
-                            
+
                             let height = calculateHeightFlowLayout(actions: actions)
                             FlowLayout(
                                 mode: .vstack,
@@ -141,7 +141,7 @@ struct OrderHistoryFilterView: View {
                                 .font(.labelSmallSecondary)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .padding(.bottom, .md)
-                            
+
                             let statuses = ([allKey] + OrderV2Status.allCases.map({ $0.title })).map { $0.toString() }
                             FlexibleView(
                                 data: statuses,
@@ -189,7 +189,7 @@ struct OrderHistoryFilterView: View {
                                     viewModel.showSelectFromDate = true
                                 }
                         }
-                        
+
                         VStack(alignment: .leading, spacing: 4) {
                             Text("To")
                                 .font(.labelSmallSecondary)
@@ -322,7 +322,7 @@ private struct TextSelectable<T: Equatable>: View {
     @State var content: LocalizedStringKey = "All"
     @Binding var selected: T?
     @State var value: T?
-    
+
     var body: some View {
         Text(content)
             .font(.labelSmallSecondary)

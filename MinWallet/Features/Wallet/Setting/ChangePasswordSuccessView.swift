@@ -7,14 +7,14 @@ struct ChangePasswordSuccessView: View {
         case setting
         case walletSetting
     }
-    
+
     @EnvironmentObject
     private var navigator: FlowNavigator<MainCoordinatorViewModel.Screen>
     @EnvironmentObject
     private var appSetting: AppSetting
-    
+
     var screenType: ScreenType
-    
+
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
             Image(.icChangePasswordSuccess)

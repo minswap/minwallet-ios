@@ -13,14 +13,14 @@ struct SignContractView: View {
     private var isFocus: Bool
     @State
     private var currentPassword: String = ""
-    
+
     var onSignSuccess: (() -> Void)?
-    
+
     @Environment(\.partialSheetDismiss)
     var onDismiss
-    
+
     var body: some View {
-        
+
         VStack(spacing: 0) {
             Text("Sign the contract")
                 .font(.titleH5)
@@ -42,7 +42,7 @@ struct SignContractView: View {
                     )
             }
             .padding(.bottom, 40)
-            
+
             HStack(spacing: .xl) {
                 CustomButton(title: "Cancel", variant: .secondary) {
                     onDismiss?()

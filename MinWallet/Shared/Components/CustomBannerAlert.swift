@@ -3,9 +3,9 @@ import SwiftUI
 
 private struct CustomBannerAlertModifier<InfoContent: View>: ViewModifier {
     @Binding var isShowing: Bool
-    
+
     private let infoContent: () -> InfoContent
-    
+
     init(
         isShowing: Binding<Bool>,
         @ViewBuilder infoContent: @escaping () -> InfoContent
@@ -13,7 +13,7 @@ private struct CustomBannerAlertModifier<InfoContent: View>: ViewModifier {
         _isShowing = isShowing
         self.infoContent = infoContent
     }
-    
+
     func body(content: Content) -> some View {
         ZStack(alignment: .top) {
             content
@@ -58,11 +58,11 @@ extension View {
 
 private struct LoadingViewModifier: ViewModifier {
     @Binding var isShowing: Bool
-    
+
     init(isShowing: Binding<Bool>) {
         _isShowing = isShowing
     }
-    
+
     func body(content: Content) -> some View {
         ZStack {
             content.opacity(isShowing ? 0 : 1)
@@ -85,11 +85,11 @@ extension View {
 
 private struct ProgressViewModifier: ViewModifier {
     @Binding private var isShowing: Bool
-    
+
     init(isShowing: Binding<Bool>) {
         _isShowing = isShowing
     }
-    
+
     func body(content: Content) -> some View {
         content
             .overlay {

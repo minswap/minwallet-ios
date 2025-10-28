@@ -7,7 +7,7 @@ import OneSignalFramework
 
 @MainActor
 class HomeViewModel: ObservableObject {
-    
+
     @Published
     var tabType: TokenListView.TabType = .market
     @Published
@@ -16,30 +16,30 @@ class HomeViewModel: ObservableObject {
     var tabTypes: [TokenListView.TabType] = []
     @Published
     var scrollIndex: Int = 0
-    
+
     private var cancellables: Set<AnyCancellable> = []
     private var timerReloadBalance: AnyCancellable?
     private var timerReloadMarket: AnyCancellable?
-    
+
     @Published
     var marketViewModel: MarketViewModel = .init()
     @Published
     var yourTokenViewModel: YourTokenViewModel = .init(type: .yourToken)
     @Published
     var nftViewModel: YourTokenViewModel = .init(type: .nft)
-    
+
     @Published
     var favTokenIds: [String] = []
-    
+
     deinit {
         timerReloadBalance?.cancel()
         timerReloadMarket?.cancel()
     }
-    
+
     init() {
         guard AppSetting.shared.isLogin else { return }
         Self.generateTokenHash()
-        
+
         $tabType
             .removeDuplicates()
             .debounce(for: .milliseconds(200), scheduler: DispatchQueue.main)
@@ -57,7 +57,7 @@ class HomeViewModel: ObservableObject {
                 }
             }
             .store(in: &cancellables)
-        
+
         Timer.publish(every: 5, on: .main, in: .common)
             .autoconnect()
             .throttle(for: .seconds(5), scheduler: RunLoop.main, latest: true)
@@ -70,7 +70,7 @@ class HomeViewModel: ObservableObject {
             }
             .store(in: &cancellables)
     }
-    
+
     private func createTimerReloadBalance() {
         timerReloadBalance?.cancel()
         timerReloadBalance = Timer.publish(every: TokenManager.TIME_RELOAD_BALANCE, on: .main, in: .common)
@@ -93,7 +93,7 @@ class HomeViewModel: ObservableObject {
                     }
                 }
             }
-        
+
         timerReloadMarket?.cancel()
         timerReloadMarket = Timer.publish(every: TokenManager.TIME_RELOAD_MARKET, on: .main, in: .common)
             .autoconnect()
@@ -117,17 +117,17 @@ class HomeViewModel: ObservableObject {
                 }
             }
     }
-    
+
     private func getTokens(isLoadMore: Bool = false) async {
         timerReloadBalance?.cancel()
         timerReloadMarket?.cancel()
-        
+
         if showSkeletonDic[.market] == nil {
             withAnimation {
                 showSkeletonDic[.market] = !isLoadMore
             }
         }
-        
+
         switch tabType {
         case .market:
             await marketViewModel.getTokens()
@@ -136,7 +136,7 @@ class HomeViewModel: ObservableObject {
         case .nft:
             await nftViewModel.getTokens()
         }
-        
+
         if showSkeletonDic[.market] == true {
             withAnimation {
                 showSkeletonDic[.market] = false
@@ -144,15 +144,15 @@ class HomeViewModel: ObservableObject {
         }
         createTimerReloadBalance()
     }
-    
+
     static func generateTokenHash() {
         guard let address = UserInfo.shared.minWallet?.address, !address.isBlank else { return }
         Task {
             async let notificationGenerateAuthHashAsync = MinWalletService.shared.mutation(mutation: NotificationGenerateAuthHashMutation(identifier: address))?.notificationGenerateAuthHash
             async let skateAddressAsync = MinWalletService.shared.fetch(query: GetSkateAddressQuery(address: address))?.getStakeAddress
-            
+
             let value = try? await (notificationGenerateAuthHashAsync, skateAddressAsync)
-            
+
             if let token = value?.0, !token.isBlank, let skateAddress = value?.1, !skateAddress.isBlank, AppSetting.shared.enableNotification {
                 UserDataManager.shared.notificationGenerateAuthHash = token
                 OneSignal.login(externalId: skateAddress, token: token)
@@ -165,7 +165,7 @@ extension HomeViewModel {
     var showSkeleton: Bool {
         showSkeletonDic[.market] ?? true
     }
-    
+
     var countToken: Int? {
         switch tabType {
         case .yourToken:
@@ -176,7 +176,7 @@ extension HomeViewModel {
             nil
         }
     }
-    
+
     func showSkeleton(tabType: TokenListView.TabType) {
         switch tabType {
         case .market:

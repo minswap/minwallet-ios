@@ -6,7 +6,7 @@ struct CustomWebImage<Placeholder: View>: View {
     let url: String?
     let frameSize: CGSize?
     let placeholder: () -> Placeholder
-    
+
     init(
         url: String?,
         frameSize: CGSize? = nil,
@@ -21,7 +21,7 @@ struct CustomWebImage<Placeholder: View>: View {
         self.frameSize = frameSize
         self.placeholder = placeholder
     }
-    
+
     var body: some View {
         if let frameSize = frameSize {
             WebImage(url: URL(string: url ?? "")) { image in

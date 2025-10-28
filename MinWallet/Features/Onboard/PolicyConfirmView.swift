@@ -2,19 +2,19 @@ import SwiftUI
 import FlowStacks
 
 struct PolicyConfirmView: View {
-    
+
     enum ScreenType {
         case splash
         case about
     }
-    
+
     @EnvironmentObject
     private var navigator: FlowNavigator<MainCoordinatorViewModel.Screen>
     @EnvironmentObject
     private var preloadWebVM: PreloadWebViewModel
     @State
     var screenType: ScreenType = .splash
-    
+
     var body: some View {
         if screenType == .splash {
             VStack(spacing: 0) {

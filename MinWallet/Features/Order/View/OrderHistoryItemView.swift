@@ -6,9 +6,9 @@ struct OrderHistoryItemView: View {
     var wrapOrder: WrapOrderHistory? = .init()
     @State
     var order: OrderHistory?
-    
+
     var onCancelItem: (() -> Void)?
-    
+
     var body: some View {
         VStack(spacing: 0) {
             tokenView
@@ -106,7 +106,7 @@ struct OrderHistoryItemView: View {
             Color.colorBorderPrimarySub.frame(height: 1)
         }
     }
-    
+
     private var tokenView: some View {
         HStack(spacing: .xs) {
             let inputs = wrapOrder?.inputAsset ?? []
@@ -209,5 +209,5 @@ struct OrderHistoryItemView: View {
             .padding(.horizontal, .xl)
         Spacer()
     }
-    
+
 }

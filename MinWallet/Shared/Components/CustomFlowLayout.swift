@@ -8,9 +8,9 @@ public struct FlowLayout<RefreshBinding, Data: Collection, ItemView: View>: View
     let items: Data
     let itemSpacing: CGFloat
     @ViewBuilder let viewMapping: (Data.Element) -> ItemView
-    
+
     @State private var totalHeight: CGFloat
-    
+
     public init(
         mode: Mode,
         binding: Binding<RefreshBinding>,
@@ -25,7 +25,7 @@ public struct FlowLayout<RefreshBinding, Data: Collection, ItemView: View>: View
         self.viewMapping = viewMapping
         _totalHeight = State(initialValue: (mode == .scrollable) ? .zero : .infinity)
     }
-    
+
     public var body: some View {
         let stack = VStack {
             GeometryReader { geometry in
@@ -40,7 +40,7 @@ public struct FlowLayout<RefreshBinding, Data: Collection, ItemView: View>: View
             }
         }
     }
-    
+
     private func content(in g: GeometryProxy) -> some View {
         var width = CGFloat.zero
         var height = CGFloat.zero
@@ -80,7 +80,7 @@ public struct FlowLayout<RefreshBinding, Data: Collection, ItemView: View>: View
         }
         .background(HeightReaderView(binding: $totalHeight))
     }
-    
+
     public enum Mode {
         case scrollable, vstack
     }

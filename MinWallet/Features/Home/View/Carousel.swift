@@ -13,12 +13,12 @@ struct CarouselView: View {
         Data(title: "Join the latest IDO today?", description: "Get your tokens early"),
         Data(title: "Join the latest IDO today?", description: "Get your tokens early"),
     ]
-    
+
     @ObservedObject
     var homeViewModel: HomeViewModel
     @ObservedObject
     var tokenManager: TokenManager
-    
+
     var body: some View {
         GeometryReader { geometry in
             ZStack(alignment: .bottomLeading) {
@@ -35,9 +35,9 @@ struct CarouselView: View {
                                 .foregroundStyle(.colorInteractiveTentPrimarySub)
                         }
                         .padding(.leading, Spacing.xl)
-                        
+
                         Spacer()
-                        
+
                         Image(.icFirstToken)
                             .resizable()
                             .frame(width: 61, height: 98)
@@ -61,9 +61,9 @@ struct CarouselView: View {
                                 }
                                 .padding(.top, Spacing.xl)
                                 .padding(.leading, Spacing.xl)
-                                
+
                                 Spacer()
-                                
+
                                 Image(.comingSoon).resizable()
                                     .frame(
                                         width: 98, height: 98)
@@ -92,7 +92,7 @@ struct CarouselView: View {
 private struct IndicatorView: View {
     let count: Int
     let scrollIndex: Int
-    
+
     var body: some View {
         HStack(spacing: Spacing.xs) {
             ForEach(0..<count, id: \.self) {
@@ -119,6 +119,6 @@ private struct IndicatorView: View {
         CarouselView(homeViewModel: HomeViewModel(), tokenManager: TokenManager.shared)
             .frame(height: 98)
             .padding(.horizontal, .xl)
-        
+
     }
 }

@@ -7,7 +7,7 @@ struct AssetsInput: Then {
     var limit: Int = 20
     var onlyVerified: Bool?
     var searchAfter: [Any]?
-    
+
     init() {}
 }
 
@@ -15,10 +15,10 @@ struct AssetsInput: Then {
 struct AssetsResponse: Mappable {
     var searchAfter: [String]?
     var assets: [AssetData] = []
-    
+
     init() {}
     init?(map: Map) {}
-    
+
     mutating func mapping(map: Map) {
         searchAfter <- map["search_after"]
         assets <- map["assets"]

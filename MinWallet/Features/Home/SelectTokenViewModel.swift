@@ -23,19 +23,19 @@ class SelectTokenViewModel: ObservableObject {
     var searchAfter: [String]? = nil
     @Published
     var marketTokenFavs: [TopAssetsResponse.AssetMetric] = []
-    
+
     private var favIDs: [String] = []
-    
+
     private var hasLoadMore: Bool = true
     private var isFetching: Bool = true
-    
+
     private var cancellables: Set<AnyCancellable> = []
     private var cachedIndex: [String: Int] = [:]
-    
+
     var rawTokens: [TokenProtocol] {
         [TokenManager.shared.tokenAda] + TokenManager.shared.normalTokens.filter({ !$0.isTokenADA })
     }
-    
+
     init(
         tokensSelected: [TokenProtocol?] = [],
         screenType: SelectTokenView.ScreenType,
@@ -54,7 +54,7 @@ class SelectTokenViewModel: ObservableObject {
                 self.cachedIndex[token?.uniqueID ?? ""] = idx
             }
         self.cachedIndex[TokenManager.shared.tokenAda.uniqueID] = -1
-        
+
         $keyword
             .map({ $0.trimmingCharacters(in: .whitespacesAndNewlines) })
             .removeDuplicates()
@@ -67,7 +67,7 @@ class SelectTokenViewModel: ObservableObject {
                 case .initSelectedToken,
                     .sendToken:
                     let rawTokens = self.rawTokens
-                    
+
                     let keyword = self.keyword.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
                     let _tokens =
                         keyword.isBlank
@@ -86,10 +86,10 @@ class SelectTokenViewModel: ObservableObject {
                 case .swapToken:
                     self.getTokens()
                 }
-                
+
             }
             .store(in: &cancellables)
-        
+
         switch screenType {
         case .initSelectedToken, .sendToken:
             if rawTokens.count <= 1 {
@@ -101,23 +101,23 @@ class SelectTokenViewModel: ObservableObject {
             self.getTokens()
         }
     }
-    
+
     func getTokens(isLoadMore: Bool = false) {
         Task {
             do {
                 favIDs = UserInfo.shared.tokensFav.map({ $0.uniqueID })
-                
+
                 showSkeleton = !isLoadMore
                 isFetching = true
-                
+
                 var _tokens: [TokenProtocol] = []
                 if !isLoadMore {
                     var rawTokens = self.rawTokens
                     let rawTokensIds = rawTokens.map { $0.uniqueID }
-                    
+
                     marketTokenFavs = marketTokenFavs.filter({ !rawTokensIds.contains($0.uniqueID) })
                     rawTokens += marketTokenFavs
-                    
+
                     let keyword = self.keyword.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
                     _tokens =
                         keyword.isEmpty
@@ -135,7 +135,7 @@ class SelectTokenViewModel: ObservableObject {
                 } else {
                     _tokens = self.tokens.map({ $0.token })
                 }
-                
+
                 switch screenType {
                 case .initSelectedToken:
                     self.hasLoadMore = false
@@ -158,22 +158,22 @@ class SelectTokenViewModel: ObservableObject {
                                 $0.term = keyword
                             }
                         }
-                    
+
                     let assets: [AssetData]
-                    
+
                     if !isLoadMore {
                         async let jsonDataRaw = try? await MinWalletAPIRouter.assets(input: input).async_request()
                         async let tokenFavRaw = MarketViewModel.getTopAssetsFav()
-                        
+
                         let result = await (jsonDataRaw, tokenFavRaw)
                         let jsonData = result.0
                         marketTokenFavs = result.1
                         let response = Mapper<AssetsResponse>.init().map(JSON: jsonData?.dictionaryObject ?? [:]) ?? .init()
                         assets = response.assets
-                        
+
                         self.searchAfter = response.searchAfter
                         self.hasLoadMore = self.searchAfter != nil
-                        
+
                     } else {
                         let jsonData = try await MinWalletAPIRouter.assets(input: input).async_request()
                         let response = Mapper<AssetsResponse>.init().map(JSON: jsonData.dictionaryObject ?? [:]) ?? .init()
@@ -181,15 +181,15 @@ class SelectTokenViewModel: ObservableObject {
                         self.searchAfter = response.searchAfter
                         self.hasLoadMore = self.searchAfter != nil
                     }
-                    
+
                     if !assets.isEmpty {
                         let currentUniqueIds = _tokens.map { $0.uniqueID } + favIDs
                         let _assets: [TokenProtocol] = assets.filter { !currentUniqueIds.contains($0.uniqueID) }
-                        
+
                         self.tokens = UserInfo.sortTokens(tokens: _tokens + _assets).map({ WrapTokenProtocol(token: $0) })
                     }
                 }
-                
+
                 self.showSkeleton = false
                 self.isFetching = false
             } catch {
@@ -199,7 +199,7 @@ class SelectTokenViewModel: ObservableObject {
             }
         }
     }
-    
+
     func loadMoreData(item: TokenProtocol) {
         guard case .swapToken = screenType else { return }
         guard hasLoadMore, !isFetching else { return }
@@ -208,7 +208,7 @@ class SelectTokenViewModel: ObservableObject {
             getTokens(isLoadMore: true)
         }
     }
-    
+
     func toggleSelected(token: TokenProtocol) {
         switch screenType {
         case .initSelectedToken, .sendToken:
@@ -223,7 +223,7 @@ class SelectTokenViewModel: ObservableObject {
             tokensSelected[token.uniqueID] = token
         }
     }
-    
+
     func selectToken(tokens: [TokenProtocol]) {
         tokensSelected = tokens.compactMap({ $0 })
             .reduce(
@@ -236,7 +236,7 @@ class SelectTokenViewModel: ObservableObject {
                 self.cachedIndex[token.uniqueID] = idx
             }
     }
-    
+
     func resetState() {
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(400)) { [weak self] in
             guard let self = self else { return }

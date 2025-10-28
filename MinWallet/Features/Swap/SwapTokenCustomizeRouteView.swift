@@ -5,18 +5,18 @@ import FlowStacks
 struct SwapTokenCustomizedRouteView: View {
     @Environment(\.partialSheetDismiss)
     private var onDismiss
-    
+
     private let columns = [
         GridItem(.flexible(), spacing: .xl),
         GridItem(.flexible(), spacing: .xl),
     ]
-    
+
     private let items: [AggregatorSource] = AggregatorSource.allCases
     @Binding
     var excludedSource: [String: AggregatorSource]
-    
+
     var onSave: (() -> Void)?
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("Customized Routing")
@@ -52,7 +52,7 @@ struct SwapTokenCustomizedRouteView: View {
                 }
                 .padding(.horizontal, .xl)
             }
-            
+
             Spacer(minLength: 0)
             HStack(spacing: 16) {
                 CustomButton(title: "Cancel", variant: .secondary) {
@@ -78,7 +78,7 @@ struct SwapTokenCustomizedRouteView: View {
 private struct SwapTokenCustomizedRouteItemView: View {
     @State var source: AggregatorSource
     @Binding var excludedSource: [String: AggregatorSource]
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: .md) {
             HStack(spacing: 4) {

@@ -56,7 +56,7 @@ struct DashedUnderlineText: View {
     @State var font: Font = .paragraphSmall
     @State
     private var width: CGFloat = 0
-    
+
     var body: some View {
         VStack(spacing: 0) {
             Text(text)
@@ -82,7 +82,7 @@ struct DashedLine: View {
     var lineWidth: CGFloat = 0.7
     var dash: [CGFloat] = [6, 3]  // Dash length and gap
     var color: Color = .black
-    
+
     var body: some View {
         GeometryReader { geometry in
             Path { path in
@@ -91,7 +91,7 @@ struct DashedLine: View {
             }
             .stroke(style: StrokeStyle(lineWidth: lineWidth, dash: dash))
             .foregroundColor(color)
-            
+
         }
     }
 }

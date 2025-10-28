@@ -3,10 +3,10 @@ import SwiftUI
 struct CurrencyView: View {
     @EnvironmentObject
     var appSetting: AppSetting
-    
+
     @Environment(\.partialSheetDismiss)
     var onDismiss
-    
+
     var body: some View {
         VStack(spacing: 8) {
             VStack(spacing: 0) {

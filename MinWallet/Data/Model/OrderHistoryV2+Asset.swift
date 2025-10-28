@@ -11,17 +11,17 @@ extension OrderHistory {
         var priceByAda: Double = 0
         var project_name: String = ""
         var decimals: Int = 0
-        
+
         var adaName: String = ""
         var token: TokenDefault?
-        
+
         init() {}
     }
 }
 
 extension OrderHistory.Asset: Mappable {
     init?(map: Map) {}
-    
+
     mutating func mapping(map: Map) {
         tokenId <- map["token_id"]
         logo <- map["logo"]
@@ -30,12 +30,12 @@ extension OrderHistory.Asset: Mappable {
         priceByAda <- (map["price_by_ada"], GKMapFromJSONToDouble)
         project_name <- map["project_name"]
         decimals <- (map["decimals"], GKMapFromJSONToInt)
-        
+
         adaName = {
             if !ticker.isBlank { return ticker }
             return tokenId.tokenDefault.adaName
         }()
-        
+
         token = (tokenId.tokenDefault as? TokenDefault)?
             .with({
                 $0.mDecimals = decimals

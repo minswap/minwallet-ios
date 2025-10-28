@@ -4,10 +4,10 @@ import SwiftUI
 struct SecurePasswordTextField: View {
     @State private var visibleInput: String = ""
     @State private var isSecured: Bool = true
-    
+
     let placeHolder: String
     @Binding var text: String
-    
+
     var body: some View {
         HStack {
             TextField("", text: $visibleInput)
@@ -38,7 +38,7 @@ struct SecurePasswordTextField: View {
             ZStack {
                 HStack {
                     Spacer()
-                    
+
                     Button {
                         isSecured.toggle()
                         visibleInput = isSecured ? String(text.map { _ in Character("*") }) : text

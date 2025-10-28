@@ -76,7 +76,7 @@ extension OrderHistoryView {
                                 isFocus = true
                             }
                         }
-                    
+
                     ZStack {
                         Image(.icFilter)
                             .fixSize(40)

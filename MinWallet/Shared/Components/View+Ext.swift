@@ -24,20 +24,20 @@ extension View {
         alignment: Alignment = .leading,
         @ViewBuilder placeholder: () -> Content
     ) -> some View {
-        
+
         ZStack(alignment: alignment) {
             placeholder().opacity(shouldShow ? 1 : 0)
             self
         }
     }
-    
+
     func placeholder(
         _ text: String,
         font: Font = .paragraphSmall,
         when shouldShow: Bool,
         alignment: Alignment = .leading
     ) -> some View {
-        
+
         placeholder(when: shouldShow, alignment: alignment) { Text(text).font(font).foregroundColor(.colorInteractiveTentPrimarySub) }
     }
 }
@@ -52,7 +52,7 @@ struct DismissingKeyboard: ViewModifier {
 }
 
 extension View {
-    
+
     func hideKeyboard() {
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
@@ -87,7 +87,7 @@ extension Binding where Value == String {
     func max(_ limit: Int) -> Self {
         if self.wrappedValue.count > limit {
             self.wrappedValue = String(self.wrappedValue.prefix(limit))
-            
+
         }
         return self
     }

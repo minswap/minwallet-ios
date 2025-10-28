@@ -4,31 +4,31 @@ import SwiftUI
 struct SwapTokenSettingView: View {
     enum Slippage: Double, CaseIterable, Identifiable {
         var id: Double { self.rawValue }
-        
+
         case _01 = 0.1
         case _05 = 0.5
         case _1 = 1
         case _2 = 2
     }
-    
+
     @State
     private var slippages: [Slippage] = Slippage.allCases
     @FocusState
     private var isFocus: Bool
-    
+
     var onShowToolTip: ((_ title: LocalizedStringKey, _ content: LocalizedStringKey) -> Void)?
-    
+
     private let maxValue: Double = 100.0  // Define the maximum value
-    
+
     @Environment(\.partialSheetDismiss)
     private var onDismiss
     @Binding
     var showCustomizedRoute: Bool
     @Binding
     var swapTokenSetting: SwapTokenSetting
-    
+
     var onSave: (() -> Void)?
-    
+
     var body: some View {
         ZStack {
             VStack(spacing: 0) {
@@ -97,12 +97,12 @@ struct SwapTokenSettingView: View {
                     )
                     .padding(.top, .xl)
                 }
-                
+
                 HStack(spacing: .xl) {
                     DashedUnderlineText(text: "Liquidity Source", textColor: .colorBaseTent, font: .labelSmallSecondary)
-                    
+
                     Spacer()
-                    
+
                     let count =
                         String(AggregatorSource.allCases.count - swapTokenSetting.excludedPools.count) + "/"
                         + String(
@@ -150,7 +150,7 @@ struct SwapTokenSettingView: View {
                         Toggle("", isOn: $swapTokenSetting.safeMode)
                             .toggleStyle(SwitchToggleStyle())
                     }
-                    
+
                     Text("Prevent high price impact trades. Disable at your own risk.")
                         .font(.paragraphSmall)
                         .foregroundColor(.colorInteractiveTentPrimarySub)

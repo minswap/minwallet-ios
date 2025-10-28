@@ -8,7 +8,7 @@ typealias ContractType = AMMType
 
 extension OrderHistory.OrderType: Identifiable {
     public var id: String { UUID().uuidString }
-    
+
     var title: LocalizedStringKey {
         switch self {
         case .deposit:
@@ -33,7 +33,7 @@ extension OrderHistory.OrderType: Identifiable {
             "Zap Out"
         }
     }
-    
+
     var titleFilter: LocalizedStringKey {
         switch self {
         case .deposit:
@@ -58,7 +58,7 @@ extension OrderHistory.OrderType: Identifiable {
             ""
         }
     }
-    
+
     public init?(title: String) {
         switch title {
         case OrderHistory.OrderType.deposit.titleFilter.toString():
@@ -93,7 +93,7 @@ enum OrderV2Status: String, CaseIterable {
 
 extension OrderV2Status: Identifiable {
     public var id: String { UUID().uuidString }
-    
+
     var title: LocalizedStringKey {
         switch self {
         case .batched:
@@ -104,7 +104,7 @@ extension OrderV2Status: Identifiable {
             "Pending"
         }
     }
-    
+
     var foregroundColor: Color {
         switch self {
         case .batched:
@@ -115,7 +115,7 @@ extension OrderV2Status: Identifiable {
             .colorInteractiveToneWarning
         }
     }
-    
+
     var foregroundCircleColor: Color {
         switch self {
         case .batched:
@@ -126,7 +126,7 @@ extension OrderV2Status: Identifiable {
             .colorInteractiveToneWarningSub
         }
     }
-    
+
     var backgroundColor: Color {
         switch self {
         case .batched:
@@ -137,7 +137,7 @@ extension OrderV2Status: Identifiable {
             .colorSurfaceWarningDefault
         }
     }
-    
+
     var number: Int {
         switch self {
         case .batched:
@@ -148,7 +148,7 @@ extension OrderV2Status: Identifiable {
             1
         }
     }
-    
+
     public init?(title: String) {
         switch title {
         case OrderV2Status.created.title.toString():
@@ -165,7 +165,7 @@ extension OrderV2Status: Identifiable {
 
 extension ContractType: @retroactive Identifiable {
     public var id: String { UUID().uuidString }
-    
+
     var title: LocalizedStringKey {
         switch self {
         case .dex:
@@ -176,7 +176,7 @@ extension ContractType: @retroactive Identifiable {
             "Stableswap"
         }
     }
-    
+
     var backgroundColor: Color {
         switch self {
         case .dex:
@@ -187,7 +187,7 @@ extension ContractType: @retroactive Identifiable {
             .colorDecorativeLeaf
         }
     }
-    
+
     var foregroundColor: Color {
         switch self {
         case .dex:

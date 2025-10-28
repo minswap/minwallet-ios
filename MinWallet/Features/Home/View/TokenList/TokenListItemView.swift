@@ -5,13 +5,13 @@ import SkeletonUI
 struct TokenListItemView: View {
     @EnvironmentObject
     private var appSetting: AppSetting
-    
+
     let token: TokenProtocol?
     let showSubPrice: Bool
     let showBottomLine: Bool
-    
+
     @Binding var isFav: Bool
-    
+
     init(
         token: TokenProtocol?,
         showSubPrice: Bool = false,
@@ -23,7 +23,7 @@ struct TokenListItemView: View {
         self.showBottomLine = showBottomLine
         self._isFav = .constant(isFav)
     }
-    
+
     var body: some View {
         HStack(spacing: .xl) {
             TokenLogoView(
@@ -41,7 +41,7 @@ struct TokenListItemView: View {
                         .lineLimit(1)
                         .foregroundStyle(.colorBaseTent)
                     Spacer()
-                    
+
                     if showSubPrice {
                         Text((token?.priceValue ?? 0).formatNumber(suffix: !showSubPrice ? Currency.ada.prefix : "", roundingOffset: token?.decimals))
                             .font(.labelMediumSecondary)
@@ -67,7 +67,7 @@ struct TokenListItemView: View {
                         .lineLimit(1)
                         .padding(.trailing, .md)
                     Spacer()
-                    
+
                     if showSubPrice {
                         let subPrice: Double = {
                             return token?.subPriceValue ?? 0
@@ -132,7 +132,7 @@ struct TokenListItemView: View {
 struct TokenListItemSkeletonView: View {
     @State
     var showLogo: Bool = true
-    
+
     var body: some View {
         HStack(spacing: .xl) {
             if showLogo {

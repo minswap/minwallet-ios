@@ -11,7 +11,7 @@ extension AppSetting {
 enum Currency: String {
     case usd = "USD"
     case ada = "ADA"
-    
+
     var prefix: String {
         switch self {
         case .usd:
@@ -24,7 +24,7 @@ enum Currency: String {
 
 enum Language: String, CaseIterable, Identifiable {
     var id: String { UUID().uuidString }
-    
+
     case english = "en"
     case afrikaans = "af"
     case arabic = "ar"
@@ -37,11 +37,11 @@ enum Language: String, CaseIterable, Identifiable {
     case persian = "fa"
     case suomalainen = "fi"
     case filipino = "fil"
-    
+
     var locale: Locale {
         Locale(identifier: rawValue)
     }
-    
+
     var title: String {
         switch self {
         case .english:

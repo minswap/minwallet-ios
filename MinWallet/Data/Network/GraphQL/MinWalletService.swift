@@ -7,13 +7,13 @@ import SwiftyJSON
 
 class MinWalletService {
     static let shared: MinWalletService = .init()
-    
+
     private let apolloClient: ApolloClient
-    
+
     private init() {
         apolloClient = ApolloClient(url: URL(string: MinWalletConstant.minGraphURL + "/graphql")!)
     }
-    
+
     func fetch<Query: GraphQLQuery>(query: Query) async throws -> Query.Data? {
         #if DEBUG
             os_log("\(query.description) BEGIN")
@@ -37,7 +37,7 @@ class MinWalletService {
             }
         }
     }
-    
+
     func mutation<Mutation: GraphQLMutation>(mutation: Mutation) async throws -> Mutation.Data? {
         #if DEBUG
             os_log("\(mutation.description) BEGIN")

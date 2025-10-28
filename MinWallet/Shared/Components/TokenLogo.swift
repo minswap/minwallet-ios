@@ -20,7 +20,7 @@ struct TokenLogoView: View {
     private var forceVerified: Bool
     @Binding
     private var isFav: Bool?
-    
+
     init(
         currencySymbol: String? = nil,
         tokenName: String? = nil,
@@ -36,24 +36,24 @@ struct TokenLogoView: View {
         self._isFav = .constant(isFav)
         self._size = .init(initialValue: size)
     }
-    
+
     private var uniqueID: String {
         let currencySymbol = currencySymbol ?? ""
         let tokenName = tokenName ?? ""
         if currencySymbol.isEmpty && tokenName.isEmpty {
             return ""
         }
-        
+
         if currencySymbol.isEmpty {
             return tokenName
         }
-        
+
         if tokenName.isEmpty {
             return currencySymbol
         }
         return currencySymbol + "." + tokenName
     }
-    
+
     var body: some View {
         ZStack {
             Group {
@@ -89,7 +89,7 @@ struct TokenLogoView: View {
         }
         .frame(width: size.width, height: size.height)
     }
-    
+
     private func buildImageURL(currencySymbol: String, tokenName: String) -> String {
         let path = "\(currencySymbol)\(tokenName)"
         return "\(MinWalletConstant.minAssetURL)/\(path)"
@@ -102,18 +102,18 @@ struct TokenLogoView: View {
         //            .frame(width: 28, height: 28)
     }
     .background(.pink)
-    
+
 }
 
 
 struct HalfCircleMask: Shape {
     let isLeft: Bool
-    
+
     func path(in rect: CGRect) -> Path {
         var path = Path()
         let center = CGPoint(x: rect.midX, y: rect.midY)
         let radius = min(rect.width, rect.height) / 2
-        
+
         if isLeft {
             path.addArc(
                 center: center,
@@ -131,7 +131,7 @@ struct HalfCircleMask: Shape {
         }
         path.addLine(to: center)
         path.closeSubpath()
-        
+
         return path
     }
 }

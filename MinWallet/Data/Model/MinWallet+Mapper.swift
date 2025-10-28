@@ -11,7 +11,7 @@ extension MinWallet: Codable {
         encryptedKey = try container.decode(String.self, forKey: .encryptedKey)
         publicKey = try container.decode(String.self, forKey: .publicKey)
     }
-    
+
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(walletName, forKey: .walletName)
@@ -21,7 +21,7 @@ extension MinWallet: Codable {
         try container.encode(encryptedKey, forKey: .encryptedKey)
         try container.encode(publicKey, forKey: .publicKey)
     }
-    
+
     private enum CodingKeys: String, CodingKey {
         case walletName
         case address

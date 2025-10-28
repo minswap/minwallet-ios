@@ -3,7 +3,7 @@ import UIKit
 import SDWebImageSwiftUI
 
 struct TestView: View {
-    
+
     @State
     var isEnable: Bool = true
     var body: some View {
@@ -21,7 +21,7 @@ struct TestView: View {
             } label: {
                 Text("togle")
             }
-            
+
         }
     }
 }

@@ -23,9 +23,9 @@ class OrderHistoryViewModel: ObservableObject {
     var isDeleted: [Bool] = []
     @Published
     var offsets: [CGFloat] = []
-    
+
     private var cancellables: Set<AnyCancellable> = []
-    
+
     @Published
     var filterSourceSelected: AggrSource?
     @Published
@@ -38,9 +38,9 @@ class OrderHistoryViewModel: ObservableObject {
     var fromDate: Date?
     @Published
     var toDate: Date?
-    
+
     private var pagination: Pagination = .init()
-    
+
     @Published
     var orderCancelSelected: [String: OrderHistory] = [:]
     @Published
@@ -49,14 +49,14 @@ class OrderHistoryViewModel: ObservableObject {
     var showCancelOrderList: Bool = false
     @Published
     var orderCancel: WrapOrderHistory?
-    
+
     private var rawOrders: [OrderHistory] = []
-    
+
     var hasOnlyOneOrderCancel: Bool {
         guard let orderCancel = orderCancel else { return false }
         return orderCancel.orders.count == 1 && orderCancel.orders.first?.status == .created
     }
-    
+
     var countFilter: Int {
         [
             (fromDate != nil || toDate != nil) ? true : nil,
@@ -68,7 +68,7 @@ class OrderHistoryViewModel: ObservableObject {
         .compactMap { $0 }
         .count
     }
-    
+
     init() {
         $keyword
             .removeDuplicates()
@@ -85,7 +85,7 @@ class OrderHistoryViewModel: ObservableObject {
             })
             .store(in: &cancellables)
     }
-    
+
     func fetchData(showSkeleton: Bool = true, fromPullToRefresh: Bool = false) async {
         //        withAnimation {
         self.showSkeleton = showSkeleton
@@ -105,17 +105,17 @@ class OrderHistoryViewModel: ObservableObject {
             $0.hasMore = !rawOrders.isEmpty
             $0.cursor = cursorID.isEmpty ? nil : Int(cursorID)
         })
-        
+
         self.rawOrders = rawOrders
         self.wrapOrders = groupOrders(rawOrders)
         self.isDeleted = self.wrapOrders.map({ _ in false })
         self.offsets = self.wrapOrders.map({ _ in 0 })
-        
+
         withAnimation {
             self.showSkeleton = false
         }
     }
-    
+
     func loadMoreData(order: WrapOrderHistory) {
         guard pagination.readyToLoadMore else { return }
         let thresholdIndex = wrapOrders.index(wrapOrders.endIndex, offsetBy: -5)
@@ -123,7 +123,7 @@ class OrderHistoryViewModel: ObservableObject {
             Task {
                 pagination = pagination.with({ $0.isFetching = true })
                 let _orders = await getOrderHistory()
-                
+
                 self.rawOrders += _orders
                 let cursorID = _orders.last?.id ?? ""
                 pagination = pagination.with({
@@ -132,14 +132,14 @@ class OrderHistoryViewModel: ObservableObject {
                     $0.hasMore = !_orders.isEmpty
                     $0.cursor = cursorID.isEmpty ? nil : Int(cursorID)
                 })
-                
+
                 self.wrapOrders = groupOrders(rawOrders)
                 self.isDeleted = self.wrapOrders.map({ _ in false })
                 self.offsets = self.wrapOrders.map({ _ in 0 })
             }
         }
     }
-    
+
     var input: OrderHistory.Request {
         let address = UserInfo.shared.minWallet?.address ?? ""
         let keyword = keyword.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -159,7 +159,7 @@ class OrderHistoryViewModel: ObservableObject {
                 $0.cursor = pagination.cursor
             })
     }
-    
+
     func cancelOrder() async throws -> String? {
         let orders: [OrderHistory] = hasOnlyOneOrderCancel ? (orderCancel?.orders ?? []) : orderCancelSelected.map({ _, value in value })
         let jsonData = try await OrderAPIRouter.cancelOrder(address: UserInfo.shared.minWallet?.address ?? "", orders: orders).async_request()
@@ -179,7 +179,7 @@ extension OrderHistory.Request {
         let fromDateTime = (Double(fromDate) ?? 0) / 1000
         return fromDateTime > 0 ? Date(timeIntervalSince1970: fromDateTime) : nil
     }
-    
+
     var toDateTimeInterval: Date? {
         guard let toDate = toTime, !toDate.isEmpty else { return nil }
         let toDateTime = (Double(toDate) ?? 0) / 1000
@@ -204,12 +204,12 @@ extension OrderHistoryViewModel {
         var limit: Int = 20
         var hasMore: Bool = true
         var isFetching: Bool = false
-        
+
         var readyToLoadMore: Bool {
             return !isFetching && hasMore
         }
         init() {}
-        
+
         mutating func reset() {
             isFetching = false
             hasMore = true
@@ -223,29 +223,29 @@ extension OrderHistoryViewModel {
     static func getOrders(orders: [OrderHistory]) async -> [OrderHistory] {
         let tokens = await withTaskGroup(of: OrderHistory?.self) { taskGroup in
             var results: [OrderHistory?] = []
-            
+
             for item in orders {
                 taskGroup.addTask {
                     await OrderHistoryViewModel.fetchOrder(by: item)
                 }
             }
-            
+
             for await result in taskGroup {
                 results.append(result)
             }
-            
+
             return results
         }
         return tokens.compactMap { $0 }
     }
-    
+
     private static func fetchOrder(by order: OrderHistory) async -> OrderHistory? {
         let input = OrderHistory.Request()
             .with {
                 $0.ownerAddress = UserInfo.shared.minWallet?.address ?? ""
                 $0.txId = order.createdTxId
             }
-        
+
         do {
             let jsonData = try await OrderAPIRouter.getOrders(request: input).async_request()
             let orders = Mapper<OrderHistory>().gk_mapArrayOrNull(JSONObject: JSON(jsonData)["orders"].arrayValue)
@@ -261,7 +261,7 @@ extension OrderHistoryViewModel {
     private func groupOrders(_ orders: [OrderHistory]) -> [WrapOrderHistory] {
         var groups: [(key: String, values: [OrderHistory])] = []
         var seenKeys: Set<String> = []
-        
+
         for item in orders {
             if let index = groups.firstIndex(where: { $0.key == item.keyToGroup }) {
                 groups[index].values.append(item)
@@ -270,7 +270,7 @@ extension OrderHistoryViewModel {
                 seenKeys.insert(item.keyToGroup)
             }
         }
-        
+
         return groups.map { (key: String, values: [OrderHistory]) in
             WrapOrderHistory(orders: values, key: key)
         }

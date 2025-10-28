@@ -8,7 +8,7 @@ enum MinWalletAPIRouter: DomainAPIRouter {
     case assets(input: AssetsInput)
     case topAssets(input: TopAssetsInput)
     case detailAsset(id: String)
-    
+
     func path() -> String {
         switch self {
         case .portfolio:
@@ -23,7 +23,7 @@ enum MinWalletAPIRouter: DomainAPIRouter {
             return "/v1/assets/\(id)/metrics"
         }
     }
-    
+
     func method() -> HTTPMethod {
         switch self {
         case .portfolio:
@@ -38,10 +38,10 @@ enum MinWalletAPIRouter: DomainAPIRouter {
             return .get
         }
     }
-    
+
     func parameters() -> Parameters {
         var params = Parameters()
-        
+
         switch self {
         case .portfolio:
             params["address"] = UserInfo.shared.minWallet?.address

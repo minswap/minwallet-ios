@@ -13,7 +13,7 @@ struct CreateNewWalletSeedPhraseView: View {
     private var seedPhrase: [String] = []
     @State
     private var isConfirm: Bool = false
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("Create new wallet")
@@ -37,7 +37,7 @@ struct CreateNewWalletSeedPhraseView: View {
                     .background(content: {
                         PartialRoundedBorder(cornerRadius: 24, lineWidth: 1)
                             .stroke(Color.colorBorderPrimarySub, lineWidth: 1)
-                        
+
                     })
                     .contentShape(.rect)
                     .onTapGesture {
@@ -67,7 +67,7 @@ struct CreateNewWalletSeedPhraseView: View {
 }
 
 private struct SeedPhraseRevealView: View {
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Image(.icReveal)
@@ -96,7 +96,7 @@ private struct SeedPhraseCopyView: View {
     @Binding var copied: Bool
     @Binding var seedPhrase: [String]
     @Binding var isConfirm: Bool
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             HStack(alignment: .top, spacing: 8) {
@@ -127,7 +127,7 @@ private struct SeedPhraseCopyView: View {
                     }
                 }
                 .frame(height: 56)
-                
+
                 CustomButton(
                     title: "Next", isEnable: $isConfirm,
                     action: {
@@ -146,12 +146,12 @@ private struct SeedPhraseContentView: View {
     var isRevealPhrase: Bool
     @Binding
     var seedPhrase: [String]
-    
+
     private let columns = [
         GridItem(.flexible()),
         GridItem(.flexible()),
     ]
-    
+
     var body: some View {
         ScrollView {
             VStack(spacing: 0) {

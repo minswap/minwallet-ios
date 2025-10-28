@@ -6,10 +6,10 @@ struct PopupSheetModifier<SheetContent: View>: ViewModifier {
     var isPresented: Bool
     @State
     private var sheetHeight: CGFloat = .zero
-    
+
     let onDismiss: (() -> Void)?
     let content: () -> SheetContent
-    
+
     func body(content: Content) -> some View {
         content
             .sheet(isPresented: $isPresented, onDismiss: onDismiss) {

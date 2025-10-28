@@ -8,7 +8,7 @@ struct BuildTxRequest: Then {
     var min_amount_out: String = ""
     var amount_in_decimal: Bool = false
     var estimate: Estimate = Estimate()
-    
+
     init() {}
 }
 
@@ -21,7 +21,7 @@ extension BuildTxRequest {
         var exclude_protocols: [AggregatorSource] = []
         var allow_multi_hops: Bool = true
         var partner: String = ""
-        
+
         init() {}
     }
 }

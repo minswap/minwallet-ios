@@ -9,7 +9,7 @@ struct SearchTokenView: View {
     private var isFocus: Bool
     @StateObject
     private var viewModel: SearchTokenViewModel = .init()
-    
+
     var body: some View {
         VStack(spacing: 0) {
             HStack(alignment: .center, spacing: 0) {
@@ -96,7 +96,7 @@ struct SearchTokenView: View {
             viewModel.getTokens()
         }
     }
-    
+
     @ViewBuilder
     private var recentSearchView: some View {
         if !viewModel.recentSearch.isEmpty && viewModel.keyword.isBlank {
@@ -133,7 +133,7 @@ struct SearchTokenView: View {
             }
         }
     }
-    
+
     @ViewBuilder
     private var favouriteView: some View {
         if !viewModel.tokensFav.isEmpty && viewModel.keyword.isBlank {
@@ -162,7 +162,7 @@ struct SearchTokenView: View {
                             viewModel.isDeleted[index] = value
                         }
                     )
-                    
+
                     TokenListItemView(token: item, showBottomLine: index != viewModel.tokensFav.count - 1)
                         .contentShape(.rect)
                         .swipeToDelete(
@@ -179,7 +179,7 @@ struct SearchTokenView: View {
             }
         }
     }
-    
+
     @ViewBuilder
     private var tokensView: some View {
         if viewModel.keyword.isBlank {

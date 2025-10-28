@@ -14,7 +14,7 @@ struct EditNickNameView: View {
     private var isFocus: Bool
     @Environment(\.partialSheetDismiss)
     private var onDismiss
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("Edit nickname")
@@ -59,7 +59,7 @@ struct EditNickNameView: View {
                 }
             }
             .frame(height: isFocus ? 150 : nil)
-            
+
             HStack(spacing: .xl) {
                 CustomButton(title: "Cancel", variant: .secondary) {
                     hideKeyboard()

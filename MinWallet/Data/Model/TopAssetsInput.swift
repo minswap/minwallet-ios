@@ -10,7 +10,7 @@ struct TopAssetsInput: Then {
     var sort_field: SortField?
     var favorite_asset_ids: [String]?
     var filter_small_liquidity: Bool?
-    
+
     init() {}
 }
 
@@ -19,7 +19,7 @@ extension TopAssetsInput {
         case asc
         case desc
     }
-    
+
     enum SortField: String {
         case price_change_1h
         case price_change_24h

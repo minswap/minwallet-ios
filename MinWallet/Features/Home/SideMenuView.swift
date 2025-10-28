@@ -4,7 +4,7 @@ import SwiftUI
 public struct SideMenu<MenuContent: View>: ViewModifier {
     @Binding var isShowing: Bool
     private let menuContent: () -> MenuContent
-    
+
     public init(
         isShowing: Binding<Bool>,
         @ViewBuilder menuContent: @escaping () -> MenuContent
@@ -12,7 +12,7 @@ public struct SideMenu<MenuContent: View>: ViewModifier {
         _isShowing = isShowing
         self.menuContent = menuContent
     }
-    
+
     public func body(content: Content) -> some View {
         let drag = DragGesture()
             .onEnded { event in
@@ -29,7 +29,7 @@ public struct SideMenu<MenuContent: View>: ViewModifier {
                         .disabled(isShowing)
                         .frame(width: geometry.size.width, height: geometry.size.height)
                         .offset(x: self.isShowing ? geometry.size.width * 0.8 : 0)
-                    
+
                     VisualEffectBlurView()  // Replace .light with .dark or .systemMaterial
                         .edgesIgnoringSafeArea(.all)
                         .transition(.opacity)
@@ -41,7 +41,7 @@ public struct SideMenu<MenuContent: View>: ViewModifier {
                         isShowing = false
                     }
                 }
-                
+
                 menuContent()
                     .frame(width: geometry.size.width * 0.8)
                     .transition(.move(edge: .leading))
@@ -65,7 +65,7 @@ public extension View {
 
 private struct SideMenuTest: View {
     @State private var showSideMenu = false
-    
+
     var body: some View {
         NavigationView {
             List(1..<6) { index in

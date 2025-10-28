@@ -5,7 +5,7 @@ import Combine
 
 @MainActor
 class ToWalletAddressViewModel: ObservableObject {
-    
+
     @Published
     var adaAddress: AdaAddress?
     @Published
@@ -14,12 +14,12 @@ class ToWalletAddressViewModel: ObservableObject {
     var address: String = ""
     @Published
     var errorType: ErrorType?
-    
+
     let tokens: [WrapTokenSend]
-    
+
     private var cancellables: Set<AnyCancellable> = []
     let isSendAll: Bool
-    
+
     init(tokens: [WrapTokenSend], isSendAll: Bool) {
         self.tokens = tokens
         self.isSendAll = isSendAll
@@ -34,7 +34,7 @@ class ToWalletAddressViewModel: ObservableObject {
             })
             .store(in: &cancellables)
     }
-    
+
     func checkAddress() {
         guard case .handleNotResolved = errorType else { return }
         Task {
@@ -43,14 +43,14 @@ class ToWalletAddressViewModel: ObservableObject {
             isChecking = false
         }
     }
-    
+
     func reset() {
         errorType = nil
         isChecking = nil
         adaAddress = nil
         address = ""
     }
-    
+
     private func validateAddress(newAddress: String) {
         errorType = nil
         guard !address.isEmpty else { return }
@@ -80,7 +80,7 @@ class ToWalletAddressViewModel: ObservableObject {
             }
         }
     }
-    
+
     private func resolveAdaName() async {
         do {
             let adaName = address.trimmingPrefix("$")
@@ -89,14 +89,14 @@ class ToWalletAddressViewModel: ObservableObject {
                 errorType = .handleResolvedError(msg: "Handle not found")
                 return
             }
-            
+
             let (data, _) = try await URLSession.shared.data(from: url)
             guard let jsonData = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any]
             else {
                 errorType = .handleResolvedError(msg: "Handle not found")
                 return
             }
-            
+
             if let resolvedAddresses = jsonData["resolved_addresses"] as? [String: Any],
                 let adaAddress = resolvedAddresses["ada"] as? String, !adaAddress.isEmpty
             {
@@ -134,7 +134,7 @@ extension ToWalletAddressViewModel {
         case invalidAdaName
         case handleResolvedError(msg: LocalizedStringKey)
         case handleNotResolved(adaName: String)
-        
+
         var errorDesc: LocalizedStringKey {
             switch self {
             case .invalidAddress:

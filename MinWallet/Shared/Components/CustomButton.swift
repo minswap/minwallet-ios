@@ -7,12 +7,12 @@ struct CustomButton: View {
     var frameType: FrameType = .matchParent
     var icon: ImageResource? = nil
     var iconRight: ImageResource? = nil
-    
+
     var action: () -> Void
-    
+
     @Binding
     private var isEnable: Bool
-    
+
     init(
         title: LocalizedStringKey,
         variant: Varriant = .primary,
@@ -30,7 +30,7 @@ struct CustomButton: View {
         self.action = action
         self._isEnable = isEnable
     }
-    
+
     var body: some View {
         Button(action: {
             guard isEnable else { return }
@@ -94,7 +94,7 @@ extension CustomButton {
             borderColor: Color,
             textColorDisable: Color?,
             backgroundColorDisable: Color?)
-        
+
         var textColor: Color {
             switch self {
             case .primary:
@@ -105,7 +105,7 @@ extension CustomButton {
                 return textColor
             }
         }
-        
+
         var textColorDisable: Color {
             switch self {
             case .primary:
@@ -116,7 +116,7 @@ extension CustomButton {
                 return textColor ?? .colorInteractiveTentSecondaryDisable
             }
         }
-        
+
         var backgroundColor: Color {
             switch self {
             case .primary:
@@ -127,7 +127,7 @@ extension CustomButton {
                 return backgroundColor
             }
         }
-        
+
         var backgroundColorDisable: Color {
             switch self {
             case .primary:
@@ -138,7 +138,7 @@ extension CustomButton {
                 return backgroundColor ?? .colorSurfacePrimaryDisable
             }
         }
-        
+
         var borderColor: Color {
             switch self {
             case .primary:
@@ -150,7 +150,7 @@ extension CustomButton {
             }
         }
     }
-    
+
     enum FrameType {
         case wrapContent
         case matchParent

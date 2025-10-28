@@ -18,18 +18,18 @@ class SearchTokenViewModel: ObservableObject {
     var keyword: String = ""
     @Published
     var recentSearch: [String] = []
-    
+
     private var input: TopAssetsInput = .init()
     private var searchAfter: [Any]? = nil
     private var hasLoadMore: Bool = true
     private let limit: Int = 20
     private var isFetching: Bool = true
-    
+
     private var cancellables: Set<AnyCancellable> = []
-    
+
     @Published
     var showSkeleton: Bool = true
-    
+
     init() {
         $keyword
             .removeDuplicates()
@@ -48,10 +48,10 @@ class SearchTokenViewModel: ObservableObject {
                 self?.showSkeleton = true
             }
             .store(in: &cancellables)
-        
+
         recentSearch = UserDataManager.shared.tokenRecentSearch
     }
-    
+
     func getTokens(isLoadMore: Bool = false) {
         showSkeleton = !isLoadMore
         isFetching = true
@@ -71,7 +71,7 @@ class SearchTokenViewModel: ObservableObject {
                 $0.sort_field = .volume_usd_24h
                 $0.sort_direction = .desc
             })
-        
+
         Task {
             if keyword.isBlank {
                 self.tokensFav = await self.getTokenFav()
@@ -82,7 +82,7 @@ class SearchTokenViewModel: ObservableObject {
                 self.isDeleted = []
                 self.offsets = []
             }
-            
+
             let jsonData = try? await MinWalletAPIRouter.topAssets(input: input).async_request()
             let tokens = Mapper<TopAssetsResponse>.init().map(JSON: jsonData?.dictionaryObject ?? [:])
             let _tokens = tokens?.assets ?? []
@@ -97,7 +97,7 @@ class SearchTokenViewModel: ObservableObject {
             self.isFetching = false
         }
     }
-    
+
     func loadMoreData(item: TopAssetsResponse.AssetMetric) {
         guard hasLoadMore, !isFetching, !keyword.isBlank else { return }
         let thresholdIndex = tokens.index(tokens.endIndex, offsetBy: -2)
@@ -105,12 +105,12 @@ class SearchTokenViewModel: ObservableObject {
             getTokens(isLoadMore: true)
         }
     }
-    
+
     func clearRecentSearch() {
         recentSearch = []
         UserDataManager.shared.tokenRecentSearch = []
     }
-    
+
     func addRecentSearch(keyword: String) {
         var recentSearch = recentSearch
         recentSearch.insert(keyword.trimmingCharacters(in: .whitespacesAndNewlines), at: 0)
@@ -118,7 +118,7 @@ class SearchTokenViewModel: ObservableObject {
         self.recentSearch = recentSearch.reversed()
         UserDataManager.shared.tokenRecentSearch = self.recentSearch
     }
-    
+
     func deleteTokenFav(at index: Int) {
         guard let item = tokensFav[gk_safeIndex: index] else { return }
         let tokensFav = tokensFav.filter { $0.uniqueID != item.uniqueID }
@@ -127,7 +127,7 @@ class SearchTokenViewModel: ObservableObject {
         self.offsets = self.tokensFav.map({ _ in 0 })
         UserInfo.shared.tokenFavSelected(token: item, isAdd: false)
     }
-    
+
     private func getTokenFav() async -> [TokenProtocol] {
         await MarketViewModel.getTopAssetsFav()
     }

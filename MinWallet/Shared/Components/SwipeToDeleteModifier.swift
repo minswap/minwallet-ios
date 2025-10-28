@@ -6,20 +6,20 @@ struct SwipeToDeleteModifier: ViewModifier {
     @Binding var isDeleted: Bool
     @Binding var enableDrag: Bool
     @GestureState private var isDragging = false
-    
+
     @Binding
     var height: CGFloat
-    
+
     @State
     var image: ImageResource = .icDelete
-    
+
     let onDelete: () -> Void
-    
+
     @State
     private var isAppear: Bool = false
     @State
     private var isHorizontalDrag = false
-    
+
     private var dragGesture: some Gesture {
         DragGesture(minimumDistance: 16)
             .updating($isDragging) { _, state, _ in
@@ -43,7 +43,7 @@ struct SwipeToDeleteModifier: ViewModifier {
                 isHorizontalDrag = false
             }
     }
-    
+
     func body(content: Content) -> some View {
         GeometryReader { geometry in
             ZStack {

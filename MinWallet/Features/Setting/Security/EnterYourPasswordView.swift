@@ -23,7 +23,7 @@ struct EnterYourPasswordView: View {
     private var isShowIncorrectPassword: Bool = false
     @Environment(\.partialSheetDismiss)
     private var onDismiss
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("Enter your password")

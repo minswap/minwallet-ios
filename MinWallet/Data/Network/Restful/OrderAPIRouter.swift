@@ -5,7 +5,7 @@ import Alamofire
 enum OrderAPIRouter: DomainAPIRouter {
     case getOrders(request: OrderHistory.Request)
     case cancelOrder(address: String, orders: [OrderHistory])
-    
+
     func path() -> String {
         switch self {
         case .getOrders:
@@ -14,14 +14,14 @@ enum OrderAPIRouter: DomainAPIRouter {
             return "/aggregator/cancel-tx"
         }
     }
-    
+
     func method() -> HTTPMethod {
         return .post
     }
-    
+
     func parameters() -> Parameters {
         var params = Parameters()
-        
+
         switch self {
         case let .getOrders(request):
             //TODO: Remove

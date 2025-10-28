@@ -21,13 +21,13 @@ struct OrderHistoryView: View {
     private var isShowSignContract: Bool = false
     @StateObject
     var filterViewModel: OrderHistoryFilterViewModel = .init()
-    
+
     //TODO: Remove
     @State
     private var showInputFakeAddress = false
     @State
     private var fakeWalletAddress: String = AppSetting.shared.fakeWalletAddress
-    
+
     var body: some View {
         ZStack {
             Color.colorBaseBackground.ignoresSafeArea()
@@ -126,13 +126,13 @@ struct OrderHistoryView: View {
                 }
             }
             Button("Cancel", role: .cancel) {
-                
+
             }
         } message: {
             Text("Please enter wallet address below. Empty will use your current wallet address.")
         }
     }
-    
+
     private func authenticationSuccess() {
         Task {
             do {

@@ -7,10 +7,10 @@ struct SwapTokenInfoView: View {
     private var onDismiss
     @ObservedObject
     var viewModel: SwapTokenViewModel
-    
+
     var onShowToolTip: ((_ title: LocalizedStringKey, _ content: LocalizedStringKey) -> Void)?
     var onSwap: (() -> Void)?
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("Details")

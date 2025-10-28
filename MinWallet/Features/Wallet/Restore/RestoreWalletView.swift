@@ -7,13 +7,13 @@ struct RestoreWalletView: View {
         case seedPhrase
         case importJson
     }
-    
+
     @EnvironmentObject
     var navigator: FlowNavigator<MainCoordinatorViewModel.Screen>
-    
+
     @State
     private var restoreType: RestoreType = .seedPhrase
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("Restore wallet")

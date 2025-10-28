@@ -13,11 +13,11 @@ class HUDState: ObservableObject {
     var isPresented: Bool = false
     @Published
     var isShowLoading: Bool = false
-    
+
     var onAction: (() -> Void)?
-    
+
     init() {}
-    
+
     func showMsg(
         title: LocalizedStringKey = "Notice",
         msg: String,
@@ -30,7 +30,7 @@ class HUDState: ObservableObject {
         self.onAction = onAction
         self.isPresented = true
     }
-    
+
     func showLoading(_ isShow: Bool) {
         withAnimation {
             isShowLoading = isShow

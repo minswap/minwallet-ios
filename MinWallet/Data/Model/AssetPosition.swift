@@ -9,11 +9,11 @@ struct AssetPosition: Mappable {
     var amount_position_usd: Double = 0
     var pnl_24h_usd: Double = 0
     var pnl_24h_percent: Double = 0
-    
+
     init() {}
-    
+
     init?(map: Map) {}
-    
+
     mutating func mapping(map: Map) {
         asset <- map["asset"]
         price_usd <- (map["price_usd"], GKMapFromJSONToDouble)
@@ -35,9 +35,9 @@ extension AssetPosition: TokenProtocol {
     var amount: Double { priceValue }
     var percentChange: Double { pnl_24h_percent }
     var subPriceValue: Double { amount_position_usd }
-    
+
     var category: [String] { [] }
-    
+
     var socialLinks: [SocialLinks: String] {
         let socialLinks = asset.social_links ?? .init()
         var links: [SocialLinks: String] = [:]
@@ -66,11 +66,11 @@ extension AssetPosition: TokenProtocol {
         links[.adaStat] = "https://adastat.net/tokens/\(currencySymbol)\(tokenName)"
         return links
     }
-    
+
     var decimals: Int {
         asset.metadata?.decimals ?? 0
     }
-    
+
     var hasMetaData: Bool {
         asset.metadata != nil
     }

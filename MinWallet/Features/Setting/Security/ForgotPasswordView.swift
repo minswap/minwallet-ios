@@ -7,7 +7,7 @@ struct ForgotPasswordView: View {
         case enterPassword
         case changeYourPassword(ChangePasswordView.ScreenType)
     }
-    
+
     @EnvironmentObject
     private var navigator: FlowNavigator<MainCoordinatorViewModel.Screen>
     @EnvironmentObject
@@ -20,7 +20,7 @@ struct ForgotPasswordView: View {
     private var conditionTwo: Bool = false
     @State
     var screenType: ScreenType
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("Forgot password")
@@ -30,7 +30,7 @@ struct ForgotPasswordView: View {
                 .padding(.top, .lg)
                 .padding(.bottom, .xl)
                 .padding(.horizontal, .xl)
-            
+
             VStack(alignment: .leading, spacing: .xl) {
                 HStack(spacing: .xl) {
                     Image(conditionOne ? .icChecked : .icUnchecked).resizable().frame(width: 20, height: 20)
@@ -67,7 +67,7 @@ struct ForgotPasswordView: View {
                     conditionTwo = newValue
                 }
             )
-            
+
             CustomButton(title: "Restore", isEnable: combinedBinding) {
                 userInfo.deleteAccount()
                 appSetting.deleteAccount()

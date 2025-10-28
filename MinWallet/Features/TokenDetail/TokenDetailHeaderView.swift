@@ -21,7 +21,7 @@ extension TokenDetailView {
             let offset = viewModel.scrollOffset.y
             let heightOrders = viewModel.sizeOfLargeHeader.height
             let opacity = abs(max(0, min(1, (offset - heightOrders / 2) / (heightOrders / 2))))
-            
+
             HStack(alignment: .center, spacing: 12) {
                 TokenLogoView(currencySymbol: viewModel.token.currencySymbol, tokenName: viewModel.token.tokenName, isVerified: viewModel.token.isVerified, size: .init(width: 24, height: 24))
                 VStack(alignment: .leading, spacing: 2) {
@@ -65,7 +65,7 @@ extension TokenDetailView {
         .background(.colorBaseBackground)
         .padding(.horizontal, .xl)
     }
-    
+
     var largeHeader: some View {
         VStack(alignment: .leading, spacing: 0) {
             Color.clear.frame(height: .md)
@@ -93,7 +93,7 @@ extension TokenDetailView {
                     prefix: Currency.usd.prefix,
                     font: .titleH4,
                     fontColor: .colorBaseTent) ?? "-"
-            
+
             Text(chartSelected)
                 .padding(.top, .lg)
                 .padding(.bottom, .xs)

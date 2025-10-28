@@ -5,17 +5,17 @@ import SwiftUI
 struct VisualEffectBlurView: UIViewRepresentable {
     var tintAlpha: CGFloat = 0.3
     var blurRadius: CGFloat = 4
-    
+
     func makeUIView(context: Context) -> CustomVisualEffectView {
         let visualEffectView = CustomVisualEffectView()
-        
+
         visualEffectView.colorTint = .black
         visualEffectView.colorTintAlpha = tintAlpha
         visualEffectView.blurRadius = blurRadius
-        
+
         return visualEffectView
     }
-    
+
     func updateUIView(_ uiView: CustomVisualEffectView, context: Context) {}
 }
 
@@ -86,13 +86,13 @@ private extension UIView {
 
 /// GVisualEffectView is a dynamic background blur view.
 public class CustomVisualEffectView: UIVisualEffectView {
-    
+
     /// Returns the instance of UIBlurEffect.
     private let blurEffect = (NSClassFromString("_UICustomBlurEffect") as! UIBlurEffect.Type).init()
-    
+
     /**
      Tint color.
-    
+
      The default value is nil.
      */
     public var colorTint: UIColor? {
@@ -111,10 +111,10 @@ public class CustomVisualEffectView: UIVisualEffectView {
             }
         }
     }
-    
+
     /**
      Tint color alpha.
-    
+
      The default value is 0.0.
      */
     public var colorTintAlpha: CGFloat {
@@ -127,10 +127,10 @@ public class CustomVisualEffectView: UIVisualEffectView {
             }
         }
     }
-    
+
     /**
      Blur radius.
-    
+
      The default value is 0.0.
      */
     public var blurRadius: CGFloat {
@@ -149,44 +149,44 @@ public class CustomVisualEffectView: UIVisualEffectView {
             }
         }
     }
-    
+
     /**
      Scale factor.
-    
+
      The scale factor determines how content in the view is mapped from the logical coordinate space (measured in points) to the device coordinate space (measured in pixels).
-    
+
      The default value is 1.0.
      */
     public var scale: CGFloat {
         get { return _value(forKey: .scale) }
         set { _setValue(newValue, forKey: .scale) }
     }
-    
+
     // MARK: - Initialization
-    
+
     public override init(effect: UIVisualEffect?) {
         super.init(effect: effect)
-        
+
         scale = 1
     }
-    
+
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        
+
         scale = 1
     }
-    
+
 }
 
 // MARK: - Helpers
 
 private extension CustomVisualEffectView {
-    
+
     /// Returns the value for the key on the blurEffect.
     func _value<T>(forKey key: Key) -> T {
         return blurEffect.value(forKeyPath: key.rawValue) as! T
     }
-    
+
     /// Sets the value for the key on the blurEffect.
     func _setValue<T>(_ value: T, forKey key: Key) {
         blurEffect.setValue(value, forKeyPath: key.rawValue)
@@ -195,11 +195,11 @@ private extension CustomVisualEffectView {
             self.effect = blurEffect
         }
     }
-    
+
     enum Key: String {
         case colorTint, colorTintAlpha, blurRadius, scale
     }
-    
+
 }
 
 // ["grayscaleTintLevel", "grayscaleTintAlpha", "lightenGrayscaleWithSourceOver", "colorTint", "colorTintAlpha", "colorBurnTintLevel", "colorBurnTintAlpha", "darkeningTintAlpha", "darkeningTintHue", "darkeningTintSaturation", "darkenWithSourceOver", "blurRadius", "saturationDeltaFactor", "scale", "zoom"]

@@ -6,10 +6,10 @@ import Foundation
 struct TopAssetsResponse: Then, Mappable {
     var search_after: [Any]?
     var assets: [AssetMetric] = []
-    
+
     init() {}
     init?(map: Map) {}
-    
+
     mutating func mapping(map: Map) {
         search_after <- map["search_after"]
         assets <- map["asset_metrics"]
@@ -19,7 +19,7 @@ struct TopAssetsResponse: Then, Mappable {
 extension TopAssetsResponse {
     struct AssetMetric: Then, Mappable, Hashable {
         var asset: AssetData = .init()
-        
+
         var price_usd: Double = 0
         var price_change_1h: Double = 0
         var price_change_24h: Double = 0
@@ -35,10 +35,10 @@ extension TopAssetsResponse {
         var created_at: String = ""
         var created_tx_id: String = ""
         var categories: [String] = []
-        
+
         init() {}
         init?(map: Map) {}
-        
+
         mutating func mapping(map: Map) {
             asset <- map["asset"]
             price_usd <- (map["price_usd"], GKMapFromJSONToDouble)
@@ -70,9 +70,9 @@ extension TopAssetsResponse.AssetMetric: TokenProtocol {
     var percentChange: Double { price_change_24h }
     var priceValue: Double { price_usd }
     var subPriceValue: Double { 0 }
-    
+
     var category: [String] { categories }
-    
+
     var socialLinks: [SocialLinks: String] {
         let socialLinks = asset.social_links ?? .init()
         var links: [SocialLinks: String] = [:]
@@ -101,7 +101,7 @@ extension TopAssetsResponse.AssetMetric: TokenProtocol {
         links[.adaStat] = "https://adastat.net/tokens/\(currencySymbol)\(tokenName)"
         return links
     }
-    
+
     var decimals: Int { asset.metadata?.decimals ?? 0 }
     var hasMetaData: Bool { asset.metadata != nil }
 }

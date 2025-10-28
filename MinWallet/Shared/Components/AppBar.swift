@@ -6,13 +6,13 @@ struct BaseContentView: ViewModifier {
     var titleView: (() -> AnyView)?
     var backgroundColor: Color = .colorBaseBackground
     var actionBarHeight: CGFloat = 48
-    
+
     var iconRight: ImageResource?
     var alignmentTitle: Alignment = .leading
     var actionLeft: (() -> Void)?
     var actionRight: (() -> Void)?
     var ignoreSafeArea: Bool = false
-    
+
     func body(content: Content) -> some View {
         ZStack {
             Color.colorBaseBackground.ignoresSafeArea()
@@ -35,7 +35,7 @@ struct BaseContentView: ViewModifier {
                             )
                             .buttonStyle(.plain)
                         }
-                        
+
                         if let titleView = titleView {
                             if alignmentTitle != .leading {
                                 Spacer()
@@ -57,7 +57,7 @@ struct BaseContentView: ViewModifier {
                                 Spacer()
                             }
                         }
-                        
+
                         if let actionRight = actionRight, let iconRight = iconRight {
                             Button(
                                 action: {
@@ -88,7 +88,7 @@ struct BaseContentView: ViewModifier {
                 })
         }
     }
-    
+
     static func text() -> some View { Text("zzz") }
 }
 
@@ -108,9 +108,9 @@ struct BaseContentView: ViewModifier {
             },
             iconRight: .icFavourite,
             actionLeft: {
-                
+
             },
             actionRight: {
-                
+
             }))
 }

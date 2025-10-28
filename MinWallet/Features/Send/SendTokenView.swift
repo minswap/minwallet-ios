@@ -7,12 +7,12 @@ struct SendTokenView: View {
         case scanQRCode(address: String)
         case normal
     }
-    
+
     enum Focusable: Hashable {
         case none
         case row(id: String)
     }
-    
+
     @EnvironmentObject
     private var navigator: FlowNavigator<MainCoordinatorViewModel.Screen>
     @EnvironmentObject
@@ -31,11 +31,11 @@ struct SendTokenView: View {
     private var ignoresKeyboard: Bool = false
     @State
     private var keyboardHeight: CGFloat = 0
-    
+
     init(viewModel: SendTokenViewModel) {
         self._viewModel = .init(wrappedValue: viewModel)
     }
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             ScrollView {
@@ -57,7 +57,7 @@ struct SendTokenView: View {
                                 .font(.labelMediumSecondary)
                                 .foregroundStyle(.colorInteractiveToneHighlight)
                                 .onTapGesture {
-                        
+
                                 }
                             Image(.ada)
                                 .resizable()
@@ -186,7 +186,7 @@ struct SendTokenView: View {
                 get: { viewModel.isValidTokenToSend },
                 set: { _ in }
             )
-            
+
             if keyboardHeight == 0 {
                 CustomButton(title: "Next", isEnable: combinedBinding) {
                     let tokens = viewModel.tokensToSend
@@ -205,7 +205,7 @@ struct SendTokenView: View {
         .toolbar {
             ToolbarItemGroup(placement: .keyboard) {
                 Spacer()
-                
+
                 Button("Done") {
                     hideKeyboard()
                 }
@@ -251,7 +251,7 @@ struct SendTokenView: View {
             unsubscribeFromKeyboard()
         }
     }
-    
+
     private func subscribeToKeyboard() {
         NotificationCenter.default.addObserver(
             forName: UIResponder.keyboardWillShowNotification,
@@ -262,7 +262,7 @@ struct SendTokenView: View {
                 self.keyboardHeight = keyboardFrame.height
             }
         }
-        
+
         NotificationCenter.default.addObserver(
             forName: UIResponder.keyboardWillHideNotification,
             object: nil,
@@ -271,7 +271,7 @@ struct SendTokenView: View {
             self.keyboardHeight = 0
         }
     }
-    
+
     private func unsubscribeFromKeyboard() {
         NotificationCenter.default.removeObserver(self)
     }

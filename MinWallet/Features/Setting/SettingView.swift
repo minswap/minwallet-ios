@@ -6,14 +6,14 @@ import OneSignalFramework
 struct SettingView: View {
     @State var isVerified: Bool = true
     @StateObject private var viewModel = SettingViewModel()
-    
+
     @EnvironmentObject
     var navigator: FlowNavigator<MainCoordinatorViewModel.Screen>
     @EnvironmentObject
     var appSetting: AppSetting
     @EnvironmentObject
     var userInfo: UserInfo
-    
+
     @Binding
     var isShowAppearance: Bool
     @Binding
@@ -26,9 +26,9 @@ struct SettingView: View {
     private var isCopyAddress: Bool = false
     @Binding
     var isPresentAlertPermission: Bool
-    
+
     private let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack {
@@ -38,7 +38,7 @@ struct SettingView: View {
                         .scaledToFit()
                         .frame(width: 64, height: 64)
                         .clipShape(Circle())
-                    
+
                     if isVerified {
                         Image(.icSubAvatar)
                             .resizable()
@@ -62,7 +62,7 @@ struct SettingView: View {
             .frame(height: 64)
             .padding(.top, .md)
             .padding(.horizontal, .xl)
-            
+
             VStack(alignment: .leading, spacing: 4) {
                 HStack(spacing: 4) {
                     if !userInfo.adaHandleName.isBlank {
@@ -128,7 +128,7 @@ struct SettingView: View {
             }
             .padding(.horizontal, .xl)
             .padding(.vertical, .xl)
-            
+
             Color.colorBorderPrimarySub.frame(height: 1)
                 .padding(.horizontal, .xl)
                 .padding(.bottom, .xl)
@@ -210,7 +210,7 @@ struct SettingView: View {
                                         { accepted in
                                             //enableNotification = accepted
                                             if accepted {
-                                                
+
                                             } else {
                                                 //OneSignal.logout()
                                                 isPresentAlertPermission = true

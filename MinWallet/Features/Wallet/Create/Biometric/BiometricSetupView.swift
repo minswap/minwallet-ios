@@ -7,7 +7,7 @@ struct BiometricSetupView: View {
         case createWallet(seedPhase: [String], nickName: String)
         case restoreWallet(fileContent: String, seedPhase: [String], nickName: String)
     }
-    
+
     @EnvironmentObject
     private var navigator: FlowNavigator<MainCoordinatorViewModel.Screen>
     @EnvironmentObject
@@ -20,7 +20,7 @@ struct BiometricSetupView: View {
     private var bannerState: BannerState
     @State
     var screenType: ScreenType
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             VStack(alignment: .center, spacing: 16) {
@@ -53,7 +53,7 @@ struct BiometricSetupView: View {
                             else {
                                 throw AppGeneralError.localErrorLocalized(message: "Something went wrong!")
                             }
-                            
+
                             try AppSetting.savePasswordToKeychain(username: AppSetting.USER_NAME, password: MinWalletConstant.passDefaultForFaceID)
                             userInfo.saveWalletInfo(walletInfo: wallet)
                             appSetting.isLogin = true
@@ -70,7 +70,7 @@ struct BiometricSetupView: View {
                             guard let wallet = wallet else {
                                 throw AppGeneralError.localErrorLocalized(message: "Error while restoring wallet")
                             }
-                            
+
                             try AppSetting.savePasswordToKeychain(username: AppSetting.USER_NAME, password: MinWalletConstant.passDefaultForFaceID)
                             userInfo.saveWalletInfo(walletInfo: wallet)
                             appSetting.isLogin = true

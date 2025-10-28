@@ -9,7 +9,7 @@ extension OrderHistory {
         case aToB = "A_TO_B"
         case bToA = "B_TO_A"
     }
-    
+
     enum OrderType: String {
         case swap = "SWAP"
         case limit = "LIMIT"
@@ -22,7 +22,7 @@ extension OrderHistory {
         case zapOut = "ZAP_OUT"
         case donation = "DONATION"
     }
-    
+
     struct Detail: Then, Hashable {
         var lpAsset: Asset?
         var inputAsset: Asset?
@@ -35,11 +35,11 @@ extension OrderHistory {
         var limitAmount: Double = 0
         var minSwapAmount: Double = 0
         var changeAmount: Double = 0
-        
+
         var receiveLpAmount: Double = 0
         var depositAmountA: Double = 0
         var depositAmountB: Double = 0
-        
+
         var withdrawLpAmount: Double = 0
         var minimumAmountA: Double = 0
         var minimumAmountB: Double = 0
@@ -49,7 +49,7 @@ extension OrderHistory {
         var lpAmount: Double = 0
         var swapAmount: Double = 0
         var filledAmount: Double = 0
-        
+
         var maxSwapTime: Int = 0
         var tradingFee: Double = 0
         var fillOrKill: Bool = false
@@ -57,40 +57,40 @@ extension OrderHistory {
         var expireAt: String? = nil
         var fillHistory: [FillHistory] = []
         var isChangeAssetA: Bool = false
-        
+
         var stopAmount: Double = 0
-        
+
         init() {}
     }
-    
+
     struct Route: Then, Hashable {
         var lpAsset: Asset = .init()
         var assets: [Asset] = []
-        
+
         init() {}
     }
-    
+
     struct FillHistory: Then, Hashable, Identifiable {
         var id: String {
             batchedTxId
         }
-        
+
         var input: InputOutput = .init()
         var output: InputOutput = .init()
-        
+
         var inputAmount: Double = 0
         var outputAmount: Double = 0
         var batchedTxId: String = ""
         var batchedAt: String = ""
         var percent: Double = 0
-        
+
         init() {}
     }
 }
 
 extension OrderHistory.FillHistory: Mappable {
     init?(map: Map) {}
-    
+
     mutating func mapping(map: Map) {
         inputAmount <- (map["input_amount"], GKMapFromJSONToDouble)
         outputAmount <- (map["output_amount"], GKMapFromJSONToDouble)
@@ -100,7 +100,7 @@ extension OrderHistory.FillHistory: Mappable {
 }
 extension OrderHistory.Detail: Mappable {
     init?(map: Map) {}
-    
+
     mutating func mapping(map: Map) {
         orderType <- map["order_type"]
         lpAsset <- map["lp_asset"]
@@ -126,12 +126,12 @@ extension OrderHistory.Detail: Mappable {
         swapAmount <- (map["swap_amount"], GKMapFromJSONToDouble)
         receiveAmount <- (map["receive_amount"], GKMapFromJSONToDouble)
         filledAmount <- (map["filled_amount"], GKMapFromJSONToDouble)
-        
+
         fillOrKill <- map["fill_or_kill"]
         routes <- map["routes"]
         expireAt <- map["expire_at"]
         maxSwapTime <- (map["max_swap_time"], GKMapFromJSONToInt)
-        
+
         fillHistory <- map["fill_history"]
         isChangeAssetA <- map["is_change_asset_a"]
         stopAmount <- (map["stop_amount"], GKMapFromJSONToDouble)
@@ -141,7 +141,7 @@ extension OrderHistory.Detail: Mappable {
 
 extension OrderHistory.Route: Mappable {
     init?(map: Map) {}
-    
+
     mutating func mapping(map: Map) {
         assets <- map["assets"]
         lpAsset <- map["lp_asset"]

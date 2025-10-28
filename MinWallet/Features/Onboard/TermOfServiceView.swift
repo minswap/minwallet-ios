@@ -7,7 +7,7 @@ struct TermOfServiceView: View {
     var navigator: FlowNavigator<MainCoordinatorViewModel.Screen>
     @StateObject
     private var webViewModel = WebViewModel()
-    
+
     var body: some View {
         VStack(spacing: 0) {
             ProgressView(value: webViewModel.progress, total: 1.0)

@@ -6,21 +6,21 @@ import Charts
 enum LineChartType: String, CaseIterable, Plottable {
     case optimal = "Optimal"
     case outside = "Outside range"
-    
+
     var color: Color {
         switch self {
         case .optimal: return .green
         case .outside: return .red
         }
     }
-    
+
 }
 
 struct LineChartData: Hashable {
     var id = UUID()
     var date: Date
     var value: Double
-    
+
     var type: LineChartType
 }
 
@@ -214,18 +214,18 @@ extension TokenDetailView {
             .padding(.horizontal, .xl)
         }
     }
-    
+
     private func updateSelectedIndex(using proxy: ChartProxy, at location: CGPoint, in geometry: GeometryProxy) {
         let xPosition = location.x - geometry[proxy.plotAreaFrame].origin.x
         guard let date: Date = proxy.value(atX: xPosition) else { return }
-        
+
         let closestIndex = viewModel.chartDatas.indices.min(by: {
             abs(viewModel.chartDatas[$0].date.timeIntervalSince1970 - date.timeIntervalSince1970) < abs(viewModel.chartDatas[$1].date.timeIntervalSince1970 - date.timeIntervalSince1970)
         })
-        
+
         viewModel.selectedIndex = closestIndex
     }
-    
+
     private func triggerVibration() {
         // Trigger a haptic feedback when the long press begins
         let impactFeedback = UIImpactFeedbackGenerator(style: .medium)
@@ -238,17 +238,17 @@ extension Date {
     func adding(_ component: Calendar.Component, value: Int, using calendar: Calendar = .current) -> Date? {
         return calendar.date(byAdding: component, value: value, to: self)
     }
-    
+
     var startOfDay: Date {
         var calendar = Calendar(identifier: .gregorian)
         if AppSetting.shared.timeZone == AppSetting.TimeZone.utc.rawValue {
             calendar.timeZone = .gmt
             calendar.locale = Locale(identifier: "en_US_POSIX")
-            
+
         }
         return calendar.startOfDay(for: self)
     }
-    
+
     var endOfDay: Date {
         return self.startOfDay.addingTimeInterval(86400 - 1)
     }

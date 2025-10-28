@@ -2,18 +2,18 @@ import SwiftUI
 
 
 struct TokenDetailToolTipView: View {
-    
+
     @Binding
     var title: LocalizedStringKey
     @Binding
     var content: LocalizedStringKey
-    
+
     private var isRiskScore: Bool {
         let raw: LocalizedStringKey = "Powered by Xerberus. This is for informational purposes only and is not intended to be used as financial advice. User Agreement"
         guard content == raw else { return false }
         return true
     }
-    
+
     var body: some View {
         VStack(spacing: 8) {
             VStack(spacing: 0) {
@@ -50,7 +50,7 @@ struct TokenDetailToolTipView: View {
         }
         .fixedSize(horizontal: false, vertical: true)
     }
-    
+
     private func generateContentRiskScore() -> AttributedString {
         let local: LocalizedStringKey = "Powered by Xerberus. This is for informational purposes only and is not intended to be used as financial advice. "
         let localAgreement: LocalizedStringKey = "User Agreement."

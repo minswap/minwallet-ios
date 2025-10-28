@@ -8,28 +8,28 @@ struct TokenFavourite: Then {
     var currencySymbol: String = ""
     var tokenName: String = ""
     var adaName: String = ""
-    
+
     init() {}
-    
+
     var uniqueID: String {
         if currencySymbol.isEmpty && tokenName.isEmpty {
             return "lovelace"
         }
-        
+
         if currencySymbol.isEmpty {
             return tokenName
         }
         if tokenName.isEmpty {
             return currencySymbol
         }
-        
+
         return currencySymbol + "." + tokenName
     }
 }
 
 extension TokenFavourite: Mappable {
     init?(map: Map) {}
-    
+
     mutating func mapping(map: Map) {
         dateAdded <- (map["dateAdded"], GKMapFromJSONToDouble)
         currencySymbol <- (map["currencySymbol"], GKMapFromJSONToString)

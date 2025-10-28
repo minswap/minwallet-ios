@@ -4,25 +4,25 @@ import MinWalletAPI
 
 @MainActor
 class ConfirmSendTokenViewModel: ObservableObject {
-    
+
     @Published
     var tokens: [WrapTokenSend] = []
     @Published
     var address: String = ""
     @Published
     var isSendAll: Bool = false
-    
+
     init(tokens: [WrapTokenSend], address: String, isSendAll: Bool) {
         self.tokens = tokens
         self.address = address
         self.isSendAll = isSendAll
     }
-    
+
     func sendTokens() async throws -> String? {
         let receiver = address
         let sender = UserInfo.shared.minWallet?.address ?? ""
         let publicKey = UserInfo.shared.minWallet?.publicKey ?? ""
-        
+
         let assetAmounts: [InputAssetAmount] = {
             guard !isSendAll else { return [] }
             return tokens.map { token in

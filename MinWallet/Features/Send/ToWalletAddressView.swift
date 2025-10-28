@@ -10,13 +10,13 @@ struct ToWalletAddressView: View {
     private var viewModel: ToWalletAddressViewModel
     @State
     private var isRotating: Bool = false
-    
+
     private let maxLength = 300
-    
+
     init(viewModel: ToWalletAddressViewModel) {
         self._viewModel = .init(wrappedValue: viewModel)
     }
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("To wallet address:")
@@ -56,7 +56,7 @@ struct ToWalletAddressView: View {
                 .disableBounces()
             }
             itemAddressAda
-            
+
             Spacer()
             HStack(spacing: .md) {
                 Spacer()
@@ -110,7 +110,7 @@ struct ToWalletAddressView: View {
             }
             .padding(.bottom, 40)
             .padding(.horizontal, .xl)
-            
+
             let combinedBinding = Binding<Bool>(
                 get: {
                     if viewModel.isChecking == true {
@@ -136,7 +136,7 @@ struct ToWalletAddressView: View {
                     navigator.pop()
                 }))
     }
-    
+
     @ViewBuilder
     private var itemAddressAda: some View {
         if let adaAddress = viewModel.adaAddress, let isChecking = viewModel.isChecking, !isChecking {
@@ -185,7 +185,7 @@ struct ToWalletAddressView: View {
             .padding(.top, .lg)
         }
     }
-    
+
     @ViewBuilder
     private var errorTypeView: some View {
         if let errorType = viewModel.errorType {
@@ -205,7 +205,7 @@ struct ToWalletAddressView: View {
                 )
                 .padding(.top, .lg)
                 .padding(.horizontal, .xl)
-                
+
             } else {
                 HStack(spacing: 4) {
                     Image(.icWarning)

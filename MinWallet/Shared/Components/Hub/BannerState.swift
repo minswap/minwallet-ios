@@ -4,12 +4,12 @@ import SwiftUI
 class BannerState: ObservableObject {
     @Published
     var isShowingBanner: Bool = false
-    
+
     @Published
     var infoContent: (() -> AnyView)?
-    
+
     init() {}
-    
+
     func infoContentDefault(onViewTransaction: (() -> Void)?) -> AnyView {
         AnyView(
             HStack(alignment: .top) {
@@ -50,7 +50,7 @@ class BannerState: ObservableObject {
             .shadow(radius: 5, x: 0, y: 5)
         )
     }
-    
+
     private func errorDefault(_ error: String) -> AnyView {
         AnyView(
             HStack(alignment: .centerIconAlignment) {
@@ -85,7 +85,7 @@ class BannerState: ObservableObject {
             .shadow(color: Color(.sRGBLinear, white: 0, opacity: 0.15), radius: 5, x: 0, y: 5)
         )
     }
-    
+
     func showBanner(isShow: Bool) {
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(250)) {
             withAnimation {
@@ -93,7 +93,7 @@ class BannerState: ObservableObject {
             }
         }
     }
-    
+
     func showBannerError(_ error: String) {
         self.infoContent = { [weak self] in
             guard let self = self else { return AnyView(Text("")) }
@@ -110,6 +110,6 @@ private extension VerticalAlignment {
             context[.top]
         }
     }
-    
+
     static let centerIconAlignment = VerticalAlignment(CenterIconAlignment.self)
 }

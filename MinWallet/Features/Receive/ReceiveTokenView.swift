@@ -7,7 +7,7 @@ struct ReceiveTokenView: View {
         case home
         case qrCode
     }
-    
+
     @EnvironmentObject
     private var navigator: FlowNavigator<MainCoordinatorViewModel.Screen>
     @EnvironmentObject
@@ -22,7 +22,7 @@ struct ReceiveTokenView: View {
     private var showShareSheet = false
     @State
     var screenType: ScreenType = .home
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text(screenType == .home ? "Receive" : "My QR")
@@ -115,13 +115,13 @@ struct ReceiveTokenView: View {
 private struct ShareSheet: UIViewControllerRepresentable {
     var items: [Any]
     var excludedActivityTypes: [UIActivity.ActivityType]? = nil
-    
+
     func makeUIViewController(context: Context) -> UIActivityViewController {
         let controller = UIActivityViewController(activityItems: items, applicationActivities: nil)
         controller.excludedActivityTypes = excludedActivityTypes
         return controller
     }
-    
+
     func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
 }
 

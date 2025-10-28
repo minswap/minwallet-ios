@@ -4,16 +4,16 @@ import SwiftUI
 struct OrderHistoryCancelView: View {
     @Environment(\.partialSheetDismiss)
     private var onDismiss
-    
+
     @Binding
     var orders: [OrderHistory]
     @Binding
     var orderSelected: [String: OrderHistory]
     @Binding
     var orderCanSelect: [String: OrderHistory]
-    
+
     var onCancelOrder: (() -> Void)?
-    
+
     var body: some View {
         VStack(spacing: 0) {
             Text("Cancel Orders")
@@ -103,7 +103,7 @@ struct OrderHistoryCancelView: View {
                     )
                 ) {
                     guard !orderSelected.isEmpty else { return }
-                    
+
                     onDismiss?()
                     onCancelOrder?()
                 }
@@ -116,7 +116,7 @@ struct OrderHistoryCancelView: View {
         .frame(height: (UIScreen.current?.bounds.height ?? 0) * 0.8)
         .presentSheetModifier()
     }
-    
+
     private func updateSelectableOrders(
         _ orders: [OrderHistory],
         selected: [String: OrderHistory]
@@ -124,39 +124,39 @@ struct OrderHistoryCancelView: View {
         let selectedValues = Array(selected.values)
         let selectedIDs = Set(selectedValues.map { $0.id })
         let selectedCount = selectedValues.count
-        
+
         let hasP1Group = selectedValues.contains { Self.isP1($0.protocolSource) }
         let hasP23Group = selectedValues.contains { Self.isP2($0.protocolSource) || Self.isP3($0.protocolSource) }
         let splashCount = selectedValues.filter { Self.isSplash($0.protocolSource) }.count
         let cswapCount = selectedValues.filter { Self.isCSwap($0.protocolSource) }.count
-        
+
         guard selectedCount < 6 else { return [:] }
-        
+
         return orders.reduce(into: [:]) { result, order in
             guard !selectedIDs.contains(order.id) else { return }
-            
+
             let src = order.protocolSource
             let candP1 = Self.isP1(src)
             let candP23 = Self.isP2(src) || Self.isP3(src)
             let candSplash = Self.isSplash(src)
             let candCSwap = Self.isCSwap(src)
-            
+
             let fitsGroup =
                 (!hasP1Group && !hasP23Group)
                 || (hasP1Group && candP1)
                 || (hasP23Group && candP23)
-            
+
             let fitsSplash = !(candSplash && splashCount >= 1)
             let fitsCSwap = !(candCSwap && cswapCount >= 1)
             let noMixSplashCswap = !(candSplash && cswapCount > 0) && !(candCSwap && splashCount > 0)
             let fitsCount = selectedCount + 1 <= 6
-            
+
             if fitsGroup && fitsSplash && fitsCSwap && noMixSplashCswap && fitsCount {
                 result[order.id] = order
             }
         }
     }
-    
+
     static let PLUTUS_V1: Set<AggregatorSource> = [
         .Minswap, .SundaeSwap, .VyFinance, .WingRiders,
     ]
@@ -178,22 +178,22 @@ struct OrderHistoryCancelView: View {
         guard let s = s else { return false }
         return Self.PLUTUS_V1.contains(s)
     }
-    
+
     static func isP2(_ s: AggregatorSource?) -> Bool {
         guard let s = s else { return false }
         return Self.PLUTUS_V2.contains(s)
     }
-    
+
     static func isP3(_ s: AggregatorSource?) -> Bool {
         guard let s = s else { return false }
         return Self.PLUTUS_V3.contains(s)
     }
-    
+
     static func isSplash(_ s: AggregatorSource?) -> Bool {
         guard let s = s else { return false }
         return Self.SPLASH_ORDERS.contains(s)
     }
-    
+
     static func isCSwap(_ s: AggregatorSource?) -> Bool {
         s == .CSwap
     }
@@ -235,7 +235,7 @@ struct OrderHistoryItemStatusView: View {
     var isCanSelect: Bool
     @State
     var order: OrderHistory = .init()
-    
+
     var body: some View {
         ZStack {
             VStack(alignment: .leading, spacing: .xl) {
@@ -283,9 +283,9 @@ struct OrderHistoryItemStatusView: View {
                                 .font(.labelSmallSecondary)
                                 .foregroundStyle(isCanSelect ? .colorBaseTent : .colorInteractiveTentPrimaryDisable)
                                 .lineLimit(1)
-                            
+
                             let (name, bgColor) = source.nameAndBackgroundColorPlus
-                            
+
                             if let name = name, let bgColor = bgColor {
                                 Text(name)
                                     .font(.paragraphXSemiSmall)

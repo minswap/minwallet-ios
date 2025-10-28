@@ -7,11 +7,11 @@ struct ChangePasswordView: View {
         case setting
         case walletSetting
     }
-    
+
     enum FocusedField: Hashable {
         case oldPassword, password, rePassword
     }
-    
+
     @EnvironmentObject
     var navigator: FlowNavigator<MainCoordinatorViewModel.Screen>
     @EnvironmentObject
@@ -34,7 +34,7 @@ struct ChangePasswordView: View {
     private var currentPassword: String = ""
     @State
     var screenType: ScreenType
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("Change your password")
@@ -186,7 +186,7 @@ struct ChangePasswordView: View {
                     } catch {
                         bannerState.showBannerError(error.localizedDescription)
                     }
-                    
+
                 }
                 .frame(height: 56)
                 .padding(.horizontal, .xl)

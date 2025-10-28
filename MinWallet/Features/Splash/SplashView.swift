@@ -6,10 +6,10 @@ import UIKit
 struct SplashView: View {
     @State private var scale = 0.7
     @State private var isActive: Bool = false
-    
+
     @EnvironmentObject
     private var appSetting: AppSetting
-    
+
     var body: some View {
         GeometryReader { geo in
             ZStack {

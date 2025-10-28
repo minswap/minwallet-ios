@@ -8,7 +8,7 @@ struct SwapTokenView: View {
         case pay
         case receive
     }
-    
+
     @EnvironmentObject
     private var navigator: FlowNavigator<MainCoordinatorViewModel.Screen>
     @EnvironmentObject
@@ -29,19 +29,19 @@ struct SwapTokenView: View {
     var content: LocalizedStringKey = ""
     @State
     var title: LocalizedStringKey = ""
-    
+
     @State
     private var swapSettingCached: SwapTokenSetting = .init()
     @State
     private var excludedPoolsCached: [String: AggregatorSource] = [:]
-    
+
     init(viewModel: SwapTokenViewModel) {
         viewModel.swapSetting.excludedPools = [.MuesliSwap]
         self._excludedPoolsCached = .init(wrappedValue: [AggregatorSource.MuesliSwap.rawId: .MuesliSwap])
         self._swapSettingCached = .init(wrappedValue: viewModel.swapSetting)
         _viewModel = .init(wrappedValue: viewModel)
     }
-    
+
     var body: some View {
         VStack(spacing: 0) {
             ScrollView {
@@ -70,7 +70,7 @@ struct SwapTokenView: View {
         .toolbar {
             ToolbarItemGroup(placement: .keyboard) {
                 Spacer()
-                
+
                 Button("Done") {
                     hideKeyboard()
                 }
@@ -185,7 +185,7 @@ struct SwapTokenView: View {
             viewModel?.unsubscribeCombine()
         }
     }
-    
+
     @ViewBuilder
     private var contentView: some View {
         tokenPayView
@@ -203,7 +203,7 @@ struct SwapTokenView: View {
         routingView
         warningView
     }
-    
+
     @ViewBuilder
     private var tokenPayView: some View {
         VStack(alignment: .leading, spacing: 4) {
@@ -290,7 +290,7 @@ struct SwapTokenView: View {
         .padding(.horizontal, .xl)
         .padding(.top, .lg)
     }
-    
+
     @ViewBuilder
     private var tokenReceiveView: some View {
         VStack(alignment: .leading, spacing: 4) {
@@ -362,7 +362,7 @@ struct SwapTokenView: View {
         .padding(.horizontal, .xl)
         .padding(.top, .xs)
     }
-    
+
     @ViewBuilder
     private var routingView: some View {
         if viewModel.iosTradeEstimate != nil {
@@ -400,7 +400,7 @@ struct SwapTokenView: View {
             }
         }
     }
-    
+
     @ViewBuilder
     private var bottomView: some View {
         let payAmount = viewModel.tokenPay.amount.doubleValue
@@ -486,7 +486,7 @@ struct SwapTokenView: View {
             }
         }
     }
-    
+
     @ViewBuilder
     private var warningView: some View {
         if !viewModel.warningInfo.isEmpty {
@@ -509,7 +509,7 @@ struct SwapTokenView: View {
             .padding(.top, .md)
         }
     }
-    
+
     private func processingSwapToken() {
         hideKeyboard()
         guard !viewModel.isGettingTradeInfo, viewModel.errorInfo == nil, viewModel.iosTradeEstimate != nil else { return }
@@ -530,7 +530,7 @@ struct SwapTokenView: View {
             }
         }
     }
-    
+
     private func swapTokenSuccess() {
         Task {
             do {
@@ -564,12 +564,12 @@ struct WarningItemView: View {
     let waringInfo: SwapTokenViewModel.WarningInfo
     @Binding
     var isExpand: Bool
-    
+
     init(waringInfo: SwapTokenViewModel.WarningInfo, isExpand: Binding<Bool>) {
         self.waringInfo = waringInfo
         self._isExpand = isExpand
     }
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack(spacing: Spacing.md) {

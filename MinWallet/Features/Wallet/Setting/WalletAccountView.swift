@@ -21,7 +21,7 @@ struct WalletAccountView: View {
     private var isCopyAddress: Bool = false
     @Environment(\.colorScheme)
     private var colorScheme: ColorScheme
-    
+
     var body: some View {
         VStack(spacing: 0) {
             ZStack {
@@ -30,7 +30,7 @@ struct WalletAccountView: View {
                     .scaledToFit()
                     .frame(width: 96, height: 96)
                     .clipShape(Circle())
-                
+
                 if isVerified {
                     Image(.icSubAvatar)
                         .resizable()

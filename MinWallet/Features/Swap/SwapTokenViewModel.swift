@@ -7,10 +7,10 @@ import SwiftyJSON
 
 @MainActor
 class SwapTokenViewModel: ObservableObject {
-    
+
     //10s call estimate
     private static let TIME_INTERVAL: Int = 10
-    
+
     private let functionalToken: String = "a04ce7a52545e5e33c2867e148898d9e667a69602285f6a1298f9d68"
     private let functionalName: String = "Liqwid Finance"
     private let migrateTokens = [
@@ -23,7 +23,7 @@ class SwapTokenViewModel: ObservableObject {
                 tName: "4d454c44")
         )
     ]
-    
+
     @Published
     var tokenPay: WrapTokenSend
     @Published
@@ -38,7 +38,7 @@ class SwapTokenViewModel: ObservableObject {
     var isShowSelectReceiveToken: Bool = false
     @Published
     var isShowCustomizedRoute: Bool = false
-    
+
     @Published
     var warningInfo: [WarningInfo] = []
     @Published
@@ -57,21 +57,21 @@ class SwapTokenViewModel: ObservableObject {
     var errorInfo: ErrorInfo? = nil
     @Published
     var understandingWarning: Bool = false
-    
+
     @Published
     var selectTokenVM: SelectTokenViewModel = .init(screenType: .swapToken, sourceScreenType: .normal)
     @Published
     var isShowSelectToken: Bool = false
     var isSelectTokenPay: Bool = true
-    
+
     let action: PassthroughSubject<Action, Never> = .init()
     private var cancellables: Set<AnyCancellable> = []
-    
+
     var bannerState: BannerState = .init()
-    
+
     private var workItem: DispatchWorkItem?
     private var tradeInfoTask: Task<(), any Error>?
-    
+
     init(tokenReceive: TokenProtocol?) {
         tokenPay = WrapTokenSend(token: TokenManager.shared.tokenAda)
         if let tokenReceive = tokenReceive {
@@ -85,11 +85,11 @@ class SwapTokenViewModel: ObservableObject {
             let minToken = TokenManager.shared.yourTokens?.assets.first(where: { $0.uniqueID == minTokenDefault.uniqueID })
             self.tokenReceive = WrapTokenSend(token: minToken ?? minTokenDefault)
         }
-        
+
         subscribeCombine()
         action.send(.getTradingInfo)
     }
-    
+
     func subscribeCombine() {
         unsubscribeCombine()
         action
@@ -100,7 +100,7 @@ class SwapTokenViewModel: ObservableObject {
                         try await self.handleAction(action)
                     } catch {
                         self.iosTradeEstimate = nil
-                        
+
                         self.bannerState.showBannerError(error.rawError)
                     }
                 }
@@ -129,14 +129,14 @@ class SwapTokenViewModel: ObservableObject {
             .subscribe(action)
             .store(in: &cancellables)
     }
-    
+
     func unsubscribeCombine() {
         cancellables.forEach({ $0.cancel() })
         cancellables = []
         tradeInfoTask?.cancel()
         workItem?.cancel()
     }
-    
+
     private func handleAction(_ action: Action) async throws {
         switch action {
         case .resetSwap:
@@ -159,17 +159,17 @@ class SwapTokenViewModel: ObservableObject {
             let tempToken = tokenPay
             isSwapExactIn = true
             var isForceGetTradingInfo: Bool = false
-            
+
             if tokenPay.amount.doubleValue == 0 {
                 isForceGetTradingInfo = true
             }
-            
+
             tokenPay = tokenReceive
             tokenPay.amount = ""
             tokenReceive = tempToken
             tokenReceive.amount = ""
             isConvertRate = false
-            
+
             if isForceGetTradingInfo {
                 self.action.send(.getTradingInfo)
             }
@@ -228,7 +228,7 @@ class SwapTokenViewModel: ObservableObject {
                 tokenReceive.token = tokenReceiveChange
                 isReloadSelectToken = true
             }
-            
+
             if isReloadSelectToken {
                 selectTokenVM.getTokens()
                 generateErrorInfo()
@@ -248,11 +248,11 @@ class SwapTokenViewModel: ObservableObject {
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(Self.TIME_INTERVAL), execute: workItem!)
         }
     }
-    
+
     @MainActor
     private func generateWarningInfo() async {
         var warningInfo: [WarningInfo] = []
-        
+
         if let priceImpact = iosTradeEstimate?.avgPriceImpact, priceImpact >= 5 {
             warningInfo.append(.highPriceImpact(percent: "5"))
         }
@@ -277,22 +277,22 @@ class SwapTokenViewModel: ObservableObject {
         if let migrate = migrateTokens.first(where: { (old, new) in old.currencySymbol == tokenReceive.currencySymbol }) {
             warningInfo.append(.tokenPayMigration(projectName: tokenReceive.token.projectName, tokenName: migrate.new.adaName, policyId: migrate.new.currencySymbol))
         }
-        
+
         if !tokenPay.token.hasMetaData {
             warningInfo.append(.unregisteredTokenPay(policyID: tokenPay.currencySymbol))
         }
-        
+
         if !tokenReceive.token.hasMetaData {
             warningInfo.append(.unregisteredTokenReceive(policyID: tokenReceive.currencySymbol))
         }
-        
+
         if tokenPay.token.decimals == 0 || tokenReceive.token.decimals == 0 {
             warningInfo.append(.indivisibleToken)
         }
         self.warningInfo = warningInfo
         self.isExpand = [:]
     }
-    
+
     @MainActor
     private func generateErrorInfo() {
         let payAmount = tokenPay.amount.doubleValue
@@ -308,7 +308,7 @@ class SwapTokenViewModel: ObservableObject {
             }
         }
     }
-    
+
     private func getTradingInfo(amount: Double) {
         workItem?.cancel()
         tradeInfoTask?.cancel()
@@ -320,7 +320,7 @@ class SwapTokenViewModel: ObservableObject {
                         self.isGettingTradeInfo = true
                     }
                 }
-                
+
                 let amount = amount * pow(10, Double(isSwapExactIn ? tokenPay.token.decimals : tokenReceive.token.decimals))
                 let request = EstimationRequest()
                     .with {
@@ -331,7 +331,7 @@ class SwapTokenViewModel: ObservableObject {
                         $0.exclude_protocols = self.swapSetting.excludedPools
                         $0.amount_in_decimal = false
                     }
-                
+
                 let info: EstimationResponse?
                 if amount > 0 {
                     do {
@@ -342,19 +342,19 @@ class SwapTokenViewModel: ObservableObject {
                         if Task.isCancelled { return }
                         info = nil
                         self.workItem?.cancel()
-                        
+
                         await self.processResultTradingInfo(info: info)
-                        
+
                         throw error
                     }
                 } else {
                     info = nil
                 }
-                
+
                 try Task.checkCancellation()
-                
+
                 await self.processResultTradingInfo(info: info)
-                
+
                 await MainActor.run {
                     self.action.send(.startTimeInterval)
                 }
@@ -367,7 +367,7 @@ class SwapTokenViewModel: ObservableObject {
             }
         }
     }
-    
+
     private func processResultTradingInfo(info: EstimationResponse?) async {
         await MainActor.run {
             self.iosTradeEstimate = info
@@ -379,21 +379,21 @@ class SwapTokenViewModel: ObservableObject {
                 self.tokenPay.amount = outputAmount == 0 ? "" : outputAmount.formatSNumber(maximumFractionDigits: self.tokenReceive.token.decimals)
             }
         }
-        
+
         await generateWarningInfo()
         generateErrorInfo()
-        
+
         await MainActor.run {
             withAnimation {
                 self.isGettingTradeInfo = false
             }
         }
     }
-    
+
     func swapToken() async throws -> String {
         guard let iosTradeEstimate = iosTradeEstimate else { return "" }
         guard let address: String = UserInfo.shared.minWallet?.address else { throw AppGeneralError.localErrorLocalized(message: "Wallet not found") }
-        
+
         let estimate = BuildTxRequest.Estimate()
             .with {
                 $0.amount = iosTradeEstimate.amountIn
@@ -403,7 +403,7 @@ class SwapTokenViewModel: ObservableObject {
                 $0.exclude_protocols = swapSetting.excludedPools
                 $0.partner = ""
             }
-        
+
         let request = BuildTxRequest()
             .with {
                 $0.sender = address
@@ -411,17 +411,17 @@ class SwapTokenViewModel: ObservableObject {
                 $0.amount_in_decimal = iosTradeEstimate.amountInDecimal
                 $0.estimate = estimate
             }
-        
+
         let jsonData = try await SwapTokenAPIRouter.buildTX(request: request).async_request()
         try APIRouterCommon.parseDefaultErrorMessage(jsonData)
         guard let tx = jsonData["cbor"].string, !tx.isEmpty else { throw AppGeneralError.localErrorLocalized(message: "Transaction not found") }
         return tx
     }
-    
+
     var minimumMaximumAmount: Double {
         iosTradeEstimate?.minAmountOut.gkDoubleValue ?? 0
     }
-    
+
     var enableSwap: Bool {
         if !understandingWarning && showUnderstandingCheckbox {
             return false
@@ -429,14 +429,14 @@ class SwapTokenViewModel: ObservableObject {
         if errorInfo != nil {
             return false
         }
-        
+
         if tokenPay.amount.doubleValue.isZero || tokenReceive.amount.doubleValue.isZero {
             return false
         }
-        
+
         return true
     }
-    
+
     var showUnderstandingCheckbox: Bool {
         let warningInfo = warningInfo.filter { warning in
             switch warning {
@@ -446,7 +446,7 @@ class SwapTokenViewModel: ObservableObject {
                 return true
             }
         }
-        
+
         return !warningInfo.isEmpty
     }
 }
@@ -495,7 +495,7 @@ extension SwapTokenViewModel {
         case unregisteredTokenReceive(policyID: String)
         ///decimals == 0
         case indivisibleToken
-        
+
         var title: LocalizedStringKey {
             switch self {
             case .highPriceImpact:
@@ -516,7 +516,7 @@ extension SwapTokenViewModel {
                 "Indivisible Token"
             }
         }
-        
+
         var content: LocalizedStringKey {
             switch self {
             case let .highPriceImpact(percent):
@@ -540,11 +540,11 @@ extension SwapTokenViewModel {
             }
         }
     }
-    
+
     enum ErrorInfo {
         case insufficientBalance(name: String)
         case notEnoughAmountInPool(name: String)
-        
+
         var content: LocalizedStringKey {
             switch self {
             case let .insufficientBalance(name):

@@ -11,7 +11,7 @@ struct CreateNewPasswordView: View {
     enum FocusedField: Hashable {
         case password, rePassword
     }
-    
+
     @EnvironmentObject
     private var navigator: FlowNavigator<MainCoordinatorViewModel.Screen>
     @EnvironmentObject
@@ -22,22 +22,22 @@ struct CreateNewPasswordView: View {
     private var hudState: HUDState
     @EnvironmentObject
     private var bannerState: BannerState
-    
+
     @State
     private var password: String = ""
     @State
     private var rePassword: String = ""
     @FocusState
     private var focusedField: FocusedField?
-    
+
     @State
     var screenType: ScreenType
-    
+
     var onCreatePasswordSuccess: ((String) -> Void)?
-    
+
     @State
     private var passwordValidationMatched: [PasswordValidation] = []
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("Create your password")
@@ -119,7 +119,7 @@ struct CreateNewPasswordView: View {
                     }
                 }
             }
-            
+
             Spacer()
             let combinedBinding = Binding<Bool>(
                 get: { (passwordValidationMatched.count == PasswordValidation.allCases.count) && (password == rePassword) },
@@ -160,7 +160,7 @@ struct CreateNewPasswordView: View {
                         try AppSetting.savePasswordToKeychain(username: AppSetting.USER_NAME, password: password)
                         appSetting.authenticationType = .password
                         appSetting.isLogin = true
-                        
+
                         userInfo.saveWalletInfo(walletInfo: wallet)
                         navigator.push(.restoreWallet(.createNewWalletSuccess))
                     } catch {

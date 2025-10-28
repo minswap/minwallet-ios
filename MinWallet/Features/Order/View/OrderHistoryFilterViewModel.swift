@@ -19,9 +19,9 @@ class OrderHistoryFilterViewModel: ObservableObject {
     var showSelectFromDate: Bool = false
     @Published
     var showSelectToDate: Bool = false
-    
+
     init() {}
-    
+
     func bindData(vm: OrderHistoryViewModel) {
         let input = vm.input
         filterSourceSelected = input.filterSource

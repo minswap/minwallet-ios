@@ -5,16 +5,16 @@ import UIKit
 struct CustomTextField: View {
     @Binding var text: String
     @Binding var enableTextView: Bool
-    
+
     let font: UIFont
     let textColor: UIColor
-    
+
     let placeHolderTextColor: UIColor
     let placeHolderText: LocalizedStringKey
-    
+
     @State private var dynamicHeight: CGFloat = 44
     private var onCommit: (() -> Void)?
-    
+
     init(
         text: Binding<String>,
         enableTextView: Binding<Bool>,
@@ -32,7 +32,7 @@ struct CustomTextField: View {
         self.placeHolderText = placeHolderText
         self.onCommit = onCommit
     }
-    
+
     var body: some View {
         UITextViewWrapper(
             text: $text,
@@ -51,16 +51,16 @@ struct CustomTextField: View {
 private struct UITextViewWrapper: UIViewRepresentable {
     @Binding var text: String
     @Binding var enableTextView: Bool
-    
+
     let font: UIFont
     let textColor: UIColor
-    
+
     let placeHolderTextColor: UIColor
     let placeHolderText: LocalizedStringKey
-    
+
     @Binding var calculatedHeight: CGFloat
     var onDone: (() -> Void)?
-    
+
     func makeUIView(context: Context) -> UITextView {
         let textView = UITextView()
         textView.delegate = context.coordinator
@@ -79,28 +79,28 @@ private struct UITextViewWrapper: UIViewRepresentable {
         placeholderLabel.adjustsFontForContentSizeCategory = true
         placeholderLabel.translatesAutoresizingMaskIntoConstraints = false
         textView.addSubview(placeholderLabel)
-        
+
         NSLayoutConstraint.activate([
             placeholderLabel.leadingAnchor.constraint(equalTo: textView.leadingAnchor, constant: 5),
             placeholderLabel.trailingAnchor.constraint(equalTo: textView.trailingAnchor, constant: -5),
             placeholderLabel.topAnchor.constraint(equalTo: textView.topAnchor, constant: 8),
         ])
-        
+
         placeholderLabel.tag = 999  // Use a tag to identify the placeholder
         placeholderLabel.isHidden = !text.isEmpty  // Show or hide based on the initial text
-        
+
         textView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-        
+
         return textView
     }
-    
+
     func updateUIView(_ uiView: UITextView, context: Context) {
         uiView.text = text
         uiView.isUserInteractionEnabled = enableTextView
         updatePlaceholder(uiView)
         UITextViewWrapper.recalculateHeight(view: uiView, result: $calculatedHeight)
     }
-    
+
     fileprivate static func recalculateHeight(view: UIView, result: Binding<CGFloat>) {
         let newSize = view.sizeThatFits(CGSize(width: view.frame.size.width, height: CGFloat.greatestFiniteMagnitude))
         if result.wrappedValue != newSize.height {
@@ -109,28 +109,28 @@ private struct UITextViewWrapper: UIViewRepresentable {
             }
         }
     }
-    
+
     func makeCoordinator() -> Coordinator {
         Coordinator(self, height: $calculatedHeight, onDone: onDone)
     }
-    
+
     class Coordinator: NSObject, UITextViewDelegate {
         var parent: UITextViewWrapper
         var calculatedHeight: Binding<CGFloat>
         var onDone: (() -> Void)?
-        
+
         init(_ parent: UITextViewWrapper, height: Binding<CGFloat>, onDone: (() -> Void)?) {
             self.parent = parent
             self.calculatedHeight = height
             self.onDone = onDone
         }
-        
+
         func textViewDidChange(_ textView: UITextView) {
             parent.text = textView.text
             parent.updatePlaceholder(textView)
             UITextViewWrapper.recalculateHeight(view: textView, result: calculatedHeight)
         }
-        
+
         func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
             if text == "\n" {
                 onDone?()
@@ -140,7 +140,7 @@ private struct UITextViewWrapper: UIViewRepresentable {
             return true
         }
     }
-    
+
     func updatePlaceholder(_ textView: UITextView) {
         if let placeholderLabel = textView.viewWithTag(999) as? UILabel {
             placeholderLabel.isHidden = !text.isEmpty

@@ -25,11 +25,11 @@ struct MinWalletConstant {
     static let minAssetURL = GetInfoDictionaryString(for: "MIN_ASSET_URL", true)
     static let minAggURL = GetInfoDictionaryString(for: "MIN_AGG_URL", true)
     static let minLockAggSource = Bundle.main.boolValue(forInfoPlistKey: "MIN_LOCK_AGGREGATOR_SOURCE")
-    
+
     private init() {
-        
+
     }
-    
+
 }
 
 
@@ -46,7 +46,7 @@ private func GetInfoDictionaryString(for key: String, _ removingBackslashes: Boo
 extension Bundle {
     func boolValue(forInfoPlistKey key: String, default defaultValue: Bool = false) -> Bool {
         guard let value = object(forInfoDictionaryKey: key) else { return defaultValue }
-        
+
         if let num = value as? NSNumber {
             return num.boolValue
         }

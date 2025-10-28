@@ -11,7 +11,7 @@ struct EstimationRequest: Then {
     var exclude_protocols: [AggregatorSource] = []
     var allow_multi_hops: Bool = true
     var amount_in_decimal: Bool = false
-    
+
     init() {}
 }
 
@@ -30,11 +30,11 @@ struct EstimationResponse: Mappable, Then {
     var paths: [[SwapPath]] = []
     var amountInDecimal: Bool = false
     var percents: [Double] = []
-    
+
     init() {}
-    
+
     init?(map: Map) {}
-    
+
     mutating func mapping(map: Map) {
         tokenIn <- map["token_in"]
         tokenOut <- map["token_out"]
@@ -48,10 +48,10 @@ struct EstimationResponse: Mappable, Then {
         avgPriceImpact <- (map["avg_price_impact"], GKMapFromJSONToDouble)
         paths <- map["paths"]
         amountInDecimal <- map["amount_in_decimal"]
-        
+
         calculatePercentSwapPath()
     }
-    
+
     private mutating func calculatePercentSwapPath() {
         let totalAmountIn = max(amountIn.gkDoubleValue, 1)
         percents = paths.map({ path in
@@ -59,7 +59,7 @@ struct EstimationResponse: Mappable, Then {
             let percent = ((amountIn / totalAmountIn) * 100)
             return Double(round(100 * percent) / 100)
         })
-        
+
         let tempPercents: Double = percents.dropLast().reduce(0, +)
         for (index, _) in percents.enumerated() where index == percents.count - 1 {
             percents[index] = 100 - tempPercents
@@ -69,7 +69,7 @@ struct EstimationResponse: Mappable, Then {
 
 struct SwapPath: Mappable, Identifiable {
     var id: UUID = .init()
-    
+
     var lpToken: String = ""
     var tokenIn: String = ""
     var tokenOut: String = ""
@@ -82,11 +82,11 @@ struct SwapPath: Mappable, Identifiable {
     var priceImpact: Double = 0.0
     var poolId: String = ""
     var source: AggregatorSource = .Minswap
-    
+
     init() {}
-    
+
     init?(map: Map) {}
-    
+
     mutating func mapping(map: Map) {
         lpToken <- map["lp_token"]
         tokenIn <- map["token_in"]
@@ -106,6 +106,6 @@ struct SwapPath: Mappable, Identifiable {
                 return AggregatorSource(rawId: stringValue)
             })
         )
-        
+
     }
 }

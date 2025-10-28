@@ -19,7 +19,7 @@ struct AuthenticationSettingView: View {
     private var isFocus: Bool
     @State
     private var authenticationTypeSelected: AppSetting.AuthenticationType = .password
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("Authentication")

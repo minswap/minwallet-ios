@@ -17,7 +17,7 @@ struct RestoreWalletImportFileView: View {
     private var fileSize: String = "0KB"
     @State
     private var fileContent: String = ""
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("Import file")
@@ -27,7 +27,7 @@ struct RestoreWalletImportFileView: View {
                 .padding(.top, .lg)
                 .padding(.bottom, .xl)
                 .padding(.horizontal, .xl)
-            
+
             if let fileURL = fileURL {
                 HStack(spacing: 8) {
                     Image(.icSelectFileImport)
@@ -127,17 +127,17 @@ struct RestoreWalletImportFileView: View {
             }
         }
     }
-    
+
     private func formatFileSize(bytes: Int64) -> String {
         let units = ["bytes", "KB", "MB", "GB", "TB"]
         var value = Double(bytes)
         var index = 0
-        
+
         while value >= 1024 && index < units.count - 1 {
             value /= 1024
             index += 1
         }
-        
+
         return String(format: "%.0f%@", value, units[index])
     }
 }

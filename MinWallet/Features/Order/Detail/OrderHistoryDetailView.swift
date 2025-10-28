@@ -29,7 +29,7 @@ struct OrderHistoryDetailView: View {
     private var showCancelOrderList: Bool = false
     @State
     private var isShowSignContract: Bool = false
-    
+
     //Cancel
     @State
     var ordersCancel: [OrderHistory] = []
@@ -37,7 +37,7 @@ struct OrderHistoryDetailView: View {
     private var orderCancelSelected: [String: OrderHistory] = [:]
     @State
     private var orderCancelCanSelect: [String: OrderHistory] = [:]
-    
+
     ///Show popover
     @State
     private var popoverTarget: UUID?
@@ -48,13 +48,13 @@ struct OrderHistoryDetailView: View {
     @State
     private var workItem: DispatchWorkItem?
     private let uuidAggSource = UUID()
-    
+
     private var hasOnlyOneOrderCancel: Bool {
         wrapOrder.orders.count == 1 && wrapOrder.orders.first?.status == .created
     }
-    
+
     var onReloadOrder: (() -> Void)?
-    
+
     var body: some View {
         VStack(spacing: 0) {
             ZStack {
@@ -171,7 +171,7 @@ struct OrderHistoryDetailView: View {
             .onTapGesture {
                 popoverTarget = nil
             }
-            
+
             if wrapOrder.status == .created {
                 Spacer()
                 HStack(spacing: .xl) {
@@ -235,7 +235,7 @@ struct OrderHistoryDetailView: View {
             )
         }
     }
-    
+
     private var tokenView: some View {
         HStack(spacing: .xs) {
             let inputs = wrapOrder.inputAsset
@@ -307,7 +307,7 @@ struct OrderHistoryDetailView: View {
                     }
                 }
             }
-            
+
             Spacer()
             Text(wrapOrder.orderType.title)
                 .font(.labelMediumSecondary)
@@ -336,7 +336,7 @@ struct OrderHistoryDetailView: View {
         }
         .frame(height: 40)
     }
-    
+
     private var inputInfoView: some View {
         HStack(alignment: .timelineAlignment, spacing: .xl) {
             VStack(spacing: 0) {
@@ -427,7 +427,7 @@ struct OrderHistoryDetailView: View {
             }
         }
     }
-    
+
     private var executeInfoView: some View {
         HStack(alignment: .timelineAlignment, spacing: .xl) {
             VStack(spacing: 0) {
@@ -639,7 +639,7 @@ struct OrderHistoryDetailView: View {
                         }
                         .padding(.vertical, .md)
                     }
-                    
+
                     if order.detail.orderType == .limit, let input = order.input, let output = order.output, order.detail.minimumAmount > 0 {
                         HStack(spacing: 4) {
                             Text("Limit price")
@@ -742,7 +742,7 @@ struct OrderHistoryDetailView: View {
             .padding(.bottom, .xl)
         }
     }
-    
+
     private var outputInfoView: some View {
         HStack(alignment: .timelineAlignment, spacing: .xl) {
             VStack(spacing: 0) {
@@ -888,26 +888,26 @@ struct OrderHistoryDetailView: View {
             }
         }
     }
-    
+
     private func cancelOrder() async throws -> String? {
         var orders: [OrderHistory] = hasOnlyOneOrderCancel ? wrapOrder.orders : orderCancelSelected.map({ _, value in value })
         let jsonData = try await OrderAPIRouter.cancelOrder(address: userInfo.minWallet?.address ?? "", orders: orders).async_request()
         try APIRouterCommon.parseDefaultErrorMessage(jsonData)
-        
+
         guard let tx = jsonData["cbor"].string, !tx.isEmpty else { throw AppGeneralError.localErrorLocalized(message: "Transaction not found") }
         let finalID = try await TokenManager.finalizeAndSubmitV2(txRaw: tx)
-        
+
         orders = await OrderHistoryViewModel.getOrders(orders: orders)
         let wrapOrders = wrapOrder.orders.map({ history in
             orders.first { $0.id == history.id } ?? history
         })
-        
+
         self.wrapOrder = .init(orders: wrapOrders, key: self.wrapOrder.id)
         self.order = orders.first(where: { $0.id == self.order.id }) ?? self.order
-        
+
         return finalID
     }
-    
+
     private func authenticationSuccess() {
         Task {
             do {
@@ -927,7 +927,7 @@ struct OrderHistoryDetailView: View {
             }
         }
     }
-    
+
     @ViewBuilder
     private var ordersStateInfo: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -975,7 +975,7 @@ fileprivate extension VerticalAlignment {
             context[.top]
         }
     }
-    
+
     static let timelineAlignment = VerticalAlignment(TimelineAlignment.self)
 }
 
@@ -1005,13 +1005,13 @@ extension OrderHistoryDetailView {
                 .zIndex(1)
         }
     }
-    
+
     private func showPopover(target: UUID, protocolName: String) {
         workItem?.cancel()
         workItem = DispatchWorkItem(block: {
             self.popoverTarget = nil
         })
-        
+
         if popoverTarget != nil {
             popoverTarget = nil
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {

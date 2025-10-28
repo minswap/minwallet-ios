@@ -10,33 +10,33 @@ protocol APIRouter: Alamofire.URLRequestConvertible {
     func method() -> Alamofire.HTTPMethod
     func parameters() -> Alamofire.Parameters
     func encoding() -> ParameterEncoding
-    
+
     func domainAdapter() -> DomainAdapter?
     func domainHeadersContext() -> DomainHeadersContext?
-    
+
     func domainAuthRetrier() -> GDomainAuthRetrier?
 }
 
 extension APIRouter {
-    
+
     // MARK: default API
     var defaultEncoding: ParameterEncoding {
         (method() == .get)
             ? URLEncoding.default
             : JSONEncoding.default
     }
-    
+
     var defaultFullURL: String {
         baseUrl().appending(path())
     }
-    
+
     func defaultAsURLRequest() throws -> URLRequest {
         // URL, method, headers
         var urlRequest = try URLRequest(
             url: defaultFullURL,
             method: method(),
             headers: headers())
-        
+
         // parameters
         do {
             let parameters = parameters()
@@ -44,10 +44,10 @@ extension APIRouter {
         } catch {
             print("Encoding fail \(error.localizedDescription)")
         }
-        
+
         return urlRequest
     }
-    
+
     // MARK: adapted API
     var adaptedFullURL: String {
         if let adapter = domainAdapter(),
@@ -56,20 +56,20 @@ extension APIRouter {
         {
             return adapter.baseURLString.appending(path())
         }
-        
+
         return baseUrl().appending(path())
     }
-    
+
     func adaptedHeaders() -> HTTPHeaders {
         if let adapter = domainAdapter() {
             return adapter.adaptHeaders(
                 context: domainHeadersContext(),
                 headers: headers())
         }
-        
+
         return headers()
     }
-    
+
     func adaptedAsURLRequest() throws -> URLRequest {
         var urlRequest: URLRequest = try asURLRequest()
         if let adapter = domainAdapter() {
@@ -83,7 +83,7 @@ extension APIRouter {
                 urlRequest.setValue(header.value, forHTTPHeaderField: header.name)
             }
         }
-        
+
         return urlRequest
     }
 }
@@ -94,12 +94,12 @@ public
 {
     static var logAPIDurationThreshold: TimeInterval? = nil
     static var onLogAPIDuration: ((_ response: AFDataResponse<Data>) -> Void)?
-    
+
     static func parseDefaultErrorMessage(_ jsonData: JSON, alternateMessageIfEmptyError: String = APIRouterError.GenericError) throws {
         if jsonData["error"].exists() {
             let error = jsonData["error"].stringValue
             let message = jsonData["message"].string ?? error
-            
+
             throw APIRouterError.serverError(message: message)
         }
         return
@@ -113,9 +113,9 @@ extension Alamofire.AFDataResponse where Success == Data, Failure == AFError {
             let requestDuration = self.metrics?.taskInterval.duration,
             requestDuration >= threshold
         else { return self }
-        
+
         APIRouterCommon.onLogAPIDuration?(self)
-        
+
         return self
     }
 }
@@ -145,7 +145,7 @@ extension APIRouter {
         .tryMap({ try JSON(data: $0) })
         .result.get()
     }
-    
+
     func async_requestWithManualURLRequest(
         sessionManager: Session = Session.default,
         debugRequest: Bool = false,
@@ -162,7 +162,7 @@ extension APIRouter {
         .tryMap({ try JSON(data: $0) })
         .result.get()
     }
-    
+
     func async_uploadRequest(
         sessionManager: Session = Session.default,
         multipartFormData: @escaping (MultipartFormData) -> Void,
@@ -189,7 +189,7 @@ extension APIRouter {
         .tryMap({ try JSON(data: $0) })
         .result.get()
     }
-    
+
     func async_uploadRequestWithManualURLRequest(
         sessionManager: Session = Session.default,
         multipartFormData: @escaping (MultipartFormData) -> Void,

@@ -7,7 +7,7 @@ struct CreateNewWalletSuccessView: View {
         case newWallet
         case restoreWallet
     }
-    
+
     @EnvironmentObject
     private var navigator: FlowNavigator<MainCoordinatorViewModel.Screen>
     @EnvironmentObject
@@ -16,7 +16,7 @@ struct CreateNewWalletSuccessView: View {
     private var appSetting: AppSetting
     @State
     var screenType: ScreenType = .newWallet
-    
+
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
             Image(.icToken)

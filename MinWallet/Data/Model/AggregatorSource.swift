@@ -3,7 +3,7 @@ import SwiftUI
 
 enum AggregatorSource: Int, CaseIterable, Identifiable, Hashable {
     var id: Int { self.rawValue }
-    
+
     case MinswapV2
     case Minswap
     case MinswapStable
@@ -18,7 +18,7 @@ enum AggregatorSource: Int, CaseIterable, Identifiable, Hashable {
     case WingRidersStableV2
     case MuesliSwap
     case CSwap
-    
+
     var name: LocalizedStringKey {
         switch self {
         case .MinswapV2:
@@ -51,7 +51,7 @@ enum AggregatorSource: Int, CaseIterable, Identifiable, Hashable {
             "CSWAP"
         }
     }
-    
+
     var image: ImageResource {
         switch self {
         case .MinswapV2, .Minswap, .MinswapStable:
@@ -70,7 +70,7 @@ enum AggregatorSource: Int, CaseIterable, Identifiable, Hashable {
             .icCswap
         }
     }
-    
+
     var isLocked: Bool {
         guard MinWalletConstant.minLockAggSource else { return false }
         switch self {
@@ -80,7 +80,7 @@ enum AggregatorSource: Int, CaseIterable, Identifiable, Hashable {
             return false
         }
     }
-    
+
     var rawId: String {
         switch self {
         case .MinswapV2:
@@ -113,7 +113,7 @@ enum AggregatorSource: Int, CaseIterable, Identifiable, Hashable {
             "CswapV1"
         }
     }
-    
+
     public init?(title: String) {
         switch title {
         case AggregatorSource.MinswapV2.name.toString():
@@ -148,7 +148,7 @@ enum AggregatorSource: Int, CaseIterable, Identifiable, Hashable {
             self = .Minswap
         }
     }
-    
+
     public init?(rawId: String) {
         switch rawId {
         case AggregatorSource.MinswapV2.rawId:
@@ -183,7 +183,7 @@ enum AggregatorSource: Int, CaseIterable, Identifiable, Hashable {
             self = .Minswap
         }
     }
-    
+
     var nameLP: String {
         switch self {
         case .Minswap:
@@ -204,11 +204,11 @@ enum AggrSource: String, CaseIterable, Identifiable {
     case DexHunter = "DEX_HUNTER"
     case MuesliSwap = "MUESLISWAP"
     case Cardexscan = "CARDEXSCAN"
-    
+
     var id: String {
         rawValue
     }
-    
+
     var image: ImageResource {
         switch self {
         case .Minswap:
@@ -223,7 +223,7 @@ enum AggrSource: String, CaseIterable, Identifiable {
             .cardexscan
         }
     }
-    
+
     var name: String {
         switch self {
         case .Minswap:
@@ -238,7 +238,7 @@ enum AggrSource: String, CaseIterable, Identifiable {
             return "Cardexscan"
         }
     }
-    
+
     var title: LocalizedStringKey {
         switch self {
         case .Minswap:
@@ -253,7 +253,7 @@ enum AggrSource: String, CaseIterable, Identifiable {
             return "Cardexscan"
         }
     }
-    
+
     public init?(title: String) {
         switch title {
         case AggrSource.Minswap.name:

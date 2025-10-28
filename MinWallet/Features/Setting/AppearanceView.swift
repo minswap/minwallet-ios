@@ -7,7 +7,7 @@ struct AppearanceView: View {
     private var onDismiss
     @Environment(\.colorScheme)
     private var colorScheme: ColorScheme
-    
+
     var body: some View {
         VStack(spacing: 8) {
             VStack(spacing: 0) {
@@ -96,7 +96,7 @@ struct AppearanceView: View {
                                     .aspectRatio(contentMode: .fit)
                                     .frame(width: 16, height: 16)
                             }
-                            
+
                             Text("Light")
                                 .font(.paragraphSmall)
                                 .foregroundStyle(.colorBaseTent)

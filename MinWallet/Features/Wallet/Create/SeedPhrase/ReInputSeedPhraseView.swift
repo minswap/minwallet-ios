@@ -7,7 +7,7 @@ struct ReInputSeedPhraseView: View {
         case createWallet(seedPhrase: [String])
         case restoreWallet
     }
-    
+
     @EnvironmentObject
     private var navigator: FlowNavigator<MainCoordinatorViewModel.Screen>
     @EnvironmentObject
@@ -20,12 +20,12 @@ struct ReInputSeedPhraseView: View {
     private var inputSeedPhrase: String = ""
     @State
     var screenType: ScreenType
-    
+
     private var isValidSeedPhase: Bool {
         guard !inputSeedPhrase.trimmingCharacters(in: .whitespacesAndNewlines).isBlank else { return false }
         return textWarning.toString().isBlank
     }
-    
+
     private var textWarning: LocalizedStringKey {
         let inputSeedPhraseString = inputSeedPhrase.trimmingCharacters(in: .whitespacesAndNewlines)
         let inputSeedPhrase: [String] = inputSeedPhraseString.split(separator: " ").map { String($0) }
@@ -33,34 +33,34 @@ struct ReInputSeedPhraseView: View {
         if seedPhraseCount == 0 { return "" }
         switch screenType {
         case let .createWallet(seedPhrase):
-            
+
             if seedPhraseCount != 24 && seedPhraseCount != 15 && seedPhraseCount != 12 {
                 return "Invalid seed phrase"
             }
-            
+
             if inputSeedPhraseString.lowercased() != seedPhrase.joined(separator: " ").lowercased() {
                 return "Invalid seed phrase"
             }
-            
+
             if !inputSeedPhrase.allSatisfy({ appSetting.bip0039.contains($0.lowercased()) }) {
                 return "Invalid seed phrase"
             }
-            
+
             return ""
 
         case .restoreWallet:
             if seedPhraseCount != 24 && seedPhraseCount != 15 && seedPhraseCount != 12 {
                 return "Invalid seed phrase"
             }
-            
+
             if !inputSeedPhrase.allSatisfy({ appSetting.bip0039.contains($0) }) {
                 return "Invalid seed phrase"
             }
-            
+
             return ""
         }
     }
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("Re-input your seed phrase")
@@ -130,15 +130,15 @@ struct ReInputSeedPhraseView: View {
                     navigator.push(.createWallet(.setupNickName(seedPhrase: seedPhrase)))
                 case .restoreWallet:
                     guard !inputSeedPhrase.trimmingCharacters(in: .whitespacesAndNewlines).isBlank else { return }
-                    
+
                     let seedPhrase = inputSeedPhrase.trimmingCharacters(in: .whitespacesAndNewlines)
-                    
+
                     guard createWallet(phrase: seedPhrase, password: MinWalletConstant.passDefaultForFaceID, networkEnv: MinWalletConstant.networkID, walletName: "MyMinWallet") != nil
                     else {
                         hudState.showMsg(msg: "Invalid seed phrase")
                         return
                     }
-                    
+
                     navigator.push(.restoreWallet(.setupNickName(fileContent: "", seedPhrase: seedPhrase.split(separator: " ").map({ String($0) }))))
                 }
             }

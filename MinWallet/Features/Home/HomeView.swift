@@ -32,7 +32,7 @@ struct HomeView: View {
     private var isPresentAlertPermission: Bool = false
     @State
     private var openAppSetting: Bool = false
-    
+
     var body: some View {
         ZStack {
             Color.colorBaseBackground.ignoresSafeArea()
@@ -133,7 +133,7 @@ struct HomeView: View {
             }
         }
     }
-    
+
     private var headerView: some View {
         HStack(spacing: .md) {
             ZStack {
@@ -142,7 +142,7 @@ struct HomeView: View {
                     .scaledToFit()
                     .frame(width: 40, height: 40)
                     .clipShape(Circle())
-                
+
                 Image(.icSubAvatar)
                     .resizable()
                     .frame(width: 14, height: 14)
@@ -205,7 +205,7 @@ struct HomeView: View {
                 }
             }
             .padding(.leading, .xs)
-            
+
             Spacer(minLength: 0)
             Image(.icQrCode)
                 .resizable()
@@ -240,7 +240,7 @@ struct HomeView: View {
         .padding(.top, .xs)
         .padding(.bottom, .md)
     }
-    
+
     private var walletAddressView: some View {
         VStack(alignment: .leading, spacing: 4) {
             let prefix: String = appSetting.currency == Currency.usd.rawValue ? Currency.usd.prefix : ""
@@ -293,7 +293,7 @@ struct HomeView: View {
         .padding(.top, .lg)
         .padding(.bottom, .lg)
     }
-    
+
     @ViewBuilder
     private var bannerAndActionView: some View {
         HStack(spacing: Spacing.md) {
@@ -331,11 +331,11 @@ struct HomeView: View {
             .padding(.horizontal, Spacing.xl)
          */
     }
-    
+
     private func handleIncomingURL(_ url: URL) {
         //guard url.scheme == MinWalletConstant.minswapScheme else { return }
         guard let components = URLComponents(url: url, resolvingAgainstBaseURL: true) else { return }
-        
+
         switch components.path {
         case "/orders":
             guard let orderID = components.queryItems?.first(where: { $0.name == "s" })?.value
@@ -343,7 +343,7 @@ struct HomeView: View {
                 navigator.push(.orderHistory)
                 return
             }
-            
+
             fetchOrderDetail(
                 order: orderID,
                 fallback: {
@@ -364,7 +364,7 @@ extension HomeView {
                     $0.ownerAddress = address
                     $0.txId = order
                 }
-            
+
             do {
                 let jsonData = try await OrderAPIRouter.getOrders(request: input).async_request()
                 let orders = Mapper<OrderHistory>().gk_mapArrayOrNull(JSONObject: JSON(jsonData)["orders"].arrayValue)
@@ -393,7 +393,7 @@ extension UINavigationController: @retroactive UIGestureRecognizerDelegate {
         super.viewDidLoad()
         interactivePopGestureRecognizer?.delegate = self
     }
-    
+
     public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         if AppSetting.shared.swipeEnabled {
             return viewControllers.count > 1

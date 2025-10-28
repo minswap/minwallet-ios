@@ -4,7 +4,7 @@ import LocalAuthentication
 
 class BiometricAuthentication {
     private let context = LAContext()
-    
+
     private var loginReason: LocalizedStringKey {
         switch biometricType {
         case .touchID:
@@ -21,7 +21,7 @@ class BiometricAuthentication {
             return ""
         }
     }
-    
+
     var displayName: LocalizedStringKey {
         switch biometricType {
         case .touchID:
@@ -38,21 +38,21 @@ class BiometricAuthentication {
             return ""
         }
     }
-    
+
     var biometricType: LABiometryType {
         canEvaluatePolicy()
-        
+
         return context.biometryType
     }
-    
+
     init() {}
-    
+
     @discardableResult
     func canEvaluatePolicy() -> Bool {
         var error: NSError?
         return context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error)
     }
-    
+
     private func authenticateUser(completion: @escaping ((_ error: LAError?) -> Void)) {
         context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: self.loginReason.toString()) { (success, error) in
             DispatchQueue.main.async {
@@ -60,12 +60,12 @@ class BiometricAuthentication {
                     completion(nil)
                     return
                 }
-                
+
                 completion(laError)
             }
         }
     }
-    
+
     func authenticateUser() async throws {
         try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
             self.authenticateUser { error in

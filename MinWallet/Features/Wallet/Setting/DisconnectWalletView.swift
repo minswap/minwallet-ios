@@ -15,7 +15,7 @@ struct DisconnectWalletView: View {
     private var conditionTwo: Bool = false
     @Environment(\.partialSheetDismiss)
     var onDismiss
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("Disconnect wallet")
@@ -57,7 +57,7 @@ struct DisconnectWalletView: View {
             .onTapGesture {
                 conditionTwo.toggle()
             }
-            
+
             let combinedBinding = Binding<Bool>(
                 get: { conditionOne && conditionTwo },
                 set: { newValue in

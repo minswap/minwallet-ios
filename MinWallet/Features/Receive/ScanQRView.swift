@@ -19,7 +19,7 @@ struct ScanQRView: View {
     private var isPermissionDenied = false
     @State
     private var showAlert = false
-    
+
     var body: some View {
         ZStack {
             if !isPermissionDenied {
@@ -31,10 +31,10 @@ struct ScanQRView: View {
                     Task {
                         if case let .success(result) = response, !isValidatingQR {
                             qrCode = result.string
-                            
+
                             guard let qrCode = qrCode else { return }
                             isValidatingQR = true
-                            
+
                             var isValidAddress = false
                             if !qrCode.hasPrefix(MinWalletConstant.addressPrefix) {
                                 isValidAddress = false
@@ -95,7 +95,7 @@ struct ScanQRView: View {
                         }
                 }
                 Spacer()
-                
+
                 CustomButton(title: "Show my QR") {
                     navigator.push(.receiveToken(.qrCode))
                 }
@@ -120,10 +120,10 @@ struct ScanQRView: View {
         .background(isPermissionDenied ? .colorBaseBackground : .clear)
         .ignoresSafeArea()
     }
-    
+
     private func checkCameraPermission() {
         let cameraAuthorizationStatus = AVCaptureDevice.authorizationStatus(for: .video)
-        
+
         switch cameraAuthorizationStatus {
         case .notDetermined:
             AVCaptureDevice.requestAccess(for: .video) { granted in
@@ -175,10 +175,10 @@ private struct QRScanOverlay: View {
 private struct CornerShape: Shape {
     func path(in rect: CGRect) -> Path {
         var path = Path()
-        
+
         let cornerLength: CGFloat = 35
         let cornerRadius: CGFloat = 16
-        
+
         // Top-left corner
         path.move(to: CGPoint(x: rect.minX, y: rect.minY + cornerLength))
         path.addLine(to: CGPoint(x: rect.minX, y: rect.minY + cornerRadius))
@@ -186,7 +186,7 @@ private struct CornerShape: Shape {
             to: CGPoint(x: rect.minX + cornerRadius, y: rect.minY),
             control: CGPoint(x: rect.minX, y: rect.minY))
         path.addLine(to: CGPoint(x: rect.minX + cornerLength, y: rect.minY))
-        
+
         // Top-right corner
         path.move(to: CGPoint(x: rect.maxX - cornerLength, y: rect.minY))
         path.addLine(to: CGPoint(x: rect.maxX - cornerRadius, y: rect.minY))
@@ -194,7 +194,7 @@ private struct CornerShape: Shape {
             to: CGPoint(x: rect.maxX, y: rect.minY + cornerRadius),
             control: CGPoint(x: rect.maxX, y: rect.minY))
         path.addLine(to: CGPoint(x: rect.maxX, y: rect.minY + cornerLength))
-        
+
         // Bottom-right corner
         path.move(to: CGPoint(x: rect.maxX, y: rect.maxY - cornerLength))
         path.addLine(to: CGPoint(x: rect.maxX, y: rect.maxY - cornerRadius))
@@ -202,7 +202,7 @@ private struct CornerShape: Shape {
             to: CGPoint(x: rect.maxX - cornerRadius, y: rect.maxY),
             control: CGPoint(x: rect.maxX, y: rect.maxY))
         path.addLine(to: CGPoint(x: rect.maxX - cornerLength, y: rect.maxY))
-        
+
         // Bottom-left corner
         path.move(to: CGPoint(x: rect.minX + cornerLength, y: rect.maxY))
         path.addLine(to: CGPoint(x: rect.minX + cornerRadius, y: rect.maxY))
@@ -210,7 +210,7 @@ private struct CornerShape: Shape {
             to: CGPoint(x: rect.minX, y: rect.maxY - cornerRadius),
             control: CGPoint(x: rect.minX, y: rect.maxY))
         path.addLine(to: CGPoint(x: rect.minX, y: rect.maxY - cornerLength))
-        
+
         return path
     }
 }

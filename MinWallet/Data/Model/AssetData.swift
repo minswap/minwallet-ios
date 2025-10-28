@@ -8,11 +8,11 @@ struct AssetData: Mappable, Hashable {
     var is_verified: Bool = false
     var metadata: Metadata?
     var social_links: SocialLinksRaw?
-    
+
     init() {}
-    
+
     init?(map: Map) {}
-    
+
     mutating func mapping(map: Map) {
         currency_symbol <- map["currency_symbol"]
         token_name <- map["token_name"]
@@ -29,11 +29,11 @@ extension AssetData {
         var decimals: Int?
         var description: String?
         var logo: String?
-        
+
         init() {}
-        
+
         init?(map: Map) {}
-        
+
         mutating func mapping(map: Map) {
             name <- map["name"]
             url <- map["url"]
@@ -43,7 +43,7 @@ extension AssetData {
             logo <- map["logo"]
         }
     }
-    
+
     struct SocialLinksRaw: Mappable, Hashable {
         var website: String?
         var twitter: String?
@@ -51,11 +51,11 @@ extension AssetData {
         var coinGecko: String?
         var coinMarketCap: String?
         var discord: String?
-        
+
         init() {}
-        
+
         init?(map: Map) {}
-        
+
         mutating func mapping(map: Map) {
             website <- map["website"]
             twitter <- map["twitter"]
@@ -107,9 +107,9 @@ extension AssetData: TokenProtocol {
         links[.adaStat] = "https://adastat.net/tokens/\(currencySymbol)\(tokenName)"
         return links
     }
-    
+
     var decimals: Int { 0 }
-    
+
     var nftDisplayName: String { metadata?.name ?? "" }
     var nftImage: String { metadata?.url ?? "" }
     var hasMetaData: Bool { true }

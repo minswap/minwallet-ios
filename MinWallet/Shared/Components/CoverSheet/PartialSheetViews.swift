@@ -7,9 +7,9 @@ private struct ModalTypeView<Modal: View>: ViewModifier {
     @State var modalHeight: CGFloat?
     @ViewBuilder var modal: () -> Modal
     @State private var enableDragGesture: Bool = true
-    
+
     var onDimiss: (() -> Void)?
-    
+
     func body(content: Content) -> some View {
         ZStack {
             content
@@ -85,7 +85,7 @@ extension View {
             )
         )
     }
-    
+
     func presentSheetModifier() -> some View {
         modifier(PresentSheetModifier())
     }
