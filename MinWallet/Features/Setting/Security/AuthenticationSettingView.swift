@@ -68,7 +68,7 @@ struct AuthenticationSettingView: View {
                 guard appSetting.authenticationType != .password else { return }
                 Task {
                     do {
-                        try await appSetting.reAuthenticateUser()
+                        try await BiometricAuthentication.authenticateUser()
                         let createPasswordSuccess: ((String) -> Void)? = { password in
                             do {
                                 guard let minWallet = userInfo.minWallet else { return }
@@ -86,7 +86,7 @@ struct AuthenticationSettingView: View {
                         }
                         navigator.push(.securitySetting(.createPassword(onCreatePassSuccess: SecuritySetting.CreatePassSuccess(onCreatePassSuccess: createPasswordSuccess))))
                     } catch {
-                        //TODO: print sau
+                        bannerState.showBannerError(error)
                     }
                 }
             }

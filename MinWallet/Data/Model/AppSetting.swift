@@ -11,8 +11,12 @@ class AppSetting: ObservableObject {
     var extraSafeArea: CGFloat {
         safeArea > 44 ? 32 : 12
     }
-
-    lazy var biometricAuthentication: BiometricAuthentication = .init()
+    
+    var biometricAuthentication: BiometricAuthentication = .init() {
+        willSet {
+            objectWillChange.send()
+        }
+    }
 
     let objectWillChange = PassthroughSubject<Void, Never>()
 
@@ -75,22 +79,6 @@ class AppSetting: ObservableObject {
         }
     }
 
-    /*
-    @UserDefault("enable_notification", defaultValue: false)
-    var enableNotification: Bool {
-        willSet {
-            objectWillChange.send()
-        }
-    }
-     */
-
-    @UserDefault("enable_biometric", defaultValue: false)
-    private var enableBiometric: Bool {
-        willSet {
-            objectWillChange.send()
-        }
-    }
-
     @UserDefault("security_type", defaultValue: 0)
     private var securityType: Int {
         willSet {
@@ -140,15 +128,41 @@ class AppSetting: ObservableObject {
     private lazy var suspiciousToken: [String] = []
 
     private init() {
-        if enableBiometric {
-            enableBiometric = biometricAuthentication.canEvaluatePolicy()
-        }
-
         rootScreen = isLogin ? .home : (isFirstTimeRunApp ? .policy(.splash) : .gettingStarted)
 
         getAdaPrice()
     }
-
+    
+    var showBiometryChanged: Bool = false {
+        willSet {
+            Task {
+                await MainActor.run {
+                    objectWillChange.send()
+                }
+            }
+        }
+    }
+    
+    var openSettingForSetupFaceId: Bool = false {
+        willSet {
+            Task {
+                await MainActor.run {
+                    objectWillChange.send()
+                }
+            }
+        }
+    }
+    
+    var messageForSetting: String = "" {
+        willSet {
+            Task {
+                await MainActor.run {
+                    objectWillChange.send()
+                }
+            }
+        }
+    }
+    
     @MainActor func deleteAccount() {
         isLogin = false
 
@@ -266,11 +280,6 @@ extension AppSetting {
         } catch {
             UserDefaults.standard.removeObject(forKey: username)
         }
-    }
-
-    func reAuthenticateUser() async throws {
-        biometricAuthentication = .init()
-        try await biometricAuthentication.authenticateUser()
     }
 
     var password: String {

@@ -129,13 +129,13 @@ struct ConfirmSendTokenView: View {
                     do {
                         switch appSetting.authenticationType {
                         case .biometric:
-                            try await appSetting.reAuthenticateUser()
+                            try await BiometricAuthentication.authenticateUser()
                             authenticationSuccess()
                         case .password:
                             $isShowSignContract.showSheet()
                         }
                     } catch {
-                        bannerState.showBannerError(error.localizedDescription)
+                        bannerState.showBannerError(error)
                     }
                 }
             }
