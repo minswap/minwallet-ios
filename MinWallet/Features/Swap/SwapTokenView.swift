@@ -519,14 +519,14 @@ struct SwapTokenView: View {
                 viewModel.action.send(.cancelTimeInterval)
                 switch appSetting.authenticationType {
                 case .biometric:
-                    try await appSetting.reAuthenticateUser()
+                    try await BiometricAuthentication.authenticateUser()
                     swapTokenSuccess()
                 case .password:
                     $isShowSignContract.showSheet()
                 }
             } catch {
                 viewModel.action.send(.startTimeInterval)
-                bannerState.showBannerError(error.localizedDescription)
+                bannerState.showBannerError(error)
             }
         }
     }

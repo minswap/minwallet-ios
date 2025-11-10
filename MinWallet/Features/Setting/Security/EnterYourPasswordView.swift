@@ -91,7 +91,7 @@ struct EnterYourPasswordView: View {
                     do {
                         switch authenticationType {
                         case .biometric:
-                            try await appSetting.reAuthenticateUser()
+                            try await BiometricAuthentication.setupBiometric()
                             guard let minWallet = userInfo.minWallet else { return }
                             guard verifyPassword(wallet: minWallet, password: currentPassword) else { return }
                             guard let newWallet = changePassword(wallet: minWallet, currentPassword: currentPassword, newPassword: MinWalletConstant.passDefaultForFaceID)
@@ -105,6 +105,7 @@ struct EnterYourPasswordView: View {
                         onDismiss?()
                         appSetting.authenticationType = authenticationType
                     } catch {
+                        await BiometricAuthentication.deleteBiometric()
                         bannerState.showBannerError(error.localizedDescription)
                     }
                 }

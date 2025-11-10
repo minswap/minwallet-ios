@@ -33,7 +33,9 @@ struct MinWalletApp: App {
 
     var body: some Scene {
         WindowGroup {
-            MainCoordinator()
+            LockGateView {
+                MainCoordinator()
+            }
                 .environmentObject(appSetting)
                 .environmentObject(userInfo)
                 .environmentObject(hudState)

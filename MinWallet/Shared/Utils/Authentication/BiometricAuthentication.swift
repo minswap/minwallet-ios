@@ -3,100 +3,93 @@ import LocalAuthentication
 
 
 class BiometricAuthentication {
-    private let context = LAContext()
-
+    private static let KEY_ACCOUNT = "org.minswap.MinWallet.BiometricAuthentication.Account"
+    
     private var loginReason: LocalizedStringKey {
         switch biometricType {
-        case .touchID:
-            return "Touch ID"
-        case .faceID:
-            return "Face ID"
-        #if swift(>=5.9)
+            case .touchID:
+                return "Touch ID"
+            case .faceID:
+                return "Face ID"
+#if swift(>=5.9)
             case .opticID:
                 return "Optic ID"
-        #endif
-        case .none:
-            return ""
-        @unknown default:
-            return ""
+#endif
+            case .none:
+                return ""
+            @unknown default:
+                return ""
         }
     }
-
+    
     var displayName: LocalizedStringKey {
         switch biometricType {
-        case .touchID:
-            return "Touch ID"
-        case .faceID:
-            return "Face ID"
-        #if swift(>=5.9)
+            case .touchID:
+                return "Touch ID"
+            case .faceID:
+                return "Face ID"
+#if swift(>=5.9)
             case .opticID:
                 return "Optic ID"
-        #endif
-        case .none:
-            return ""
-        @unknown default:
-            return ""
+#endif
+            case .none:
+                return ""
+            @unknown default:
+                return ""
         }
     }
-
+    
     var biometricType: LABiometryType {
-        canEvaluatePolicy()
-
+        let context = LAContext()
+        var error: NSError?
+        context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error)
         return context.biometryType
     }
-
-    init() {}
-
-    @discardableResult
-    func canEvaluatePolicy() -> Bool {
-        var error: NSError?
-        return context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error)
+    
+    init() { }
+    
+    static func setupBiometric() async throws {
+        try BiometricVault.ensureDeviceSecure()
+        try await BiometricVault.generateAndStoreSymKeyAsync(account: BiometricAuthentication.KEY_ACCOUNT)
+        
+        _ = try await BiometricVault.readSecretAsync(
+            account: BiometricAuthentication.KEY_ACCOUNT,
+            prompt: "Authenticate to confirm biometric setup"
+        )
     }
-
-    private func authenticateUser(completion: @escaping ((_ error: LAError?) -> Void)) {
-        context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: self.loginReason.toString()) { (success, error) in
-            DispatchQueue.main.async {
-                guard !success, let laError = error as? LAError else {
-                    completion(nil)
-                    return
-                }
-
-                completion(laError)
-            }
-        }
+    
+    static func resetupBiometric() async throws {
+        try BiometricVault.ensureDeviceSecure()
+        try await BiometricVault.generateAndStoreSymKeyAsync(account: BiometricAuthentication.KEY_ACCOUNT)
     }
-
-    func authenticateUser() async throws {
-        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
-            self.authenticateUser { error in
-                let errorMessage: ErrorType? = error.map {
-                    switch $0 {
-                    case LAError.authenticationFailed:
-                        return .authenticationFailed
-                    case LAError.userCancel:
-                        return .userCancel
-                    case LAError.userFallback:
-                        return .userFallback
-                    case LAError.passcodeNotSet:
-                        return .passcodeNotSet
-                    case LAError.biometryNotAvailable:
-                        return .biometryNotAvailable
-                    case LAError.biometryNotEnrolled:
-                        return .biometryNotEnrolled
-                    case LAError.biometryLockout:
-                        return .biometryLockout
+    
+    static func authenticateUser() async throws {
+        do {
+            _ = try await BiometricVault.readSecretAsync(
+                account: BiometricAuthentication.KEY_ACCOUNT,
+                prompt: "Verify your identity to proceed"
+            )
+        } catch {
+            if let error = error as? BiometricVaultError {
+                switch error {
+                    case .itemNotFound:
+                        AppSetting.shared.showBiometryChanged = true
+                        throw BiometricVaultError.ignore
+                    case .passcodeNotSet:
+                        AppSetting.shared.messageForSetting = BiometricVaultError.passcodeNotSet.localizedDescription
+                        AppSetting.shared.openSettingForSetupFaceId = true
+                        throw BiometricVaultError.ignore
                     default:
-                        return .biometryNotAvailable
-                    }
+                        throw error
                 }
-
-                if let errorMessage = errorMessage {
-                    continuation.resume(throwing: AppGeneralError.localErrorLocalized(message: errorMessage.rawValue))
-                } else {
-                    continuation.resume(returning: ())
-                }
+            } else {
+                throw error
             }
         }
+    }
+    
+    static func deleteBiometric() async {
+        try? await BiometricVault.deleteSecretAsync(account: BiometricAuthentication.KEY_ACCOUNT)
     }
 }
 

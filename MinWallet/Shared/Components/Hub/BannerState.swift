@@ -101,6 +101,14 @@ class BannerState: ObservableObject {
         }
         self.showBanner(isShow: true)
     }
+    
+    func showBannerError(_ error: Error) {
+        if case .ignore = error as? BiometricVaultError {
+            return  
+        }
+        
+        showBannerError(error.localizedDescription)
+    }
 }
 
 
