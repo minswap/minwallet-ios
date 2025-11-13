@@ -23,13 +23,9 @@
 		96BB948B2E265263000D7739 /* ObjectMapper in Frameworks */ = {isa = PBXBuildFile; productRef = 96BB948A2E265263000D7739 /* ObjectMapper */; };
 		96BD2A482D0D644A00D81277 /* Apollo in Frameworks */ = {isa = PBXBuildFile; productRef = 96BD2A472D0D644A00D81277 /* Apollo */; };
 		96BD2A592D0D758700D81277 /* MinWalletAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 96BD2A582D0D758700D81277 /* MinWalletAPI */; };
-		96D93EEE2E45946700349AF5 /* AppConfig.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 96D93E282E45946700349AF5 /* AppConfig.xcconfig */; };
-		96D93F222E45946700349AF5 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D93E292E45946700349AF5 /* Constant.swift */; };
 		96D93F962E45946700349AF5 /* MinWallet.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 96D93ED42E45946700349AF5 /* MinWallet.xcdatamodeld */; };
 		96D93F972E45946700349AF5 /* MinWalletApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D93ED52E45946700349AF5 /* MinWalletApp.swift */; };
 		96D93F982E45946700349AF5 /* MinWallet.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 96D93ED42E45946700349AF5 /* MinWallet.xcdatamodeld */; };
-		96D93F992E45946700349AF5 /* AppConfig.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 96D93E282E45946700349AF5 /* AppConfig.xcconfig */; };
-		96D93F9A2E45946700349AF5 /* AppConfig.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 96D93E282E45946700349AF5 /* AppConfig.xcconfig */; };
 		96D93F9B2E45946700349AF5 /* MinWallet.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 96D93ED42E45946700349AF5 /* MinWallet.xcdatamodeld */; };
 		96D93F9E2E45947C00349AF5 /* MinWalletTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D93F9C2E45947C00349AF5 /* MinWalletTests.swift */; };
 		96D93FA22E45947C00349AF5 /* MinWalletUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D93F9F2E45947C00349AF5 /* MinWalletUITests.swift */; };
@@ -84,11 +80,6 @@
 		57F102922C64CCA0000B3544 /* MinWallet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MinWallet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		57F102A22C64CCA1000B3544 /* MinWalletTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MinWalletTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		57F102AC2C64CCA1000B3544 /* MinWalletUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MinWalletUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		96D93E282E45946700349AF5 /* AppConfig.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = AppConfig.xcconfig; sourceTree = "<group>"; };
-		96D93E292E45946700349AF5 /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
-		96D93E2A2E45946700349AF5 /* Development.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Development.xcconfig; sourceTree = "<group>"; };
-		96D93E2B2E45946700349AF5 /* MinWallet.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MinWallet.entitlements; sourceTree = "<group>"; };
-		96D93E2C2E45946700349AF5 /* Production.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Production.xcconfig; sourceTree = "<group>"; };
 		96D93ED32E45946700349AF5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		96D93ED52E45946700349AF5 /* MinWalletApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MinWalletApp.swift; sourceTree = "<group>"; };
 		96D93ED72E45946700349AF5 /* MinWallet.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MinWallet.xcdatamodel; sourceTree = "<group>"; };
@@ -101,6 +92,29 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		961D2C8B2EC58C4B00E0CFCE /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				AppConfig.xcconfig,
+				Constant.swift,
+				"ios-api.cer",
+			);
+			target = 57F102912C64CCA0000B3544 /* MinWallet */;
+		};
+		961D2C8C2EC58C4B00E0CFCE /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				AppConfig.xcconfig,
+			);
+			target = 57F102A12C64CCA1000B3544 /* MinWalletTests */;
+		};
+		961D2C8D2EC58C4B00E0CFCE /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				AppConfig.xcconfig,
+			);
+			target = 57F102AB2C64CCA1000B3544 /* MinWalletUITests */;
+		};
 		96D940272E45948F00349AF5 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -116,6 +130,7 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		961D2C862EC58C4A00E0CFCE /* Environment */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (961D2C8B2EC58C4B00E0CFCE /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 961D2C8C2EC58C4B00E0CFCE /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 961D2C8D2EC58C4B00E0CFCE /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Environment; sourceTree = "<group>"; };
 		96D93FEC2E45948F00349AF5 /* Data */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (96D940272E45948F00349AF5 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Data; sourceTree = "<group>"; };
 		96D940642E45949800349AF5 /* Shared */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Shared; sourceTree = "<group>"; };
 		96D940982E45949800349AF5 /* Preview Content */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "Preview Content"; sourceTree = "<group>"; };
@@ -194,23 +209,11 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		96D93E2D2E45946700349AF5 /* Environment */ = {
-			isa = PBXGroup;
-			children = (
-				96D93E282E45946700349AF5 /* AppConfig.xcconfig */,
-				96D93E292E45946700349AF5 /* Constant.swift */,
-				96D93E2A2E45946700349AF5 /* Development.xcconfig */,
-				96D93E2B2E45946700349AF5 /* MinWallet.entitlements */,
-				96D93E2C2E45946700349AF5 /* Production.xcconfig */,
-			);
-			path = Environment;
-			sourceTree = "<group>";
-		};
 		96D93ED62E45946700349AF5 /* MinWallet */ = {
 			isa = PBXGroup;
 			children = (
 				96D93FEC2E45948F00349AF5 /* Data */,
-				96D93E2D2E45946700349AF5 /* Environment */,
+				961D2C862EC58C4A00E0CFCE /* Environment */,
 				96D940FF2E45949800349AF5 /* Features */,
 				96D940982E45949800349AF5 /* Preview Content */,
 				96D940642E45949800349AF5 /* Shared */,
@@ -422,7 +425,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				96D93EEE2E45946700349AF5 /* AppConfig.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -430,7 +432,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				96D93F992E45946700349AF5 /* AppConfig.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -438,7 +439,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				96D93F9A2E45946700349AF5 /* AppConfig.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -457,7 +457,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				96D93F222E45946700349AF5 /* Constant.swift in Sources */,
 				96D93F962E45946700349AF5 /* MinWallet.xcdatamodeld in Sources */,
 				96D93F972E45946700349AF5 /* MinWalletApp.swift in Sources */,
 				5761D7182D0ADFF400D2809A /* mwrust.swift in Sources */,
@@ -572,7 +571,8 @@
 		};
 		57F102B42C64CCA1000B3544 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 96D93E2A2E45946700349AF5 /* Development.xcconfig */;
+			baseConfigurationReferenceAnchor = 961D2C862EC58C4A00E0CFCE /* Environment */;
+			baseConfigurationReferenceRelativePath = Development.xcconfig;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -637,7 +637,8 @@
 		};
 		57F102B52C64CCA1000B3544 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 96D93E2C2E45946700349AF5 /* Production.xcconfig */;
+			baseConfigurationReferenceAnchor = 961D2C862EC58C4A00E0CFCE /* Environment */;
+			baseConfigurationReferenceRelativePath = Production.xcconfig;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -695,7 +696,8 @@
 		};
 		57F102B72C64CCA1000B3544 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 96D93E2A2E45946700349AF5 /* Development.xcconfig */;
+			baseConfigurationReferenceAnchor = 961D2C862EC58C4A00E0CFCE /* Environment */;
+			baseConfigurationReferenceRelativePath = Development.xcconfig;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -714,6 +716,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MinWallet/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = MinswapWallet;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_NSCameraUsageDescription = "$(PRODUCT_NAME) camera use";
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "Using Face ID to login";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -743,7 +746,8 @@
 		};
 		57F102B82C64CCA1000B3544 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 96D93E2C2E45946700349AF5 /* Production.xcconfig */;
+			baseConfigurationReferenceAnchor = 961D2C862EC58C4A00E0CFCE /* Environment */;
+			baseConfigurationReferenceRelativePath = Production.xcconfig;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -765,6 +769,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MinWallet/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = MinswapWallet;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_NSCameraUsageDescription = "$(PRODUCT_NAME) camera use";
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "Using Face ID to login";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -794,7 +799,8 @@
 		};
 		57F102BA2C64CCA1000B3544 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 96D93E2C2E45946700349AF5 /* Production.xcconfig */;
+			baseConfigurationReferenceAnchor = 961D2C862EC58C4A00E0CFCE /* Environment */;
+			baseConfigurationReferenceRelativePath = Production.xcconfig;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
@@ -814,7 +820,8 @@
 		};
 		57F102BB2C64CCA1000B3544 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 96D93E2C2E45946700349AF5 /* Production.xcconfig */;
+			baseConfigurationReferenceAnchor = 961D2C862EC58C4A00E0CFCE /* Environment */;
+			baseConfigurationReferenceRelativePath = Production.xcconfig;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
@@ -834,7 +841,8 @@
 		};
 		57F102BD2C64CCA1000B3544 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 96D93E2C2E45946700349AF5 /* Production.xcconfig */;
+			baseConfigurationReferenceAnchor = 961D2C862EC58C4A00E0CFCE /* Environment */;
+			baseConfigurationReferenceRelativePath = Production.xcconfig;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 104;
@@ -852,7 +860,8 @@
 		};
 		57F102BE2C64CCA1000B3544 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 96D93E2C2E45946700349AF5 /* Production.xcconfig */;
+			baseConfigurationReferenceAnchor = 961D2C862EC58C4A00E0CFCE /* Environment */;
+			baseConfigurationReferenceRelativePath = Production.xcconfig;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 104;

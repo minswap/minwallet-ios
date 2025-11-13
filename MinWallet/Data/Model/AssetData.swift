@@ -72,7 +72,7 @@ extension AssetData: TokenProtocol {
     var currencySymbol: String { currency_symbol }
     var tokenName: String { token_name }
     var isVerified: Bool { false }
-    var ticker: String { "" }
+    var ticker: String { metadata?.ticker ?? UserInfo.TOKEN_NAME_DEFAULT[uniqueID] ?? "" }
     var projectName: String { "" }
     var percentChange: Double { 0 }
     var priceValue: Double { 0 }

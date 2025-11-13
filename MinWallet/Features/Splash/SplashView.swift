@@ -108,13 +108,7 @@ struct LockGateView<Content: View>: View {
         }
         .onChange(of: scenePhase) { newPhase in
             withAnimation {
-                if newPhase == .active {
-                    let result = JailbreakDetector.scan()
-                    let showJBWarning = result.suspicionScore != 0
-                    
-                    self.showJBWarning = showJBWarning
-                    
-                    guard !showJBWarning else { return }
+                if newPhase == .active { 
                     guard appSetting.isLogin else { return }
                     let ctxBio = LAContext()
                     var err: NSError?
@@ -126,6 +120,12 @@ struct LockGateView<Content: View>: View {
                 }
             }
         }
+        .onAppear(perform: {
+            if UIDevice.current.isJailBroken {
+                fatalError("This device appears compromised. Sensitive actions are disabled.")
+            }
+            self.showJBWarning = UIDevice.current.isJailBroken
+        })
         .showSystemAlert(
             $appSetting.showBiometryChanged,
             title: "Security Warning",
@@ -166,24 +166,52 @@ struct LockGateView<Content: View>: View {
 
 
 struct SensitiveView<Content: View>: View {
-    @State private var lock: Bool = false
-    @Environment(\.scenePhase)
-    private var scenePhase
+    var content: Content
     
-    let content: () -> Content
+    init(@ViewBuilder content: @escaping () -> Content) {
+        self.content = content()
+    }
+    
+    @State
+    private var hostingController: UIHostingController<Content>?
     
     var body: some View {
-        ZStack {
-            content()
-            if lock {
-                VisualEffectBlurView()
-                    .edgesIgnoringSafeArea(.all)
+        _ScreenshotPreventHelper(hostingController: $hostingController)
+            .overlay {
+                GeometryReader {
+                    let size = $0.size
+                    Color.clear.preference(key: SizeKey.self, value: size)
+                        .onPreferenceChange(SizeKey.self, perform: { value in
+                            if value != .zero {
+                                if hostingController == nil {
+                                    hostingController = UIHostingController(rootView: content)
+                                    hostingController?.view.backgroundColor = .clear
+                                    hostingController?.view.tag = 1009
+                                }
+                                hostingController?.view.frame = .init(origin: .zero, size: value)
+                            }
+                        })
+                }
             }
+    }
+}
+
+fileprivate struct _ScreenshotPreventHelper<Content: View>: UIViewRepresentable {
+    @Binding var hostingController: UIHostingController<Content>?
+    
+    func makeUIView(context: Context) -> some UIView {
+        let secureTextField = UITextField()
+        secureTextField.isSecureTextEntry = true
+        
+        if let textLayoutView = secureTextField.subviews.first {
+            return textLayoutView
         }
-        .onChange(of: scenePhase) { newPhase in
-            withAnimation {
-                lock = newPhase != .active 
-            }
+        return UIView()
+    }
+    
+    func updateUIView(_ uiView: UIViewType, context: Context) {
+        if let hostingController, !uiView.subviews.contains(where: { $0.tag == 1009 }) {
+            uiView.addSubview(hostingController.view)
         }
     }
 }

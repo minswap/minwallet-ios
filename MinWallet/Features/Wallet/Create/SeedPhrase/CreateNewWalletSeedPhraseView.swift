@@ -170,10 +170,12 @@ private struct SeedPhraseContentView: View {
                                     .font(.paragraphSmall)
                                     .foregroundStyle(.colorInteractiveTentPrimaryDisable)
                                     .frame(width: 20, alignment: .leading)
-                                Text(seedPhrase)
-                                    .font(.paragraphSmall)
-                                    .foregroundStyle(.colorBaseTent)
-                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                SensitiveView { 
+                                    Text(seedPhrase)
+                                        .font(.paragraphSmall)
+                                        .foregroundStyle(.colorBaseTent)
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                }
                                 if index % 2 == 0 {
                                     Color.colorBorderPrimaryTer.frame(width: 1)
                                         .padding(.trailing, 4)

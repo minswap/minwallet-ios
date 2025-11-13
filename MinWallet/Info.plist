@@ -42,7 +42,7 @@
 	<key>MIN_TRANSACTION_URL</key>
 	<string>${MIN_TRANSACTION_URL}</string>
 	<key>NSFaceIDUsageDescription</key>
-	<string>Using Face ID to login</string>
+	<string>Use Face ID to unlock your wallet securely</string>
 	<key>MIN_ADDRESS_PREFIX</key>
 	<string>${MIN_ADDRESS_PREFIX}</string>
 	<key>MIN_ADA_HANDLE_URL</key>
@@ -71,15 +71,13 @@
 		<string>remote-notification</string>
 	</array>
 	<key>NSCameraUsageDescription</key>
-	<string>$(PRODUCT_NAME) camera use</string>
-    <key>NSAppTransportSecurity</key>
-    <dict>
-        <key>NSAllowsArbitraryLoads</key>
-        <false/>
-        <key>NSRequiresCertificateTransparency</key>
-        <true/>
-        <key>NSTemporaryExceptionMinimumTLSVersion</key>
-        <string>TLSv1.2</string>
-    </dict>
+	<string>Use the camera to scan QR codes for transactions.</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<false/>
+		<key>NSTemporaryExceptionMinimumTLSVersion</key>
+		<string>TLSv1.2</string>
+	</dict>
 </dict>
 </plist>

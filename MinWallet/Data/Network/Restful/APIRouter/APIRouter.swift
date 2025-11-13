@@ -124,7 +124,7 @@ extension Alamofire.AFDataResponse where Success == Data, Failure == AFError {
 // MARK: - Promise: async_request
 extension APIRouter {
     func async_request(
-        sessionManager: Session = Session.default,
+        sessionManager: Session = NetworkManager.shared.session,
         debugRequest: Bool = false,
         debugResponse: Bool = false
     ) async throws -> JSON {
@@ -147,7 +147,7 @@ extension APIRouter {
     }
 
     func async_requestWithManualURLRequest(
-        sessionManager: Session = Session.default,
+        sessionManager: Session = NetworkManager.shared.session,
         debugRequest: Bool = false,
         debugResponse: Bool = false
     ) async throws -> JSON {
@@ -164,7 +164,7 @@ extension APIRouter {
     }
 
     func async_uploadRequest(
-        sessionManager: Session = Session.default,
+        sessionManager: Session = NetworkManager.shared.session,
         multipartFormData: @escaping (MultipartFormData) -> Void,
         updateProgress: ((Progress) -> Void)? = nil,
         debugRequest: Bool = false,
@@ -191,7 +191,7 @@ extension APIRouter {
     }
 
     func async_uploadRequestWithManualURLRequest(
-        sessionManager: Session = Session.default,
+        sessionManager: Session = NetworkManager.shared.session,
         multipartFormData: @escaping (MultipartFormData) -> Void,
         debugRequest: Bool = false,
         debugResponse: Bool = false

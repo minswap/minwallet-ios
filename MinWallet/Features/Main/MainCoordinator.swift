@@ -38,10 +38,7 @@ struct MainCoordinator: View {
                         case .createWallet:
                             CreateNewWalletView().navigationBarHidden(true)
                         case .seedPhrase:
-                            SensitiveView { 
-                                CreateNewWalletSeedPhraseView()
-                            }
-                            .navigationBarHidden(true)
+                            CreateNewWalletSeedPhraseView().navigationBarHidden(true)
                         case let .reInputSeedPhrase(seedPhrase):
                             ReInputSeedPhraseView(screenType: .createWallet(seedPhrase: seedPhrase)).navigationBarHidden(true)
                         case let .setupNickName(seedPhrase):

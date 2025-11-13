@@ -1,155 +1,190 @@
 import Foundation
 import UIKit
 
-#if canImport(Darwin)
-    import MachO  // for _dyld_* APIs
-#endif
 
-public struct JBIndicator: Hashable {
-    public let name: String
-    public let passed: Bool
-    public let details: String
-}
-
-public struct JBResult {
-    public let isSimulator: Bool
-    public let suspicionScore: Int  // >= 3: HIGH, 1-2: MEDIUM, 0: LOW
-    public let indicators: [JBIndicator]
-}
-
-public enum JailbreakDetector {
-    // MARK: - Public entry
-    public static func scan() -> JBResult {
-        var indicators: [JBIndicator] = []
-        
-        let sim = isRunningOnSimulator()
-        indicators.append(
-            .init(
-                name: "Simulator check",
-                passed: !sim,
-                details: sim ? "Running on Simulator" : "Real device"))
-        
-        indicators.append(checkSuspiciousPaths())
-        indicators.append(checkWriteOutsideSandbox())
-        indicators.append(checkCydiaURLScheme())
-        indicators.append(checkForkOrPrivAPIs())
-        indicators.append(checkInjectedDylibs())
-        
-        // Score: count failed (passed == false) except simulator (we won’t score simulator as JB)
-        var score = indicators.reduce(0) { sum, ind in
-            if ind.name == "Simulator check" { return sum }
-            return sum + (ind.passed ? 0 : 1)
-        }
-        
-        // Cap & simple policy: if Simulator -> keep score low
-        if sim { score = min(score, 1) }
-        
-        return JBResult(isSimulator: sim, suspicionScore: score, indicators: indicators)
-    }
-    
-    // MARK: - Indicators
-    
-    // 1) Well-known JB paths
-    private static func checkSuspiciousPaths() -> JBIndicator {
-        let suspicious = [
-            "/Applications/Cydia.app",
-            "/Library/MobileSubstrate/MobileSubstrate.dylib",
-            "/bin/bash",
-            "/usr/sbin/sshd",
-            "/etc/apt",
-            "/private/var/lib/apt/",
-            "/Applications/FakeCarrier.app",
-            "/Applications/blackra1n.app",
-            "/var/lib/cydia",
-            "/var/cache/apt",
-        ]
-        let exists = suspicious.contains { FileManager.default.fileExists(atPath: $0) }
-        return JBIndicator(
-            name: "Suspicious paths",
-            passed: !exists,
-            details: exists ? "Found at least one well-known JB path" : "No suspicious paths found"
-        )
-    }
-    
-    // 2) Try writing outside app container (should fail on non-JB)
-    private static func checkWriteOutsideSandbox() -> JBIndicator {
-        let testPath = "/private/\(UUID().uuidString)"
-        do {
-            try "test".write(toFile: testPath, atomically: true, encoding: .utf8)
-            // cleanup if somehow succeeded
-            try? FileManager.default.removeItem(atPath: testPath)
-            return JBIndicator(name: "Sandbox write /private", passed: false, details: "Write succeeded")
-        } catch {
-            return JBIndicator(name: "Sandbox write /private", passed: true, details: "Write blocked (\(error.localizedDescription))")
-        }
-    }
-    
-    // 3) canOpenURL for cydia:// (needs LSApplicationQueriesSchemes or will just return false)
-    private static func checkCydiaURLScheme() -> JBIndicator {
-        guard let url = URL(string: "cydia://package/com.example") else {
-            return JBIndicator(name: "Cydia URL scheme", passed: true, details: "URL build failed")
-        }
-        let can = UIApplication.shared.canOpenURL(url)
-        return JBIndicator(name: "Cydia URL scheme", passed: !can, details: can ? "cydia:// is openable" : "cannot open cydia://")
-    }
-    
-    // 4) fork / task_for_pid / ptrace – rough heuristic (should be blocked on stock iOS)
-    private static func checkForkOrPrivAPIs() -> JBIndicator {
-        // Avoid calling unavailable APIs like fork() on iOS. Instead, we can heuristically
-        // check for the presence of private symbols or capabilities in a benign way.
-        // We'll attempt a very limited posix_spawnattr initialization (which is allowed)
-        // without spawning a process, and report as "passed" unless other indicators fire.
-
-        // Note: We intentionally do NOT attempt to spawn or use task_for_pid/ptrace here,
-        // because these are restricted and/or require entitlements. Using them would
-        // either fail at compile time or produce runtime errors.
-
-        #if os(iOS) || os(tvOS) || os(watchOS)
-        // On these platforms, calling fork() is unavailable. Treat this indicator as passed
-        // unless we have other concrete evidence elsewhere.
-        return JBIndicator(
-            name: "Restricted APIs (fork)",
-            passed: true,
-            details: "fork() unavailable on this platform; check skipped"
-        )
-        #else
-        // On other Darwin platforms (e.g., macOS), we still avoid fork() to keep parity.
-        // If needed, advanced checks could be added under specific conditions.
-        return JBIndicator(
-            name: "Restricted APIs (fork)",
-            passed: true,
-            details: "Check not performed to avoid using restricted APIs"
-        )
-        #endif
-    }
-    
-    // 5) Loaded dylibs – look for Frida/Substrate/Cydia hooks
-    private static func checkInjectedDylibs() -> JBIndicator {
-        #if canImport(Darwin)
-            var flagged = [String]()
-            let suspectKeywords = ["frida", "substrate", "cydia", "libhooker", "tsprotector", "xcon"]
-            let count = _dyld_image_count()
-            for i in 0..<count {
-                if let cName = _dyld_get_image_name(i), let name = String(validatingUTF8: cName) {
-                    let lower = name.lowercased()
-                    if suspectKeywords.contains(where: { lower.contains($0) }) {
-                        flagged.append(name)
-                    }
-                }
-            }
-            let bad = !flagged.isEmpty
-            return JBIndicator(name: "Injected dylibs", passed: !bad, details: bad ? "Found: \(flagged.joined(separator: ", "))" : "No suspicious dylibs")
-        #else
-            return JBIndicator(name: "Injected dylibs", passed: true, details: "Darwin not available")
-        #endif
-    }
-    
-    // MARK: - Helpers
-    private static func isRunningOnSimulator() -> Bool {
+extension UIDevice {
+    var isSimulator: Bool {
         #if targetEnvironment(simulator)
             return true
         #else
             return false
         #endif
+    }
+
+    var isJailBroken: Bool {
+        get {
+            if UIDevice.current.isSimulator { return false }
+            if JailbreakDetector.hasCydiaInstalled() { return true }
+            if JailbreakDetector.isContainsSuspiciousApps() { return true }
+            if JailbreakDetector.isSuspiciousSystemPathsExists() { return true }
+            if JailbreakDetector.canEditSystemFiles() { return true }
+            // if JailBrokenHelper.hasSuspiciousSymlinks() { return true }
+            if JailbreakDetector.hasSandboxViolation() { return true }
+            if JailbreakDetector.checkDYLD() { return true }
+            return false
+        }
+    }
+}
+
+private struct JailbreakDetector {
+    // MARK: - Direct Checks
+
+    static func hasCydiaInstalled() -> Bool {
+        return UIApplication.shared.canOpenURL(URL(string: "cydia://")!) ||
+            UIApplication.shared.canOpenURL(URL(string: "sileo://")!) ||
+            UIApplication.shared.canOpenURL(URL(string: "zbra://")!)
+    }
+
+    static func isContainsSuspiciousApps() -> Bool {
+        for path in suspiciousAppsPathToCheck {
+            if FileManager.default.fileExists(atPath: path) {
+                return true
+            }
+        }
+        return false
+    }
+
+    static func isSuspiciousSystemPathsExists() -> Bool {
+        for path in suspiciousSystemPathsToCheck {
+            if FileManager.default.fileExists(atPath: path) {
+                return true
+            }
+        }
+        return false
+    }
+
+    // MARK: - Advanced Checks
+
+    static func canEditSystemFiles() -> Bool {
+        let jailBreakText = "Developer Insider"
+        let path = "/private/" + jailBreakText
+
+        do {
+            try jailBreakText.write(toFile: path, atomically: true, encoding: .utf8)
+            try FileManager.default.removeItem(atPath: path)
+            return true
+        } catch {
+            return false
+        }
+    }
+
+    static func hasSuspiciousSymlinks() -> Bool {
+        let paths = ["/Library", "/usr/lib", "/bin", "/etc", "/var"]
+        for path in paths {
+            do {
+                let attributes = try FileManager.default.attributesOfItem(atPath: path)
+                if attributes[.type] as? FileAttributeType == .typeSymbolicLink {
+                    return true
+                }
+            } catch {
+                continue
+            }
+        }
+        return false
+    }
+
+    static func hasSandboxViolation() -> Bool {
+        do {
+            try "sandbox_test".write(toFile: "/private/sandbox_test", atomically: true, encoding: .utf8)
+            try FileManager.default.removeItem(atPath: "/private/sandbox_test")
+            return true
+        } catch {
+            return false
+        }
+    }
+
+    // Alternative to fork() check - checks for suspicious dylibs
+    static func checkDYLD() -> Bool {
+        let suspiciousLibraries = [
+            "SubstrateLoader.dylib",
+            "libhooker.dylib",
+            "SubstrateBootstrap.dylib",
+            "libsubstitute.dylib",
+            "libellekit.dylib"
+        ]
+
+        for library in suspiciousLibraries {
+            if let _ = dlopen(library, RTLD_NOW) {
+                return true
+            }
+        }
+        return false
+    }
+
+    // MARK: - Path Lists (same as previous version)
+    static var suspiciousAppsPathToCheck: [String] {
+        return [
+            // Traditional jailbreaks
+            "/Applications/Cydia.app",
+            "/Applications/blackra1n.app",
+            "/Applications/FakeCarrier.app",
+            "/Applications/Icy.app",
+            "/Applications/IntelliScreen.app",
+            "/Applications/MxTube.app",
+            "/Applications/RockApp.app",
+            "/Applications/SBSettings.app",
+            "/Applications/WinterBoard.app",
+
+            // Modern jailbreaks
+            "/Applications/Palera1n.app",
+            "/Applications/Sileo.app",
+            "/Applications/Zebra.app",
+            "/Applications/TrollStore.app",
+            "/var/containers/Bundle/Application/TrollStore.app",
+
+            // Checkra1n
+            "/Applications/checkra1n.app",
+
+            // Rootless jailbreak paths
+            "/var/jb/Applications/Cydia.app",
+            "/var/jb/Applications/Sileo.app",
+            "/var/jb/Applications/Zebra.app"
+        ]
+    }
+
+    static var suspiciousSystemPathsToCheck: [String] {
+        return [
+            // Traditional paths
+            "/Library/MobileSubstrate/DynamicLibraries/LiveClock.plist",
+            "/Library/MobileSubstrate/DynamicLibraries/Veency.plist",
+            "/private/var/lib/apt",
+            "/private/var/lib/cydia",
+            "/private/var/mobile/Library/SBSettings/Themes",
+            "/private/var/stash",
+            "/private/var/tmp/cydia.log",
+            "/System/Library/LaunchDaemons/com.ikey.bbot.plist",
+            "/System/Library/LaunchDaemons/com.saurik.Cydia.Startup.plist",
+            "/usr/bin/sshd",
+            "/usr/libexec/sftp-server",
+            "/usr/sbin/sshd",
+            "/etc/apt",
+            "/bin/bash",
+            "/Library/MobileSubstrate/MobileSubstrate.dylib",
+
+            // Modern jailbreak paths
+            "/var/jb", // Rootless jailbreak root
+            "/var/binpack", // Checkm8 jailbreak
+            "/var/containers/Bundle/tweaksupport",
+            "/var/mobile/Library/palera1n",
+            "/var/mobile/Library/xyz.willy.Zebra",
+            "/var/lib/undecimus",
+
+            // Palera1n specific
+            "/var/jb/basebin",
+            "/var/jb/usr",
+            "/var/jb/etc",
+            "/var/jb/Library",
+            "/var/jb/.installed_palera1n",
+            "/var/binpack/Applications",
+            "/var/binpack/usr",
+
+            // TrollStore
+            "/var/containers/Bundle/Application/trollstorehelper",
+            "/var/containers/Bundle/trollstore",
+
+            // Bootstrap files
+            "/var/jb/preboot",
+            "/var/jb/var"
+        ]
     }
 }
