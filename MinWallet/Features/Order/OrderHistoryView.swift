@@ -24,7 +24,7 @@ struct OrderHistoryView: View {
     
     //TODO: Remove
     @State
-    private var showInputFakeAddress = false
+    var showInputFakeAddress = false
     @State
     private var fakeWalletAddress: String = AppSetting.shared.fakeWalletAddress
     
@@ -34,11 +34,6 @@ struct OrderHistoryView: View {
             VStack(alignment: .leading, spacing: 0) {
                 headerView
                     .padding(.top, .md)
-                    //TODO: Remove
-                    .onLongPressGesture {
-                        guard AppSetting.fakeWalletAddress else { return }
-                        showInputFakeAddress = true
-                    }
                 OffsetObservingScrollView(
                     offset: $scrollOffset,
                     onRefreshable: {
