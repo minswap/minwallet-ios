@@ -15,6 +15,11 @@ extension OrderHistoryView {
                     .font(.titleH4)
                     .frame(maxWidth: .infinity, minHeight: Self.heightOrder, maxHeight: Self.heightOrder, alignment: .leading)
                     .padding(.horizontal)
+                    .contentShape(.rect)
+                    .onLongPressGesture {
+                        guard AppSetting.fakeWalletAddress else { return }
+                        showInputFakeAddress = true
+                    }
             }
             if viewModel.showSkeleton {
                 ForEach(0..<20, id: \.self) { index in
