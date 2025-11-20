@@ -161,8 +161,10 @@ struct SettingView: View {
                     Text(appSetting.currency)
                         .font(.paragraphSmall)
                         .foregroundStyle(.colorInteractiveTentPrimarySub)
+                    /*
                     Image(.icNext)
                         .frame(width: 20, height: 20)
+                     */
                 }
                 .frame(height: 52)
                 .contentShape(.rect)

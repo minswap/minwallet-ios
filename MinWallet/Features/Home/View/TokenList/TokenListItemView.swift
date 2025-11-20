@@ -48,12 +48,7 @@ struct TokenListItemView: View {
                             .foregroundStyle(.colorBaseTent)
                     } else {
                         let priceValue: AttributedString = {
-                            switch appSetting.currency {
-                            case Currency.ada.rawValue:
-                                return (token?.priceValue ?? 0).formatNumber(suffix: !showSubPrice ? Currency.ada.prefix : "")
-                            default:
-                                return ((token?.priceValue ?? 0) * appSetting.currencyInADA).formatNumber(prefix: !showSubPrice ? Currency.usd.prefix : "")
-                            }
+                            return (token?.priceValue ?? 0).formatNumber(prefix: !showSubPrice ? Currency.usd.prefix : "")
                         }()
                         Text(priceValue)
                             .font(.labelMediumSecondary)
