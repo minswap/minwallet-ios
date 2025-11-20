@@ -20,12 +20,10 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
 
   public static func objectType(forTypename typename: String) -> ApolloAPI.Object? {
     switch typename {
-    case "AdaPrice": return MinWalletAPI.Objects.AdaPrice
     case "Asset": return MinWalletAPI.Objects.Asset
     case "AssetDetails": return MinWalletAPI.Objects.AssetDetails
     case "AssetMetadata": return MinWalletAPI.Objects.AssetMetadata
     case "AssetSocialLinks": return MinWalletAPI.Objects.AssetSocialLinks
-    case "CurrencyStats": return MinWalletAPI.Objects.CurrencyStats
     case "IosTradeEstimateOutput": return MinWalletAPI.Objects.IosTradeEstimateOutput
     case "Mutation": return MinWalletAPI.Objects.Mutation
     case "PortfolioNFTPosition": return MinWalletAPI.Objects.PortfolioNFTPosition

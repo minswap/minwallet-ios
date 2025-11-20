@@ -119,7 +119,6 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Model/GraphQL/ADAHandleNameQuery.graphql,
-				Model/GraphQL/AdaPrice.graphql,
 				Model/GraphQL/FinalizeAndSubmitMutation.graphql,
 				Model/GraphQL/RiskScoreOfAssetQuery.graphql,
 				Model/GraphQL/schema.graphqls,

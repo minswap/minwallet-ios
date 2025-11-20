@@ -1,8 +1,0 @@
-query AdaPriceQuery($currency: SupportedCurrency!) {
- adaPrice(currency: $currency) {
-    currency
-    value {
-      price
-    }
-  }
-}
