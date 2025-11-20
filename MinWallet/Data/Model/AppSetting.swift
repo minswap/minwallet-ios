@@ -106,6 +106,16 @@ class AppSetting: ObservableObject {
         set { securityType = newValue.rawValue }
     }
     
+    var currencyInADA: Double = 1 {
+        willSet {
+            Task {
+                await MainActor.run {
+                    objectWillChange.send()
+                }
+            }
+        }
+    }
+    
     lazy var bip0039: [String] = {
         guard let fileURL = Bundle.main.url(forResource: "bip0039", withExtension: "txt") else { return [] }
         do {
@@ -119,6 +129,8 @@ class AppSetting: ObservableObject {
     
     private init() {
         rootScreen = isLogin ? .home : (isFirstTimeRunApp ? .policy(.splash) : .gettingStarted)
+        
+        getAdaPrice()
     }
     
     var showBiometryChanged: Bool = false {

@@ -8,6 +8,7 @@ enum MinWalletAPIRouter: DomainAPIRouter {
     case assets(input: AssetsInput)
     case topAssets(input: TopAssetsInput)
     case detailAsset(id: String)
+    case getAdaPrice(currency: String)
     
     func path() -> String {
         switch self {
@@ -21,6 +22,8 @@ enum MinWalletAPIRouter: DomainAPIRouter {
             return "/v1/assets/metrics"
         case let .detailAsset(id):
             return "/v1/assets/\(id)/metrics"
+        case .getAdaPrice:
+            return "/aggregator/ada-price"
         }
     }
     
@@ -34,7 +37,7 @@ enum MinWalletAPIRouter: DomainAPIRouter {
             return .get
         case .topAssets:
             return .post
-        case .detailAsset:
+        case .detailAsset, .getAdaPrice:
             return .get
         }
     }
@@ -84,6 +87,8 @@ enum MinWalletAPIRouter: DomainAPIRouter {
             }
         case .detailAsset:
             break
+        case let .getAdaPrice(currency):
+            params["currency"] = currency
         }
         return params
     }

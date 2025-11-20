@@ -275,6 +275,17 @@ struct SwapTokenView: View {
                 }
             }
             HStack(alignment: .center, spacing: 4) {
+                if viewModel.tokenPay.subPrice > 0 {
+                    Text(
+                        viewModel.tokenPay.subPrice
+                            .formatNumber(
+                                prefix: Currency.usd.prefix,
+                                roundingOffset: viewModel.tokenPay.token.decimals,
+                                font: .paragraphSmall,
+                                fontColor: .colorInteractiveTentPrimarySub
+                            )
+                    )
+                }
                 Spacer()
                 Image(.icWallet)
                     .resizable()
@@ -347,6 +358,17 @@ struct SwapTokenView: View {
                 }
             }
             HStack(alignment: .center, spacing: 4) {
+                if viewModel.tokenReceive.subPrice > 0 {
+                    Text(
+                        viewModel.tokenReceive.subPrice
+                            .formatNumber(
+                                prefix: Currency.usd.prefix,
+                                roundingOffset: viewModel.tokenReceive.token.decimals,
+                                font: .paragraphSmall,
+                                fontColor: .colorInteractiveTentPrimarySub
+                            )
+                    )
+                }
                 Spacer()
                 Image(.icWallet)
                     .resizable()

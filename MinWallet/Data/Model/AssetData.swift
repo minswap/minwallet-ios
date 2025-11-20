@@ -108,7 +108,7 @@ extension AssetData: TokenProtocol {
         return links
     }
     
-    var decimals: Int { 0 }
+    var decimals: Int { metadata?.decimals ?? 0 }
     
     var nftDisplayName: String { metadata?.name ?? "" }
     var nftImage: String { metadata?.url ?? "" }

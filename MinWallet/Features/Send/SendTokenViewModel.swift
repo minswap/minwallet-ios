@@ -79,6 +79,8 @@ struct WrapTokenSend: Identifiable {
     
     var amount: String = ""
     var isNFT: Bool = false
+    var priceUsd: Double = 0
+    var subPrice: Double = 0
     
     init(token: TokenProtocol, amount: String = "", isNFT: Bool = false) {
         self.token = token
@@ -105,5 +107,11 @@ struct WrapTokenSend: Identifiable {
         } else {
             return name
         }
+    }
+}
+
+extension WrapTokenSend {
+    mutating func calculateSubPrice() {
+        subPrice = priceUsd * amount.doubleValue
     }
 }

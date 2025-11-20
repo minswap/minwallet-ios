@@ -316,6 +316,8 @@ class SwapTokenViewModel: ObservableObject {
             guard let self = self else { return }
             do {
                 await MainActor.run {
+                    self.tokenPay.calculateSubPrice()
+                    self.tokenReceive.subPrice = 0
                     withAnimation {
                         self.isGettingTradeInfo = true
                     }
@@ -331,6 +333,18 @@ class SwapTokenViewModel: ObservableObject {
                         $0.exclude_protocols = self.swapSetting.excludedPools
                         $0.amount_in_decimal = false
                     }
+                
+                async let priceUSDTokenPay = withTimeout(10) {
+                    await self.getTokenPriceUsd(token: self.tokenPay)
+                }
+                
+                async let priceUSDTokenReceive = withTimeout(10) {
+                    await self.getTokenPriceUsd(token: self.tokenReceive)
+                }
+                
+                let results = try? await (priceUSDTokenPay, priceUSDTokenReceive)
+                self.tokenPay.priceUsd = results?.0 ?? 0
+                self.tokenReceive.priceUsd = results?.1 ?? 0
                 
                 let info: EstimationResponse?
                 if amount > 0 {
@@ -378,6 +392,9 @@ class SwapTokenViewModel: ObservableObject {
                 let outputAmount = info?.amountOut.toExact(decimal: Double(self.tokenPay.token.decimals)) ?? 0
                 self.tokenPay.amount = outputAmount == 0 ? "" : outputAmount.formatSNumber(maximumFractionDigits: self.tokenReceive.token.decimals)
             }
+            
+            tokenPay.calculateSubPrice()
+            tokenReceive.calculateSubPrice()
         }
         
         await generateWarningInfo()
@@ -416,6 +433,14 @@ class SwapTokenViewModel: ObservableObject {
         try APIRouterCommon.parseDefaultErrorMessage(jsonData)
         guard let tx = jsonData["cbor"].string, !tx.isEmpty else { throw AppGeneralError.localErrorLocalized(message: "Transaction not found") }
         return tx
+    }
+    
+    private func getTokenPriceUsd(token: WrapTokenSend) async -> Double {
+        guard !token.token.isTokenADA else { return AppSetting.shared.currencyInADA }
+        guard token.priceUsd == 0 else { return token.priceUsd }
+        let jsonData = try? await MinWalletAPIRouter.detailAsset(id: token.currencySymbol + token.tokenName).async_request()
+        let asset = Mapper<TopAssetsResponse.AssetMetric>.init().map(JSON: jsonData?.dictionaryObject ?? [:])
+        return asset?.price_usd ?? 0
     }
     
     var minimumMaximumAmount: Double {
@@ -565,5 +590,25 @@ extension EstimationResponse {
         } else {
             return (.colorInteractiveToneWarning, .colorSurfaceWarningDefault)
         }
+    }
+}
+
+fileprivate func withTimeout<T>(
+    _ seconds: Double,
+    operation: @escaping @Sendable () async throws -> T
+) async throws -> T {
+    try await withThrowingTaskGroup(of: T.self) { group in
+        group.addTask {
+            try await operation()
+        }
+        
+        group.addTask {
+            try await Task.sleep(nanoseconds: UInt64(seconds * 1_000_000_000))
+            throw NSError(domain: "Timeout", code: -1)
+        }
+        
+        let result = try await group.next()!
+        group.cancelAll()
+        return result
     }
 }
