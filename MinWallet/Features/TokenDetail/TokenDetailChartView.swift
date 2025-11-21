@@ -34,8 +34,15 @@ extension TokenDetailView {
             let minY = values.min() ?? 0
             let maxY = values.max() ?? 1
             
-            let range = max(maxY - minY, 0.0001)
+            let rawRange = maxY - minY
+            let base = max(abs(minY), abs(maxY))
+            let epsilon = (base == 0 ? 1.0 : base * 0.001)
+            let range = rawRange == 0 ? epsilon : rawRange
+            
             let padding = range * 0.2
+            
+            let lower = minY - padding
+            let upper = maxY + padding
             
             let isShowNoData: Bool = !viewModel.isLoadingPriceChart && viewModel.chartDatas.isEmpty
             VStack(alignment: .leading, spacing: 0) {
@@ -122,7 +129,7 @@ extension TokenDetailView {
                             }
                         }
                     }
-                    .chartYScale(domain: (minY - padding)...(maxY + padding))
+                    .chartYScale(domain: lower...upper)
                     .chartXAxis(.hidden)
                     .chartLegend(.hidden)
                     .padding(.horizontal, .xl)
