@@ -27,9 +27,16 @@ struct LineChartData: Hashable {
 extension TokenDetailView {
     var tokenDetailChartView: some View {
         VStack(alignment: .leading, spacing: 0) {
-            let maxY: Double = (viewModel.chartDatas.map { $0.value }.max() ?? 0) * 1
             let minDate: Date = viewModel.chartDatas.map { $0.date }.min() ?? Date()
             let maxDate: Date = viewModel.chartDatas.map { $0.date }.max() ?? Date()
+            
+            let values = viewModel.chartDatas.map { $0.value }
+            let minY = values.min() ?? 0
+            let maxY = values.max() ?? 1
+            
+            let range = max(maxY - minY, 0.0001)
+            let padding = range * 0.2
+            
             let isShowNoData: Bool = !viewModel.isLoadingPriceChart && viewModel.chartDatas.isEmpty
             VStack(alignment: .leading, spacing: 0) {
                 if isShowNoData {
@@ -115,7 +122,7 @@ extension TokenDetailView {
                             }
                         }
                     }
-                    .chartYScale(domain: 0...maxY)
+                    .chartYScale(domain: (minY - padding)...(maxY + padding))
                     .chartXAxis(.hidden)
                     .chartLegend(.hidden)
                     .padding(.horizontal, .xl)
