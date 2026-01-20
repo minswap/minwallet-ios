@@ -20,7 +20,7 @@ struct SwapTokenRoutingView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text("Your trade route")
+            Text("Your Route")
                 .font(.titleH5)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .frame(height: 60)

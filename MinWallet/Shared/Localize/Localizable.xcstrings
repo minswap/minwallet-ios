@@ -113,6 +113,9 @@
     "Aggregator Source" : {
 
     },
+    "Alert" : {
+
+    },
     "All" : {
 
     },
@@ -273,6 +276,9 @@
 
     },
     "Default" : {
+
+    },
+    "DeFi Swap" : {
 
     },
     "Deposit" : {
@@ -564,6 +570,9 @@
 
     },
     "Minwallet is a secure and user-friendly wallet built directly into Minswap for seamless token swapping and management." : {
+
+    },
+    "MinWallet only helps you sign transactions and does not operate an exchange or hold funds." : {
 
     },
     "MuesliSwap" : {
@@ -871,6 +880,15 @@
     "Swap amount" : {
 
     },
+    "Swap via DEXs" : {
+
+    },
+    "Swaps are executed by third-party Cardano protocols." : {
+
+    },
+    "Swaps are executed by third-party Cardano protocols. " : {
+
+    },
     "Tap to reveal seed phrase" : {
 
     },
@@ -1130,10 +1148,10 @@
     "Your password must contain:" : {
 
     },
-    "Your tokens" : {
+    "Your Route" : {
 
     },
-    "Your trade route" : {
+    "Your tokens" : {
 
     },
     "Your transaction has been submitted successfully" : {

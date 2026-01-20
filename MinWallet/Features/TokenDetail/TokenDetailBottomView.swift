@@ -42,7 +42,7 @@ extension TokenDetailView {
                             .padding(.bottom, 2)
                         }
                         Spacer()
-                        CustomButton(title: "Swap") {
+                        CustomButton(title: "DeFi Swap") {
                             navigator.push(.swapToken(.swapToken(token: viewModel.token)))
                         }
                         .frame(width: 90, height: 44)

@@ -97,7 +97,6 @@
 			membershipExceptions = (
 				AppConfig.xcconfig,
 				Constant.swift,
-				"ios-api.cer",
 			);
 			target = 57F102912C64CCA0000B3544 /* MinWallet */;
 		};
