@@ -118,7 +118,11 @@ class HomeViewModel: ObservableObject {
             }
     }
     
-    private func getTokens(isLoadMore: Bool = false) async {
+    func resetSkeleton() {
+        showSkeletonDic = [:]
+    }
+    
+    func getTokens(isLoadMore: Bool = false) async {
         timerReloadBalance?.cancel()
         timerReloadMarket?.cancel()
         

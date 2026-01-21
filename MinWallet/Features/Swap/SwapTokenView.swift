@@ -24,13 +24,13 @@ struct SwapTokenView: View {
     @State
     private var isShowSignContract: Bool = false
     @State
-    var isShowToolTip: Bool = false
+    private var isShowToolTip: Bool = false
     @State
-    var isShowDescView: Bool = false
+    private var isShowDescView: Bool = false
     @State
-    var content: LocalizedStringKey = ""
+    private var content: LocalizedStringKey = ""
     @State
-    var title: LocalizedStringKey = ""
+    private var title: LocalizedStringKey = ""
     
     @State
     private var swapSettingCached: SwapTokenSetting = .init()

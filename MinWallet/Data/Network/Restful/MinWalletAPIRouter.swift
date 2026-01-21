@@ -48,9 +48,11 @@ enum MinWalletAPIRouter: DomainAPIRouter {
         switch self {
         case .portfolio:
             params["address"] = UserInfo.shared.minWallet?.address
+            AppSetting.updateParamsCurrency(params: &params)
         case let .chartInfo(id, period):
             params["id"] = id
             params["period"] = period.rawValue
+            AppSetting.updateParamsCurrency(params: &params)
         case let .assets(input):
             if let term = input.term, !term.isBlank {
                 params["term"] = term
@@ -85,8 +87,9 @@ enum MinWalletAPIRouter: DomainAPIRouter {
             input.favorite_asset_ids.map {
                 params["favorite_asset_ids"] = $0
             }
+            AppSetting.updateParamsCurrency(params: &params)
         case .detailAsset:
-            break
+            AppSetting.updateParamsCurrency(params: &params)
         case let .getAdaPrice(currency):
             params["currency"] = currency
         }

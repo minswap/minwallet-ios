@@ -35,7 +35,7 @@ class MarketViewModel: ObservableObject {
                 $0.limit = limit
                 $0.only_verified = false
                 $0.favorite_asset_ids = nil
-                $0.sort_field = .volume_usd_24h
+                $0.sort_field = .volume_24h
                 $0.sort_direction = .desc
                 if isLoadMore, let searchAfter = searchAfter {
                     $0.search_after = searchAfter

@@ -23,8 +23,8 @@ struct WalletAssetPosition: Mappable {
         
         lpTokens = lpAssets.compactMap({ $0.lp_asset_position })
         
-        netAdaValue = assets.map { $0.amount_position_usd }.reduce(0, +) + lpTokens.map { $0.amount_position_usd }.reduce(0, +)
-        pnl24H = assets.map { $0.pnl_24h_usd }.reduce(0, +) + lpTokens.map { $0.pnl_24h_usd }.reduce(0, +)
+        netAdaValue = assets.map { $0.value }.reduce(0, +) + lpTokens.map { $0.value }.reduce(0, +)
+        pnl24H = assets.map { $0.pnl_24h }.reduce(0, +) + lpTokens.map { $0.pnl_24h }.reduce(0, +)
         
         pnl24HPercent = (netAdaValue - pnl24H == 0) ? 0 : ((pnl24H * 100) / (netAdaValue - pnl24H))
     }

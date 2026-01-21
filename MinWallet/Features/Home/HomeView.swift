@@ -132,6 +132,12 @@ struct HomeView: View {
                 appSetting.enableNotification = OneSignal.Notifications.permission
             }
         }
+        .onChange(of: appSetting.currency) { newValue in
+            Task {
+                viewModel.resetSkeleton()
+                await viewModel.getTokens()
+            }
+        }
     }
     
     private var headerView: some View {
