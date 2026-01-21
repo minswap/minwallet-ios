@@ -48,7 +48,7 @@ struct HomeView: View {
                     }
                 }
                 Spacer()
-                CustomButton(title: "Swap") {
+                CustomButton(title: "Swap via DEXs") {
                     navigator.push(.swapToken(.swapToken(token: nil)))
                 }
                 .frame(height: 56)

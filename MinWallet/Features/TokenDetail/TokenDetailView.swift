@@ -58,7 +58,7 @@ struct TokenDetailView: View {
                         .background(.colorBaseBackground)
                         .padding(.horizontal, .md)
                 } else {
-                    CustomButton(title: "Swap") {
+                    CustomButton(title: "DeFi Swap") {
                         navigator.push(.swapToken(.swapToken(token: viewModel.token)))
                     }
                     .frame(height: 56)

@@ -26,6 +26,8 @@ struct SwapTokenView: View {
     @State
     var isShowToolTip: Bool = false
     @State
+    var isShowDescView: Bool = false
+    @State
     var content: LocalizedStringKey = ""
     @State
     var title: LocalizedStringKey = ""
@@ -79,7 +81,7 @@ struct SwapTokenView: View {
         }
         .modifier(
             BaseContentView(
-                screenTitle: "Swap",
+                screenTitle: "Swap aggregator",
                 iconRight: .icSwapTokenSetting,
                 alignmentTitle: .leading,
                 actionLeft: {
@@ -162,6 +164,17 @@ struct SwapTokenView: View {
                 })
                 .ignoresSafeArea()
         }
+        .presentSheet(isPresented: $isShowDescView) {
+            SwapTokenDescriptionView(onDismiss: {
+                isShowDescView = false
+            })
+            .background(content: {
+                RoundedCorners(lineWidth: 0, tl: 24, tr: 24, bl: 0, br: 0)
+                    .fill(.colorBaseBackground)
+                    .ignoresSafeArea()
+            })
+            .ignoresSafeArea()
+        }
         .presentSheet(
             isPresented: $viewModel.isShowCustomizedRoute,
             onDimiss: {
@@ -201,6 +214,7 @@ struct SwapTokenView: View {
             }
         tokenReceiveView
         routingView
+        descriptionView
         warningView
     }
     
@@ -389,7 +403,7 @@ struct SwapTokenView: View {
     private var routingView: some View {
         if viewModel.iosTradeEstimate != nil {
             HStack(alignment: .center, spacing: 4) {
-                Text("Your trade route")
+                Text("Your Route")
                     .lineLimit(1)
                     .font(.paragraphXSmall)
                     .foregroundStyle(.colorInteractiveTentPrimarySub)
@@ -420,6 +434,27 @@ struct SwapTokenView: View {
                 hideKeyboard()
                 $viewModel.isShowRouting.showSheet()
             }
+        }
+    }
+    
+    private var descriptionView: some View {
+        HStack(alignment: .center, spacing: 4) {
+            Text("Swaps are executed by third-party Cardano protocols.")
+                .lineLimit(1)
+                .font(.paragraphXSmall)
+                .foregroundStyle(.colorBaseTent)
+            Spacer(minLength: 0)
+            
+            Image(.icArrowDown)
+        }
+        .frame(height: 40)
+        .padding(.horizontal, .lg)
+        .overlay(RoundedRectangle(cornerRadius: .xl).fill(Color.colorSurfaceHighlightDefault))
+        .padding(.top, .md)
+        .padding(.horizontal, .xl)
+        .contentShape(.rect)
+        .onTapGesture {
+            isShowDescView = true
         }
     }
     
@@ -579,6 +614,8 @@ struct SwapTokenView: View {
 #Preview {
     SwapTokenView(viewModel: SwapTokenViewModel(tokenReceive: nil))
         .environmentObject(HUDState())
+        .environmentObject(AppSetting.shared)
+        .environmentObject(BannerState())
 }
 
 
