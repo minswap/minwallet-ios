@@ -141,7 +141,7 @@ extension TokenDetailView {
                 HStack {
                     DashedUnderlineText(text: "Circulating supply", textColor: .colorInteractiveTentPrimarySub, font: .paragraphSmall)
                     Spacer()
-                    let value = (viewModel.topAsset?.circulating_supply ?? 0).getPriceValue(appSetting: appSetting, isFormatK: true)
+                    let value = (viewModel.topAsset?.circulating_supply ?? 0).getPriceValue(appSetting: appSetting, isFormatK: true, usingCurrency: false)
                     Text(value.value > 0 ? value.attribute : AttributedString("--"))
                         .font(.labelMediumSecondary)
                         .foregroundStyle(.colorBaseTent)
@@ -156,7 +156,7 @@ extension TokenDetailView {
                 HStack {
                     DashedUnderlineText(text: "Total supply", textColor: .colorInteractiveTentPrimarySub, font: .paragraphSmall)
                     Spacer()
-                    let value = (viewModel.topAsset?.total_supply ?? 0).getPriceValue(appSetting: appSetting, isFormatK: true)
+                    let value = (viewModel.topAsset?.total_supply ?? 0).getPriceValue(appSetting: appSetting, isFormatK: true, usingCurrency: false)
                     Text(value.value > 0 ? value.attribute : AttributedString("--"))
                         .font(.labelMediumSecondary)
                         .foregroundStyle(.colorBaseTent)

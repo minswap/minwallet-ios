@@ -337,14 +337,23 @@ extension String {
 }
 
 extension Double {
-    func getPriceValue(appSetting: AppSetting, font: Font = .labelMediumSecondary, roundingOffset: Int? = 3, fontColor: Color = .colorBaseTent, isFormatK: Bool = false) -> (value: Double, attribute: AttributedString) {
+    func getPriceValue(
+        appSetting: AppSetting,
+        font: Font = .labelMediumSecondary,
+        roundingOffset: Int? = 3,
+        fontColor: Color = .colorBaseTent,
+        isFormatK: Bool = false,
+        usingCurrency: Bool = true
+    ) -> (value: Double, attribute: AttributedString) {
         let price = self
+        guard usingCurrency else {
+            return (price, price.formatNumber(roundingOffset: roundingOffset, font: font, fontColor: fontColor, isFormatK: isFormatK))
+        }
         switch appSetting.currency {
         case Currency.ada.rawValue:
-            return (price, price.formatNumber(suffix: Currency.ada.prefix, roundingOffset: roundingOffset, font: font))
+            return (price, price.formatNumber(suffix: Currency.ada.prefix, roundingOffset: roundingOffset, font: font, fontColor: fontColor))
         default:
             return (price, price.formatNumber(prefix: Currency.usd.prefix, roundingOffset: roundingOffset, font: font, fontColor: fontColor, isFormatK: isFormatK))
-        //            return (price, (price * appSetting.currencyInADA).formatNumber(prefix: Currency.usd.prefix, roundingOffset: roundingOffset, font: font, fontColor: fontColor, isFormatK: isFormatK))
         }
     }
 }
