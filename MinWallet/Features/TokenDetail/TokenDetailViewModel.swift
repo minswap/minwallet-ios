@@ -42,6 +42,7 @@ class TokenDetailViewModel: ObservableObject {
     var percent: Double {
         guard let selectedIndex = selectedIndex, !chartDatas.isEmpty else { return 0 }
         guard let current = chartDatas[gk_safeIndex: selectedIndex]?.value, let previous = chartDatas[gk_safeIndex: selectedIndex - 1]?.value else { return 0 }
+        guard previous != 0 else { return 0 }
         return (current - previous) / previous * 100
     }
     

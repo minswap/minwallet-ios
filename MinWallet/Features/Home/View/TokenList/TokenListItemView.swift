@@ -48,7 +48,12 @@ struct TokenListItemView: View {
                             .foregroundStyle(.colorBaseTent)
                     } else {
                         let priceValue: AttributedString = {
-                            return (token?.priceValue ?? 0).formatNumber(prefix: !showSubPrice ? Currency.usd.prefix : "")
+                            switch appSetting.currency {
+                            case Currency.ada.rawValue:
+                                return (token?.priceValue ?? 0).formatNumber(suffix: Currency.ada.prefix)
+                            default:
+                                return (token?.priceValue ?? 0).formatNumber(prefix: Currency.usd.prefix)
+                            }
                         }()
                         Text(priceValue)
                             .font(.labelMediumSecondary)
@@ -64,34 +69,15 @@ struct TokenListItemView: View {
                     Spacer()
                     
                     if showSubPrice {
-                        let subPrice: Double = {
-                            return token?.subPriceValue ?? 0
-                            /*
-                            guard token?.isTokenADA == false else { return token?.subPriceValue ?? 0 }
-                            return (token?.subPriceValue ?? 0).toExact(decimal: 6)
-                             */
-                        }()
+                        let subPrice: Double = token?.subPriceValue ?? 0
                         let subPriceValue: AttributedString = {
-                            //guard token?.fixedUSD == false else {
-                            return subPrice.formatNumber(prefix: Currency.usd.prefix, font: .paragraphSmall, fontColor: .colorInteractiveTentPrimarySub)
-                            //}
-                            /*
                             switch appSetting.currency {
                             case Currency.ada.rawValue:
-                                return
-                                    subPrice
-                                    .formatNumber(
-                                        suffix: Currency.ada.prefix,
-                                        roundingOffset: 6,
-                                        font: .paragraphSmall,
-                                        fontColor: .colorInteractiveTentPrimarySub
-                                    )
+                                return subPrice.formatNumber(suffix: Currency.ada.prefix, font: .paragraphSmall, fontColor: .colorInteractiveTentPrimarySub)
                             default:
-                                return (subPrice * appSetting.currencyInADA).formatNumber(prefix: Currency.usd.prefix, font: .paragraphSmall, fontColor: .colorInteractiveTentPrimarySub)
+                                return subPrice.formatNumber(prefix: Currency.usd.prefix, font: .paragraphSmall, fontColor: .colorInteractiveTentPrimarySub)
                             }
-                             */
                         }()
-
                         Text(subPriceValue)
                             .layoutPriority(999)
                     } else {

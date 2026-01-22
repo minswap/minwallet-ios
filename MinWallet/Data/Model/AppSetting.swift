@@ -1,7 +1,7 @@
 import SwiftUI
 import Combine
 import OneSignalFramework
-
+import Alamofire
 
 class AppSetting: ObservableObject {
     static let USER_NAME = "minWallet"
@@ -302,4 +302,10 @@ extension AppSetting {
 
 extension AppSetting {
     static let fakeWalletAddress: Bool = true
+    
+    static func updateParamsCurrency(params: inout Parameters) {
+        if AppSetting.shared.currency == Currency.usd.rawValue {
+            params["currency"] = "usd"
+        }
+    }
 }

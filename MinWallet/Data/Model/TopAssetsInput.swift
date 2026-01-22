@@ -24,12 +24,12 @@ extension TopAssetsInput {
         case price_change_1h
         case price_change_24h
         case price_change_7d
-        case volume_usd_1h
-        case volume_usd_24h
-        case volume_usd_7d
-        case liquidity_usd
-        case market_cap_usd
-        case fully_diluted_usd
+        case volume_1h
+        case volume_24h
+        case volume_7d
+        case liquidity
+        case market_cap
+        case fully_diluted
         case total_supply
         case circulating_supply
     }

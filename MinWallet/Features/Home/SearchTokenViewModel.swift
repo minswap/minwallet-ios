@@ -68,7 +68,7 @@ class SearchTokenViewModel: ObservableObject {
                     $0.term = nil
                 }
                 $0.limit = limit
-                $0.sort_field = .volume_usd_24h
+                $0.sort_field = .volume_24h
                 $0.sort_direction = .desc
             })
         

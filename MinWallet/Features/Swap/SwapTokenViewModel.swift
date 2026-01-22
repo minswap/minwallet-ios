@@ -440,7 +440,7 @@ class SwapTokenViewModel: ObservableObject {
         guard token.priceUsd == 0 else { return token.priceUsd }
         let jsonData = try? await MinWalletAPIRouter.detailAsset(id: token.currencySymbol + token.tokenName).async_request()
         let asset = Mapper<TopAssetsResponse.AssetMetric>.init().map(JSON: jsonData?.dictionaryObject ?? [:])
-        return asset?.price_usd ?? 0
+        return asset?.price ?? 0
     }
     
     var minimumMaximumAmount: Double {

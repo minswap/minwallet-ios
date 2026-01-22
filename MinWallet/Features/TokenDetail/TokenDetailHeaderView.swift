@@ -29,12 +29,23 @@ extension TokenDetailView {
                         .lineLimit(1)
                         .foregroundStyle(.colorBaseTent)
                         .font(.labelMediumSecondary)
-                    let chartSelected =
-                        viewModel.chartDataSelected?.value
-                        .formatNumber(
-                            prefix: Currency.usd.prefix,
-                            font: .paragraphXSmall,
-                            fontColor: .colorInteractiveTentPrimarySub) ?? "--"
+                    let chartSelected: AttributedString = {
+                        switch appSetting.currency {
+                        case Currency.ada.rawValue:
+                            viewModel.chartDataSelected?.value
+                                .formatNumber(
+                                    suffix: Currency.ada.prefix,
+                                    font: .paragraphXSmall,
+                                    fontColor: .colorInteractiveTentPrimarySub) ?? "--"
+                        default:
+                            viewModel.chartDataSelected?.value
+                                .formatNumber(
+                                    prefix: Currency.usd.prefix,
+                                    font: .paragraphXSmall,
+                                    fontColor: .colorInteractiveTentPrimarySub) ?? "--"
+                        }
+                    }()
+
                     HStack(alignment: .firstTextBaseline, spacing: 4) {
                         Text(chartSelected)
                         HStack(alignment: .center, spacing: 4) {
@@ -87,13 +98,23 @@ extension TokenDetailView {
                         })
                     Spacer()
                 })
-            let chartSelected =
-                viewModel.chartDataSelected?.value
-                .formatNumber(
-                    prefix: Currency.usd.prefix,
-                    font: .titleH4,
-                    fontColor: .colorBaseTent) ?? "-"
-            
+            let chartSelected: AttributedString = {
+                switch appSetting.currency {
+                case Currency.ada.rawValue:
+                    viewModel.chartDataSelected?.value
+                        .formatNumber(
+                            suffix: Currency.ada.prefix,
+                            font: .titleH4,
+                            fontColor: .colorBaseTent) ?? "-"
+                default:
+                    viewModel.chartDataSelected?.value
+                        .formatNumber(
+                            prefix: Currency.usd.prefix,
+                            font: .titleH4,
+                            fontColor: .colorBaseTent) ?? "-"
+                }
+            }()
+
             Text(chartSelected)
                 .padding(.top, .lg)
                 .padding(.bottom, .xs)

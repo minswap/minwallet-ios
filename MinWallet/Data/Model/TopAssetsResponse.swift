@@ -20,16 +20,16 @@ extension TopAssetsResponse {
     struct AssetMetric: Then, Mappable, Hashable {
         var asset: AssetData = .init()
         
-        var price_usd: Double = 0
+        var price: Double = 0
         var price_change_1h: Double = 0
         var price_change_24h: Double = 0
         var price_change_7d: Double = 0
-        var volume_usd_1h: Double = 0
-        var volume_usd_24h: Double = 0
-        var volume_usd_7d: Double = 0
-        var liquidity_usd: Double = 0
-        var market_cap_usd: Double = 0
-        var fully_diluted_usd: Double = 0
+        var volume_1h: Double = 0
+        var volume_24h: Double = 0
+        var volume_7d: Double = 0
+        var liquidity: Double = 0
+        var market_cap: Double = 0
+        var fully_diluted: Double = 0
         var total_supply: Double = 0
         var circulating_supply: Double = 0
         var created_at: String = ""
@@ -41,16 +41,16 @@ extension TopAssetsResponse {
         
         mutating func mapping(map: Map) {
             asset <- map["asset"]
-            price_usd <- (map["price_usd"], GKMapFromJSONToDouble)
+            price <- (map["price"], GKMapFromJSONToDouble)
             price_change_1h <- (map["price_change_1h"], GKMapFromJSONToDouble)
             price_change_24h <- (map["price_change_24h"], GKMapFromJSONToDouble)
             price_change_7d <- (map["price_change_7d"], GKMapFromJSONToDouble)
-            volume_usd_1h <- (map["volume_usd_1h"], GKMapFromJSONToDouble)
-            volume_usd_24h <- (map["volume_usd_24h"], GKMapFromJSONToDouble)
-            volume_usd_7d <- (map["volume_usd_7d"], GKMapFromJSONToDouble)
-            liquidity_usd <- (map["liquidity_usd"], GKMapFromJSONToDouble)
-            market_cap_usd <- (map["market_cap_usd"], GKMapFromJSONToDouble)
-            fully_diluted_usd <- (map["fully_diluted_usd"], GKMapFromJSONToDouble)
+            volume_1h <- (map["volume_1h"], GKMapFromJSONToDouble)
+            volume_24h <- (map["volume_24h"], GKMapFromJSONToDouble)
+            volume_7d <- (map["volume_7d"], GKMapFromJSONToDouble)
+            liquidity <- (map["liquidity"], GKMapFromJSONToDouble)
+            market_cap <- (map["market_cap"], GKMapFromJSONToDouble)
+            fully_diluted <- (map["fully_diluted"], GKMapFromJSONToDouble)
             total_supply <- (map["total_supply"], GKMapFromJSONToDouble)
             circulating_supply <- (map["circulating_supply"], GKMapFromJSONToDouble)
             created_at <- map["created_at"]
@@ -68,7 +68,7 @@ extension TopAssetsResponse.AssetMetric: TokenProtocol {
     var ticker: String { asset.metadata?.ticker ?? UserInfo.TOKEN_NAME_DEFAULT[uniqueID] ?? "" }
     var projectName: String { asset.metadata?.name ?? "" }
     var percentChange: Double { price_change_24h }
-    var priceValue: Double { price_usd }
+    var priceValue: Double { price }
     var subPriceValue: Double { 0 }
     
     var category: [String] { categories }

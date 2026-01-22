@@ -4,10 +4,10 @@ import Foundation
 
 struct AssetPosition: Mappable {
     var asset: AssetData = .init()
-    var price_usd: Double = 0
+    var price: Double = 0
     var amount_position: Double = 0
-    var amount_position_usd: Double = 0
-    var pnl_24h_usd: Double = 0
+    var value: Double = 0
+    var pnl_24h: Double = 0
     var pnl_24h_percent: Double = 0
     
     init() {}
@@ -16,10 +16,10 @@ struct AssetPosition: Mappable {
     
     mutating func mapping(map: Map) {
         asset <- map["asset"]
-        price_usd <- (map["price_usd"], GKMapFromJSONToDouble)
+        price <- (map["price"], GKMapFromJSONToDouble)
         amount_position <- (map["amount"], GKMapFromJSONToDouble)
-        amount_position_usd <- (map["amount_usd"], GKMapFromJSONToDouble)
-        pnl_24h_usd <- (map["pnl_24h_usd"], GKMapFromJSONToDouble)
+        value <- (map["value"], GKMapFromJSONToDouble)
+        pnl_24h <- (map["pnl_24h"], GKMapFromJSONToDouble)
         pnl_24h_percent <- (map["pnl_24h_percent"], GKMapFromJSONToDouble)
     }
 }
@@ -34,7 +34,7 @@ extension AssetPosition: TokenProtocol {
     var priceValue: Double { amount_position }
     var amount: Double { priceValue }
     var percentChange: Double { pnl_24h_percent }
-    var subPriceValue: Double { amount_position_usd }
+    var subPriceValue: Double { value }
     
     var category: [String] { [] }
     

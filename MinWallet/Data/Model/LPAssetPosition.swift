@@ -5,8 +5,8 @@ import Foundation
 struct LPAssetPosition: Mappable {
     var asset: AssetData = .init()
     var amount_position: Double = 0
-    var amount_position_usd: Double = 0
-    var pnl_24h_usd: Double = 0
+    var value: Double = 0
+    var pnl_24h: Double = 0
     var pnl_24h_percent: Double = 0
     var pool_share: Double = 0
     var protocolSource: AggregatorSource?
@@ -18,8 +18,8 @@ struct LPAssetPosition: Mappable {
     mutating func mapping(map: Map) {
         asset <- map["asset"]
         amount_position <- (map["amount"], GKMapFromJSONToDouble)
-        amount_position_usd <- (map["amount_usd"], GKMapFromJSONToDouble)
-        pnl_24h_usd <- (map["pnl_24h_usd"], GKMapFromJSONToDouble)
+        value <- (map["value"], GKMapFromJSONToDouble)
+        pnl_24h <- (map["pnl_24h"], GKMapFromJSONToDouble)
         pnl_24h_percent <- (map["pnl_24h_percent"], GKMapFromJSONToDouble)
         protocolSource <- (
             map["protocol"],
@@ -52,7 +52,7 @@ extension LPAssetPosition: TokenProtocol {
     var priceValue: Double { amount_position }
     var amount: Double { priceValue }
     var percentChange: Double { pnl_24h_percent }
-    var subPriceValue: Double { amount_position_usd }
+    var subPriceValue: Double { value }
     
     var category: [String] { [] }
     
