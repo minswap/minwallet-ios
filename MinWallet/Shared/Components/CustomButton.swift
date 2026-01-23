@@ -54,7 +54,7 @@ struct CustomButton: View {
                 }
             }
             .frame(maxWidth: frameType == .matchParent ? .infinity : nil, maxHeight: .infinity)
-            .padding(.horizontal, 10)
+            .padding(.horizontal, .lg)
             .background(isEnable ? variant.backgroundColor : variant.backgroundColorDisable)
             .shadow(radius: 50).cornerRadius(BorderRadius.full)
             .overlay(RoundedRectangle(cornerRadius: BorderRadius.full).stroke(variant.borderColor, lineWidth: 1))
