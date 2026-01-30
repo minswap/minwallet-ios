@@ -71,7 +71,7 @@
 		<string>remote-notification</string>
 	</array>
 	<key>NSCameraUsageDescription</key>
-	<string>Use the camera to scan QR codes for transactions.</string>
+	<string>Camera access allows users to scan QR codes for wallet addresses and transaction data import.</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
