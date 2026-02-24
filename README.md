@@ -75,7 +75,7 @@ We welcome contributions! Please see our [CONTRIBUTING.md](CONTRIBUTING.md) for 
 
 ## License 📄
 
-This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the GNU General Public License 3.0 - see the [LICENSE](LICENSE) file for details.
 
 ## Security 🛡️
 
